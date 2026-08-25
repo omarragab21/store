@@ -7,3 +7,9 @@ toki2 (1)/
 PROJECT_DOCUMENTATION.md
 extract_sql_to_dummy_data.py
 api/data/database_all.json
+# Local dev only — not needed on Vercel
+server.js
+public/
+dummy_data/
+README.md
+.DS_Store

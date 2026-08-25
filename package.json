@@ -1,12 +1,11 @@
 {
   "name": "toki-store",
   "version": "3.0.2",
+  "private": true,
   "description": "Toki Store & Multi-Vendor Marketplace - Vercel Ready with Extracted SQL Mock Database & REST API",
   "scripts": {
-    "start": "node server.js",
     "dev": "node server.js",
-    "export:data": "python3 extract_sql_to_dummy_data.py",
-    "test": "node -e \"const h=require('./api/index.js'); console.log('API loaded successfully');\""
+    "export:data": "python3 extract_sql_to_dummy_data.py"
   },
   "keywords": [
     "opencart",
