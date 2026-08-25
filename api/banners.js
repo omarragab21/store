@@ -1,7 +1,9 @@
-const indexHandler = require('./index.js');
+const { banners, sendJson } = require('./_data.js');
 
 module.exports = (req, res) => {
-  const url = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
-  req.url = '/api/banners' + url.search;
-  return indexHandler(req, res);
+  if (req.method === 'OPTIONS') {
+    res.statusCode = 200;
+    return res.end();
+  }
+  return sendJson(res, 200, { status: 'success', total: banners.length, data: banners });
 };

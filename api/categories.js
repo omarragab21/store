@@ -1,7 +1,9 @@
-const indexHandler = require('./index.js');
+const { categories, sendJson } = require('./_data.js');
 
 module.exports = (req, res) => {
-  const url = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
-  req.url = '/api/categories' + url.search;
-  return indexHandler(req, res);
+  if (req.method === 'OPTIONS') {
+    res.statusCode = 200;
+    return res.end();
+  }
+  return sendJson(res, 200, { status: 'success', total: categories.length, data: categories });
 };
