@@ -1,0 +1,69 @@
+     <div class="slide-cont">
+        <div class="swiper-viewport">
+            <div id="slideshow{{ module }}" class="swiper-container" dir="{{ direction }}">
+                <div class="swiper-wrapper">
+
+                    {% for banner in banners %}
+                        <div class="swiper-slide text-center">
+                            {% if banner.link %}
+                                <a href="{{ banner.link }}">
+                                    <img src="{{ banner.image }}" alt="{{ banner.title }}" class="img-responsive"/>
+                                </a>
+                                <div class="exc">
+                                    <h3><span>{{ banner.title }}</span></h3>
+                                    <p class="desc">{{ banner.description }}</p>
+                                    <div class="over">
+                                        <a class=" " href="{{ category.href }}" >
+                                            <span>{{ button_read }}</span>
+                                        </a>
+                                        
+                                    </div>
+                                </div>
+                            {% else %}
+
+                                <img src="{{ banner.image }}" alt="{{ banner.title }}" class="img-responsive" />
+
+                                <div class="exc">
+                                    <h3><span>{{ banner.title }}</span></h3>
+                                    <p class="desc">{{ banner.description }}</p>
+                                    <div class="over">
+                                        <a class=" " href="{{ category.href }}" >
+                                            <span>{{ button_read }}</span>
+                                            
+                                        </a>
+
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                        </div>
+                    {% endfor %} </div>
+            </div>
+
+            <!-- <div class="swiper-pagination slideshow-pagination slideshow{{ module }}"></div> -->
+                <div class="swiper-pager">
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                </div>
+        </div>
+    </div>
+
+     <script type="text/javascript"><!--
+    $('#slideshow{{ module }}').swiper({
+        mode: 'horizontal',
+        slidesPerView: 1,
+         pagination: '.slideshow{{ module }}',
+
+        paginationClickable: false,
+        nextButton: '.swiper-button-next',
+        prevButton: '.swiper-button-prev',
+        spaceBetween: 0,
+        autoplay: false,
+
+
+        autoplayDisableOnInteraction: true,
+        loop: true,
+
+
+    });
+    --></script>

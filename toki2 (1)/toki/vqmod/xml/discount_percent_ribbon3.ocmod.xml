@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<modification>
+	<name>Discount Percent</name>
+
+	<code>ribbon_discount</code>
+
+	<version>2.0.0</version>
+
+	<vqmver></vqmver>
+
+	<author>GreekOC</author>
+
+	<link></link>
+
+	<date>2015.08.01</date>
+
+	<file path="catalog/controller/extension/module/bestseller.php">
+
+		<operation>
+
+            <search><![CDATA[$data['products'][] = array(]]></search>
+
+            <add position="after"><![CDATA['percent'     => $result['price'] > 0 ? sprintf($this->language->get('%s'), (round((($result['price'] - $result['special'])/$result['price']) * 100 ,0 ))) . ' %' : "",]]></add>
+
+        </operation>
+
+	</file>
+
+
+	<file path="catalog/controller/extension/module/featured.php">
+
+		<operation>
+
+            <search><![CDATA[$data['products'][] = array(]]></search>
+            <add position="after"><![CDATA['percent'     => $product_info['price'] > 0 ? sprintf($this->language->get('%s'), (round((($product_info['price'] - $product_info['special'])/$product_info['price']) * 100 ,0 ))) . ' %' : "",]]></add>
+
+            
+
+        </operation>
+
+	</file>
+
+
+<file path="catalog/controller/extension/module/productcategory.php">
+
+		<operation>
+
+            <search><![CDATA[$products[] = array(]]></search>
+
+           <add position="after"><![CDATA['percent'     => $result['price'] > 0 ? sprintf($this->language->get('%s'), (round((($result['price'] - $result['special'])/$result['price']) * 100 ,0 ))) . ' %' : "",]]></add>
+
+        </operation>
+
+	</file>
+	
+
+	<file path="catalog/controller/extension/module/latest.php">
+
+		<operation>
+
+            <search><![CDATA[$data['products'][] = array(]]></search>
+
+            <add position="after"><![CDATA['percent'     => $result['price'] > 0 ? sprintf($this->language->get('%s'), (round((($result['price'] - $result['special'])/$result['price']) * 100 ,0 ))) . ' %' : "",]]></add>
+
+        </operation>
+
+	</file>
+
+	
+
+	<file path="catalog/controller/extension/module/special.php">
+
+		<operation>
+
+            <search><![CDATA[$data['products'][] = array(]]></search>
+
+            <add position="after"><![CDATA['percent'     => $result['price'] > 0 ? sprintf($this->language->get('%s'), (round((($result['price'] - $result['special'])/$result['price']) * 100 ,0 ))) . ' %' : "",]]></add>
+
+        </operation>
+
+	</file>
+
+	
+
+	<file path="catalog/controller/product/category.php">
+
+		<operation>
+
+            <search><![CDATA[$data['products'][] = array(]]></search>
+
+            <add position="after"><![CDATA['percent'     => $result['price'] > 0 ? sprintf($this->language->get('%s'), (round((($result['price'] - $result['special'])/$result['price']) * 100 ,0 ))) . ' %' : "",]]></add>
+
+        </operation>
+
+	</file>
+
+	
+
+	<file path="catalog/controller/product/manufacturer.php">
+
+		<operation>
+
+            <search><![CDATA[$data['products'][] = array(]]></search>
+
+            <add position="after"><![CDATA['percent'     => $result['price'] > 0 ? sprintf($this->language->get('%s'), (round((($result['price'] - $result['special'])/$result['price']) * 100 ,0 ))) . ' %' : "",]]></add>
+
+        </operation>
+
+	</file>
+
+	
+
+	<file path="catalog/controller/product/search.php">
+
+		<operation>
+
+            <search><![CDATA[$data['products'][] = array(]]></search>
+
+            <add position="after"><![CDATA['percent'     => $result['price'] > 0 ? sprintf($this->language->get('%s'), (round((($result['price'] - $result['special'])/$result['price']) * 100 ,0 ))) . ' %' : "",]]></add>
+
+        </operation>
+
+	</file>
+
+	<file path="catalog/controller/extension/module/fumeproducttab.php">
+
+	<operation>
+            <search><![CDATA[$data['featured_products'][] = array(]]></search>
+            <add position="after"><![CDATA['percent'     => $result['price'] > 0 ? sprintf($this->language->get('%s'), (round((($result['price'] - $result['special'])/$result['price']) * 100 ,0 ))) . ' %' : "",]]></add>
+	</operation>
+	<operation>
+            <search><![CDATA[$data['lastest_products'][] = array(]]></search>
+            <add position="after"><![CDATA['percent'     => $result['price'] > 0 ? sprintf($this->language->get('%s'), (round((($result['price'] - $result['special'])/$result['price']) * 100 ,0 ))) . ' %' : "",]]></add>
+	</operation>
+	<operation>
+            <search><![CDATA[$data['special_products'][] = array(]]></search>
+            <add position="after"><![CDATA['percent'     => $result['price'] > 0 ? sprintf($this->language->get('%s'), (round((($result['price'] - $result['special'])/$result['price']) * 100 ,0 ))) . ' %' : "",]]></add>
+	</operation>
+	<operation>
+            <search><![CDATA[$data['bestseller_products'][] = array(]]></search>
+            <add position="after"><![CDATA['percent'     => $result['price'] > 0 ? sprintf($this->language->get('%s'), (round((($result['price'] - $result['special'])/$result['price']) * 100 ,0 ))) . ' %' : "",]]></add>
+	</operation>
+	</file>
+
+	
+
+	<file path="catalog/controller/product/special.php">
+
+		<operation>
+
+            <search><![CDATA[$data['products'][] = array(]]></search>
+
+            <add position="after"><![CDATA['percent'     => $result['price'] > 0 ? sprintf($this->language->get('%s'), (round((($result['price'] - $result['special'])/$result['price']) * 100 ,0 ))) . ' %' : "",]]></add>
+
+        </operation>
+
+	</file>
+
+	
+
+	<file path="catalog/controller/product/product.php">
+
+		<operation>
+
+            <search><![CDATA[if ((float)$product_info['special']) {]]></search>
+
+            <add position="after"><![CDATA[$data['percent'] = sprintf($this->language->get('%s'), (round((($product_info['price'] -  $product_info['special'])/$product_info['price']) * 100 ,0))). ' %';]]></add>
+
+        </operation>
+
+		
+
+		<operation>
+
+            <search><![CDATA[$data['products'][] = array(]]></search>
+
+            <add position="after"><![CDATA['percent'     => $result['price'] > 0 ? sprintf($this->language->get('%s'), (round((($result['price'] - $result['special'])/$result['price']) * 100 ,0 ))) . ' %' : "",]]></add>
+
+        </operation>
+
+	</file>
+
+	
+
+	<file path="catalog/view/theme/*/template/product/manufacturer_info.twig">
+
+		<operation>
+
+            <search><![CDATA[<div class="image">]]></search>
+
+            <add position="after"><![CDATA[{% if (product['special']) %}<div class="ribbon"><span>  {{ product['percent'] }}</span></div>{% endif %}]]></add>
+
+        </operation>
+
+	</file>
+
+		
+
+	<file path="catalog/view/theme/*/template/product/product.twig">
+
+		<!-- <operation>
+
+            <search><![CDATA[{% if (thumb) %}]]></search>
+
+            <add position="after"><![CDATA[{% if (special) %}<div class="ribbon"><span>  {{ percent }}</span></div>{% endif %}]]></add>
+
+        </operation> -->
+
+		
+
+		<operation>
+
+            <search><![CDATA[<div class="image">]]></search>
+
+            <add position="after"><![CDATA[{% if (product['special']) %}<div class="ribbon"><span>  {{ product['percent'] }}</span></div>{% endif %}]]></add>
+
+        </operation>
+
+	</file>
+
+	
+
+	<file path="catalog/view/theme/*/template/extension/module/bestseller.twig">
+
+		<operation>
+
+            <search><![CDATA[<div class="image">]]></search>
+
+            <add position="after"><![CDATA[{% if (product['special']) %}<div class="ribbon"><span>  {{ product['percent'] }}</span></div>{% endif %}]]></add>
+
+        </operation>
+
+	</file>
+
+	<file path="catalog/view/theme/*/template/extension/module/fumeproducttab.twig">
+
+		<operation>
+
+            <search><![CDATA[<div class="image">]]></search>
+
+            <add position="after"><![CDATA[{% if (product['special']) %}<div class="ribbon"><span>  {{ product['percent'] }}</span></div>{% endif %}]]></add>
+
+        </operation>
+
+	</file>
+
+
+	<file path="catalog/view/theme/*/template/extension/module/featured.twig">
+
+		<operation>
+
+            <search><![CDATA[<div class="image">]]></search>
+
+            <add position="after"><![CDATA[{% if (product['special']) %}<div class="ribbon"><span>  {{ product['percent'] }}</span></div>{% endif %}]]></add>
+
+        </operation>
+
+	</file>
+
+
+	<file path="catalog/view/theme/*/template/extension/module/productcategory.twig">
+
+		<operation>
+
+            <search><![CDATA[<div class="image">]]></search>
+
+            <add position="after"><![CDATA[{% if (product['special']) %}<div class="ribbon"><span>  {{ product['percent'] }}</span></div>{% endif %}]]></add>
+
+        </operation>
+
+	</file>
+
+	
+
+	<file path="catalog/view/theme/*/template/extension/module/latest.twig">
+
+		<operation>
+
+            <search><![CDATA[<div class="image">]]></search>
+
+            <add position="after"><![CDATA[{% if (product['special']) %}<div class="ribbon"><span>  {{ product['percent'] }}</span></div>{% endif %}]]></add>
+
+        </operation>
+
+	</file>
+
+	
+
+	<file path="catalog/view/theme/*/template/extension/module/special.twig">
+
+		<operation>
+
+            <search><![CDATA[<div class="image">]]></search>
+
+			<add position="after"><![CDATA[{% if (product['special']) %}<div class="ribbon"><span>  {{ product['percent'] }}</span></div>{% endif %}]]></add>
+
+        </operation>
+
+	</file>
+
+	
+
+	<file path="catalog/view/theme/*/template/product/category.twig">
+
+		<operation>
+
+            <search><![CDATA[<div class="image">]]></search>
+
+            <add position="after"><![CDATA[{% if (product['special']) %}<div class="ribbon"><span>  {{ product['percent'] }}</span></div>{% endif %}]]></add>
+
+        </operation>
+
+	</file>
+
+
+
+	<file path="catalog/view/theme/*/template/product/search.twig">
+
+		<operation>
+
+            <search><![CDATA[<div class="image">]]></search>
+
+            <add position="after"><![CDATA[{% if (product['special']) %}<div class="ribbon"><span>  {{ product['percent'] }}</span></div>{% endif %}]]></add>
+
+        </operation>
+
+	</file>
+
+	
+
+	<file path="catalog/controller/product/compare.php">
+
+		<operation>
+
+            <search><![CDATA[$data['products'][$product_id] = array(]]></search>
+
+            <add position="after"><![CDATA['percent'	=> sprintf($this->language->get('%s'), (round((($product_info['price'] -  $product_info['special'])/$product_info['price']) * 100 ,0))) . ' %',]]></add>
+
+        </operation>
+
+	</file>
+
+	
+
+	<file path="catalog/view/theme/*/template/product/compare.twig">
+
+		<operation>
+
+            <search><![CDATA[{{ products[product['product_id']]['special'] }}]]></search>
+
+            <add position="after"><![CDATA[<span style="color: red;float: right">  {{ product['percent'] }}</span>]]></add>
+
+        </operation>
+
+	</file>
+
+
+
+	<file path="catalog/language/ar/ar.php">
+		<operation>
+	            <search><![CDATA[// Buttons]]></search>
+	            <add position="after"><![CDATA[$_['text_discount1']    = 'خصم';]]></add>
+	        </operation>
+	</file>
+	<file path="catalog/language/en-gb/en-gb.php">
+		<operation>
+	            <search><![CDATA[// Buttons]]></search>
+	            <add position="after"><![CDATA[$_['text_discount1']    = 'Discount';]]></add>
+	        </operation>
+	</file>
+
+	
+
+    <file path="catalog/view/theme/*/template/common/footer.twig">
+
+		<operation>
+
+            <search><![CDATA[<footer>]]></search>
+
+            <add position="before"><![CDATA[
+            	<style>
+            		.product-thumb {
+		        position: relative;
+		}
+            		.ribbon{
+    position: absolute;
+        left: 0px;
+    top: 0px;
+    z-index: 1;
+    overflow: hidden;
+    width: 100px;
+    height: 50px;
+    }
+.ribbon span{
+        font-size: 11px;
+    font-weight: 700;
+    color: #fff;
+    text-align: center;
+    line-height: 22px;
+        padding: 4px 9px;
+    background: #F32F2F;
+    position: absolute;
+    top: 10px;
+    left: 0px;
+        border-radius: 0;}</style>]]></add>
+
+        </operation>
+
+	</file>
+
+		
+
+</modification>

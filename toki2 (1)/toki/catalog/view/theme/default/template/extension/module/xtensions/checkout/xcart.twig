@@ -1,0 +1,116 @@
+{% if redirect is not defined and (products or vouchers)  %} 
+<div class="panel panel-green1 xcart cartpanel">
+<div class="panel-heading xcollapsable" data-toggle="collapse" data-target="#xcart-content-{{ section }}" aria-expanded="true"><i class="fa fa-shopping-cart" aria-hidden="true"></i>&nbsp;{{ total_products }}</div>
+<div id="xcart-content-{{ section }}" class="panel-body collapse in">
+{% if    xcart_success  %} 
+<div class="alert alert-success alert-small">{{ xcart_success }}<button type="button" class="close" data-dismiss="alert">&times;</button></div>
+{% endif %} 
+<div class="cartproducts">
+{% set countOptions = 1 %} {% for product in products %} 
+<div class="cartelement">
+<div class="media">
+  <div class="media-left">
+   <a target="_newtab" href="{{ product.href }}"><img src="{{ product.thumb }}" alt="{{ product.name }}" title="{{ product.name }}" class="img-thumbnail" /></a>
+  </div>
+  <div class="media-body">
+  	<div class="col-xs-12 nopadding">
+    <div class="media-heading"><a target="_newtab" href="{{ product.href }}">{{ product.name }}</a>
+     {% if not product.stock %}
+     <span class="text-danger" data-toggle="tooltip" data-placement="bottom" title="{{ error_stock }}">***&nbsp;<i class="text-warning fa fa-warning"></i></span>
+     {% endif %}
+     </div>
+    {% if not information_always %}<a class="optionLink pointer text-right" onclick="toggleOptions('xoptions{{ countOptions }}-{{ section }}')"><i class="fa fa-info-circle" aria-hidden="true"></i></a>{% endif %}
+  	<div class="clearfix"></div>
+  	<div class="text-left width50"><span class="is_amount text-muted">{{ product.quantity }} &times; {{ product.price }}</span></div><div class="text-right width50"><span class="is_total">{{ product.total }}</span></div>
+   <div class="clearfix"></div>
+   {% if hasCoupon and has_product_discount and product['coupon_discount'] %}
+   		<div class="text-left width50"><small class="is_amount is_coupon_discount">{{ text_coupon_discount }}</small></div><div class="text-right width50"><small class="is_coupon_discount">{{ product['coupon_discount'] }}</small></div>
+   		<div class="clearfix"></div>
+  	{% elseif hasCoupon and has_product_discount %}
+  		<div class="text-left"><small class="coupon_inapplicable">{{ text_coupon_not_applicable }}</small></div>
+   		<div class="clearfix"></div>   
+  	{% endif %}   
+  <div class="text-left"><div class="text-muted">      	
+        	<div {{ information_always?'':'style="display: none;"' }} id="xoptions{{ countOptions }}-{{ section }}">
+        	<div class="text-left"><span>{{ column_model}}: </span><span class="text-muted">{{ product.model }}</span></div>  
+        	{% for option in product.option %} 
+        		<div class="xgray">{{ option.name }}: {{ option.value }}</div>        		
+        	{% endfor %} 
+        	{% if    product.reward  %}                  
+              <div class="xgray">{{ product.reward }}</div>
+            {% endif %} 
+            {% if    product.recurring  %} 
+                  <div class="xgray">{{ text_recurring_item }}: {{ product.recurring }}</div>
+			{% endif %} 
+        	</div>
+        	</div> 
+  			</div> 
+  			
+  		<div class="clearfix"></div>
+  {% if    product.error_warning  %} 
+  <div class="text-danger">{{ product.error_warning }}</div>
+  {% endif %}
+  {% if hide_cart_quantity %}
+   <div class="text-left"><a class="pointer underline" href="{{ cart_link }}">{{ text_cart_edit }}</a></div>
+   <div class="clearfix"></div> 
+   {% elseif    section == 'payment'  %} 
+   <div class="text-left"><a class="pointer underline" onclick="click2();">{{ text_cart_edit }}</a></div>
+   <div class="clearfix"></div> 
+   {% endif %}   
+   </div> 
+   </div>
+</div>
+{% if section != 'payment'  %} 
+{% if not hide_cart_quantity %}
+<div class="input-group cartedit"> 
+    <div class="input-group-addon editcart minus" onclick="$(this).children('button').children('i').removeClass('icon ion-minus');$(this).children('button').children('i').addClass('fa fa-circle-o-notch fa-spin');xcart.xupdate('{{ product.cart_id }}',parseInt(+($('input[name=\'quantity[{{ product.cart_id }}]\']').val())-1),'{{ section }}');"><button type="button" data-toggle="tooltip" title="{{ button_update }}"><i class="icon ion-minus"></i></button></div>
+    <input type="text" name="quantity[{{ product.cart_id }}]" onchange="xcart.xupdate('{{ product.cart_id }}',$('input[name=\'quantity[{{ product.cart_id }}]\']').val(),'{{ section }}');" value="{{ product.quantity }}" size="1" class="form-control" />                                     
+    <div class="input-group-addon editcart plus" onclick="$(this).children('button').children('i').removeClass('icon ion-plus-round');$(this).children('button').children('i').addClass('fa fa-circle-o-notch fa-spin');xcart.xupdate('{{ product.cart_id }}',parseInt(+($('input[name=\'quantity[{{ product.cart_id }}]\']').val())+1),'{{ section }}');"><button type="button" data-toggle="tooltip" title="{{ button_update }}"><i class="icon ion-plus-round"></i></button></div>    
+    {% if not hide_delete %}<div class="input-group-addon editcart xremove" onclick="$(this).children('button').children('i').removeClass('icon ion-trash-b');$(this).children('button').children('i').addClass('fa fa-circle-o-notch fa-spin');xcart.xremove('{{ product.cart_id }}','{{ section }}');"><button type="button" data-toggle="tooltip" title="{{ button_remove }}"><i class="icon ion-trash-b"></i></button></div>{% endif %}
+    {% if not hide_wishlist %}<div class="input-group-addon editcart xwishlist" onclick="$(this).children('button').children('i').removeClass('icon ion-android-favorite-outline');$(this).children('button').children('i').addClass('fa fa-circle-o-notch fa-spin');xcart.wishlist('{{ product.product_id }}','{{ product.cart_id }}','{{ section }}');"><button type="button" data-toggle="tooltip" title="{{ text_move_to_wishlist }}"><i class="icon ion-android-favorite-outline"></i></button></div>{% endif %}
+</div>
+{% endif %}
+<div class="clearfix"></div>   
+{% endif %} 
+</div>
+ {% set countOptions = countOptions + 1 %} 
+{% endfor %} 
+{% for voucher in vouchers %} 
+<div class="cartelement">
+<div class="media">
+<div class="media-left">
+   <span><img src="{{ voucher_image }}" alt="{{ voucher.description }}" class="img-thumbnail" /></span>
+  </div>
+<div class="media-body">
+  	<div class="col-xs-12 nopadding">
+    <div class="media-heading">{{ text_gift_voucher }}</div>
+    {% if not information_always %}<a class="optionLink pointer text-right" onclick="toggleOptions('xoptions{{ countOptions }}-{{ section }}')"><i class="fa fa-info-circle" aria-hidden="true"></i></a>{% endif %}
+    <div class="clearfix"></div>  	
+  	<div class="text-left width50"><span class="is_total">{{ voucher.amount }}</span></div>
+  	{% if    section != 'payment'  %} 
+  	<div class="text-right width50"><a class="pointer underline" onclick="xvoucher.xremove('{{ voucher.key }}','{{ section }}');">{{ button_remove }}</a></div>
+  	{% else %}
+  	{% if hide_cart_quantity %}
+       <div class="text-left"><a class="pointer underline" href="{{ cart_link }}">{{ text_cart_edit }}</a></div>
+       <div class="clearfix"></div> 
+    {% else  %}  
+  		<div class="text-right width50"><a class="pointer underline" onclick="click2();">{{ text_cart_edit }}</a></div>
+    {% endif %} 
+  	{% endif %} 
+   <div class="clearfix"></div>  
+   <div class="text-left"><div class="text-muted">      	
+   <div {{ information_always?'':'style="display: none;"' }} id="xoptions{{ countOptions }}-{{ section }}">
+   <div class="text-left"><span>{{ voucher.description }}</span></div>
+   </div>
+   </div> 
+   </div> 
+   <div class="clearfix"></div>			
+</div>
+</div>
+</div>
+</div>
+ {% set countOptions = countOptions + 1 %} {% endfor %} 
+</div>
+</div>
+</div>
+{% endif %}

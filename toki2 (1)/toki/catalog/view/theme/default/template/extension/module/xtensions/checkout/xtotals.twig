@@ -1,0 +1,12 @@
+<div class="panel panel-green1 totalspanel">              
+<div class="panel-heading"><i class="fa fa-money" aria-hidden="true"></i>&nbsp;{{ text_totals }}{{ final_price }}</div>
+<div id="xtotals-content">        
+<table class="table">
+<tbody>
+{% for total in totals %} 
+<tr><td>{{ total.title }}:</td><td class="text-right">{{ total.text }}</td></tr>
+{% endfor %}            
+</tbody>            
+</table>
+</div>
+</div>

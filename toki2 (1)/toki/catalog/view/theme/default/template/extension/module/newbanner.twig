@@ -1,0 +1,21 @@
+
+
+    <div class="newbanner-cont">
+        <div class="newbanner-content">
+            <div id="newbanner{{ module }}" class="newbanner-item">
+
+                <div class="newbanner-main">
+                    {% for banner in banners %}
+                        <div class="  newbanner-images">{% if banner.link %}<a href="{{ banner.link }}">
+                                <img src="{{ banner.image }}" alt="{{ banner.title }}" class="img-responsive"/>
+                                </a>{% else %}
+                                <img src="{{ banner.image }}" alt="{{ banner.title }}"
+                                     class="img-responsive"/>{% endif %}
+                        </div>
+                    {% endfor %} </div>
+            </div>
+            <div class="swiper-pagination newbanner{{ module }}"></div>
+
+        </div>
+    </div>
+

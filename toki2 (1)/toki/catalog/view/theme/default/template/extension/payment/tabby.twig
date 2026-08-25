@@ -1,0 +1,224 @@
+<div class="buttons">
+  <div class="pull-right">
+    <input type="button" value="{{ button_confirm }}" id="button-confirm" data-loading-text="{{ text_loading }}" class="btn btn-primary" />
+  </div>
+</div>
+<div id="tabby-checkout" style="display:none;"></div>
+<script type="text/javascript"><!--
+  var tabbyOpencartCreateOrder = function(payment_id) {
+    $.ajax({
+      url: 'index.php?route=extension/payment/tabby/create&payment_id=' + payment_id,
+      dataType: 'json',
+      beforeSend: function() {
+        $('#button-confirm').button('loading');
+      },
+      complete: function() {
+        $('#button-confirm').button('reset');
+      },
+      success: function(json) {
+        if (json['error']) {
+          alert(json['error']);
+          if (json['redirect']) {
+            location = json['redirect'];
+          }
+        }
+      },
+      error: function(xhr, ajaxOptions, thrownError) {
+        alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+      }
+    });
+  };
+  var tabbyOpencartSubmitOrder = function(payment_id) {
+    $.ajax({
+      url: 'index.php?route=extension/payment/tabby/confirm&payment_id=' + payment_id,
+      dataType: 'json',
+      beforeSend: function() {
+        $('#button-confirm').button('loading');
+      },
+      complete: function() {
+        $('#button-confirm').button('reset');
+      },
+      success: function(json) {
+        if (json['redirect']) {
+          location = json['redirect'];
+        } else {
+          if (json['error']) {
+            alert(json['error']);
+          }
+        }
+      },
+      error: function(xhr, ajaxOptions, thrownError) {
+        alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+      }
+    });
+  };
+  var tabbyOpencartError = function(error) {
+    $.ajax({
+      url: 'index.php?route=extension/payment/tabby/error&errorType='+error,
+      dataType: 'json',
+      beforeSend: function() {
+        $('#button-confirm').button('loading');
+      },
+      complete: function() {
+        $('#button-confirm').button('reset');
+      },
+      success: function(json) {
+        if (json['error']) {
+          alert(json['error']);
+          if (json['redirect']) {
+            //location = json['redirect'];
+          }
+        }
+      },
+      error: function(xhr, ajaxOptions, thrownError) {
+        alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+      }
+    });
+  };
+
+  var tabbyRenderer = {
+	product: null,
+	products: {
+		payLater: 'tabby_paylater',
+		installments: 'tabby_installments'
+	},
+	available_products: [],
+	payment: null,
+	email: null,
+	phone: null,
+	paymentCode: null,
+	tabbyConfig: null,
+	relaunchTabby: false,
+	initialize: function () {
+		this.debug = {{ tabbyDebug }};
+		this.useRedirect = {{ useRedirect }};
+		this.merchantUrls = {{ merchantUrls }};
+        this.product = '{{ tabbyProduct }}';
+		if (this.debug) console.log("Tabby checkout initialize");
+
+		this.tabbyConfig = {
+    		apiKey: '{{ tabbyApiKey }}',
+			payment: {{ tabbyPayment }},
+            //sessionId: '{{ tabby_checkout_session_id }}',
+			merchantCode: '{{ merchantCode }}',
+            lang: '{{ lang }}',
+    		onChange: function(data){
+				if (tabbyRenderer.debug) console.log(data);
+				switch (data.status.toLowerCase()) {
+					case 'created': 
+						if (data.products) {
+							tabbyRenderer.available_products = data.products;
+						}
+						if (tabbyRenderer.loadWaitingSet) {
+							tabbyRenderer.setLoadWaiting(false);
+						}
+						if (tabbyRenderer.relaunchTabby) {
+							jQuery("#tabby-checkout").css("display", "block");
+							tabbyRenderer.relaunchTabby = false;
+							tabbyRenderer.launch();
+						}
+                        tabbyOpencartCreateOrder(data.payment.id);
+						break;
+					case 'authorized':
+						//jQuery("#"+tabbyRenderer.paymentCode+"_paymentid").val(data.payment.id);
+			            $('#button-confirm').button('loading');
+						jQuery("#tabby-checkout").css("display", "none");
+                        tabbyOpencartSubmitOrder(data.payment.id);
+						break;
+					case 'error':
+						if (tabbyRenderer.loadWaitingSet) {
+							tabbyRenderer.setLoadWaiting(false);
+						}
+						if (data.errorType === 'not_authorized') {
+                          //tabbyOpencartError(data.errorType);
+                            alert("Tabby is not configured. Please select another payment method or try again later.");
+                        }
+						break;
+                    case 'rejected':
+						if (tabbyRenderer.loadWaitingSet) {
+						    tabbyRenderer.setLoadWaiting(false);
+						}
+                        alert("Tabby is not available for your order. Please select another payment method or try again later.");
+                        //tabbyOpencartSubmitOrder(data.payment.id);
+                        break;
+					default: 
+						if (tabbyRenderer.loadWaitingSet) {
+							tabbyRenderer.setLoadWaiting(false);
+						}
+						tabbyRenderer.available_products = data.products ?? [];
+						jQuery("#tabby-checkout").css("display", "none");
+						break;
+				}
+		
+    		},
+			onClose: function () {
+				tabbyRenderer.relaunchTabby = true;
+				tabbyRenderer.setLoadWaiting(false);
+				if (this.debug) console.log("Tabby checkout window closed");
+				jQuery("#tabby-checkout").css("display", "none");
+			}
+  		};
+        if (this.useRedirect) {
+            this.tabbyConfig.merchantUrls = this.merchantUrls;
+        }
+
+	}, 
+    getRedirectUrl: function () {
+        let redirect_url = '';
+        if (tabbyRenderer.useRedirect) {
+            if (this.available_products.hasOwnProperty(this.product)) {
+                redirect_url = this.available_products[this.product][0].webUrl;
+            }
+        }
+        return redirect_url;
+    },
+    setLoadWaiting : function (value) {
+        this.loadWaitingSet = value;
+        $('#button-confirm').button(this.loadWaitingSet ? 'loading' : 'reset');
+        if ($('.journal-loading-overlay').length) $('.journal-loading-overlay').remove();
+        if ($('#quick-checkout-button-confirm').length) $('#quick-checkout-button-confirm, #button-login').button('reset');
+    },
+  	create: function () {
+		if (this.debug) console.log("Tabby checkout create payment");
+        // if there is no email/phone, try to find it
+        if (!this.tabbyConfig.payment.buyer.email) {
+            if (jQuery("#input-email").length) this.tabbyConfig.payment.buyer.email = jQuery("#input-email").val();
+        }
+        if (!this.tabbyConfig.payment.buyer.phone) {
+            if (jQuery("#input-telephone").length) this.tabbyConfig.payment.buyer.phone = jQuery("#input-telephone").val();
+        }
+		var tabby = Tabby.init(this.tabbyConfig);
+  		Tabby.create();
+  		jQuery("#tabby-checkout").css("display", "none");
+	},
+	launch: function () {
+        if (this.useRedirect && this.getRedirectUrl() != '') {
+            document.location.href = this.getRedirectUrl();
+            return;
+        }
+		const checkout = document.querySelector('#tabby-checkout');
+		if (checkout) checkout.style.display = 'block';
+		if (this.debug) console.log('launch with product', this.product, tabbyRenderer.relaunchTabby);
+		if (tabbyRenderer.relaunchTabby) {
+            tabbyRenderer.setLoadWaiting(true);
+			Tabby.create();
+		} else {
+			Tabby.launch({ product: this.product });
+		}
+	},
+	addSubmitButtonEvent: function () {
+		jQuery('#button-confirm').prop('onclick', null).click(function (e) {
+            tabbyRenderer.setLoadWaiting(true);
+			e.preventDefault();
+            tabbyRenderer.relaunchTabby = true;
+			tabbyRenderer.create();
+		});
+	}
+  };
+
+  //tabbyRenderer.setLoadWaiting(true);
+  tabbyRenderer.initialize();
+  tabbyRenderer.addSubmitButtonEvent();
+  //tabbyRenderer.create();
+
+--></script>

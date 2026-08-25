@@ -1,0 +1,71 @@
+<div class="featuredbanner-main">
+    <div class="container">
+        <div class="row">
+<div class="featuredbanner-main-cont">
+             <div class="featuredbanner-view">
+                 <div id="featuredbanner0" class="featuredbanner  " dir="{{ direction }}">
+
+
+
+                        {% for banner in banners %}
+                                 <div class="item-col col-sm-3 col-xs-6 text-center">
+                                    <div class="item">
+                                        {% if banner.link %}
+                                            <a href="{{ banner.link }}">
+                                                <div class="featuredbanner-img">
+                                                <img src="{{ banner.image }}" alt="{{ banner.title }}" class="img-responsive"/>
+                                                </div>
+                                            </a>
+
+                                        {% else %}
+                                            <div class="featuredbanner-img">
+                                                <img src="{{ banner.image }}" alt="{{ banner.title }}" class="img-responsive"/>
+                                            </div>                                        
+
+                                        {% endif %}
+
+
+                                                <div class="exc">
+
+                                                  <h3>{{ banner.title }}</h3>
+                                                  <h4>{{ banner.description }}</h4>
+                                                 </div>
+                                    </div>
+                                </div>
+                         {% endfor %}
+
+
+
+
+                </div>
+             </div>
+</div>
+</div>
+        </div>
+    </div>
+
+<script type="text/javascript"><!--
+    // $('#featuredbanner0').swiper({
+    //     mode: 'horizontal',
+    //     slidesPerView: 3,
+    //     slidesPerColumn: 2,
+    //     pagination: '.featuredbanner0',
+    //     paginationClickable: true,
+    //     nextButton: '.swiper-button-next',
+    //     prevButton: '.swiper-button-prev',
+    //     spaceBetween: 0,
+    //     // autoplay: 2000,
+    //     // speed: 700,
+    //
+    //
+    //     autoplayDisableOnInteraction: true,
+    //     loop: false,
+    //     breakpoints: {
+    //         // when window width is <= 499px
+    //         499: {
+    //             slidesPerView: 1,
+    //         },
+    //     }
+    // });
+    // -->
+</script>

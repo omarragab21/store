@@ -1,0 +1,583 @@
+{{ header }}{{ column_left }}
+<div id="content">
+    <div class="page-header">
+        <div class="container-fluid">
+            <div class="pull-right">
+                <button type="submit" form="form-aramex" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+                <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+            <h1>{{ heading_title }}</h1>
+            <ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+                    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+                    {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="container-fluid">
+        {% if error_warning %}
+            <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        {% endif %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+            </div>
+            <div class="panel-body">
+                <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-aramex" class="form-horizontal">
+                    <div class="form-group required">
+                        <label class="col-sm-2 control-label" for="input-key">{{ entry_email }}</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="shipping_aramex_email" value="{{ shipping_aramex_email }}" id="input-key" class="form-control" />
+                            {% if error_email %}
+                                <div class="text-danger">{{ error_email }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-group required">
+                        <label class="col-sm-2 control-label" for="input-password">{{ entry_password }}</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="shipping_aramex_password" value="{{ shipping_aramex_password }}"  id="input-password" class="form-control" />
+                            {% if error_password %}
+                                <div class="text-danger">{{ error_password }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="form-group required">
+                        <label class="col-sm-2 control-label" for="input-account">{{ entry_account_pin }}</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="shipping_aramex_account_pin" value="{{ shipping_aramex_account_pin }}" id="input-account" class="form-control" />
+                            {% if error_account_pin %}
+                                <div class="text-danger">{{ error_account_pin }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-group required">
+                        <label class="col-sm-2 control-label" for="input-meter">{{ entry_account_number }}</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="shipping_aramex_account_number" value="{{ shipping_aramex_account_number }}" id="input-meter" class="form-control" />
+                            {% if error_account_number %}
+                                <div class="text-danger">{{ error_account_number }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-group required">
+                        <label class="col-sm-2 control-label" for="input-postcode">{{ entry_account_entity }}</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="shipping_aramex_account_entity" value="{{ shipping_aramex_account_entity }}" id="input-postcode" class="form-control" />
+                            {% if error_account_entity %}
+                                <div class="text-danger">{{ error_account_entity }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-group required">
+                        <label class="col-sm-2 control-label" for="input-postcode">{{ entry_account_country_code }}</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="shipping_aramex_account_country_code" value="{{ shipping_aramex_account_country_code }}" id="input-postcode" class="form-control" />
+                            {% if error_account_country_code %}
+                                <div class="text-danger">{{ error_account_country_code }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="aramexsettings_settings_allowed_cod">{{ entry_cod_account }}<p style="color: red;"><em>Optional account data </em> </p></label>
+                        <div class="col-sm-10">
+                            <select name="shipping_aramex_allowed_cod" id="aramexsettings_settings_allowed_cod" class="form-control">
+                                {% if not shipping_aramex_allowed_cod %}
+                                    <option value="0" selected >{{ text_no }}</option>
+                                    <option value="1">{{ text_yes }}</option>
+                                {% else %}   
+                                    {% if shipping_aramex_allowed_cod  ==  0  %}
+                                        <option value="0" selected >{{ text_no }}</option>
+                                        <option value="1">{{ text_yes }}</option>
+                                    {% else %}
+                                        <option value="0"  >{{ text_no }}</option>
+                                        <option value="1" selected>{{ text_yes }}</option>
+                                    {% endif %}
+                                {% endif %} 
+                            </select>
+                        </div>
+                    </div> 
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">{{ entry_cod_account_number }}<p style="color: red;"><em>Optional account data </em> </p></label>
+                        <div class="col-sm-10">
+                            <input type="text" name="shipping_aramex_cod_account_number" value="{{ shipping_aramex_cod_account_number }}"  class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">{{ entry_cod_account_pin }}<p style="color: red;"><em>Optional account data </em> </p></label>
+                        <div class="col-sm-10">
+                            <input type="text" name="shipping_aramex_cod_account_pin" value="{{ shipping_aramex_cod_account_pin }}"  class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">{{ entry_cod_account_entity }}<p style="color: red;"><em>Optional account data </em> </p></label>
+                        <div class="col-sm-10">
+                            <input type="text" name="shipping_aramex_cod_account_entity" value="{{ shipping_aramex_cod_account_entity }}"  class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">{{ entry_cod_account_country_code }}<p style="color: red;"><em>Optional account data </em> </p></label>
+                        <div class="col-sm-10">
+                            <input type="text" name="shipping_aramex_cod_account_country_code" value="{{ shipping_aramex_cod_account_country_code }}"  class="form-control" />
+                        </div>
+                    </div>
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ entry_service_configuration }}</h3>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">{{ entry_test_mode }}</label>
+                        <div class="col-sm-10">
+                            <label class="radio-inline">
+                                {% if shipping_aramex_test %}
+                               
+                                    <input type="radio" name="shipping_aramex_test" value="1" checked="checked" />
+                                    {{ text_yes }}
+                                {% else %}
+                                    <input type="radio" name="shipping_aramex_test" value="1" />
+                                    {{ text_yes }}
+                                {% endif %}
+                            </label>
+                            <label class="radio-inline">
+                                {% if not shipping_aramex_test %}
+                                    <input type="radio" name="shipping_aramex_test" value="0" checked="checked" />
+                                    {{ text_no }}
+                                {% else %}
+                                    <input type="radio" name="shipping_aramex_test" value="0" />
+                                    {{ text_no }}
+                                {% endif %}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group required">
+                        <label class="col-sm-2 control-label" for="input-postcode">{{ entry_report_id }}</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="shipping_aramex_report_id" value="{{ shipping_aramex_report_id }}" id="input-postcode" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">{{ entry_allowed_domestic_methods }}</label>
+                        <div class="col-sm-10">
+                            <div class="well well-sm" style="height: 150px; overflow: auto;">
+                                {% for key, dservice in shipping_allowed_domestic_methods %}
+                                    <div class="checkbox">
+                                        <label>
+                                            {% if dservice.value in shipping_aramex_allowed_domestic_methods %}
+                                                <input type="checkbox" name="shipping_aramex_allowed_domestic_methods[]" value="{{ dservice.value}}" checked="checked" />
+                                                {{ dservice.label }}
+                                            {% else %}
+                                                <input type="checkbox" name="shipping_aramex_allowed_domestic_methods[]" value="{{ dservice.value }}" />
+                                                {{ dservice.label }}
+                                            {% endif %}
+                                        </label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <a onclick="$(this).parent().find(':checkbox').prop('checked', true);">{{ text_select_all }}</a> / <a onclick="$(this).parent().find(':checkbox').prop('checked', false);">{{ text_unselect_all }}</a></div>
+                    </div>
+                    <div class="form-group required">
+                        <label class="col-sm-2 control-label">{{ entry_allowed_domestic_additional_services }}</label>
+                        <div class="col-sm-10">
+                            <div class="well well-sm" style="height: 150px; overflow: auto;">
+                                {% for key, daservice in shipping_allowed_domestic_additional_services %}
+                                    <div class="checkbox">
+                                        <label>
+                                            {% if daservice.value in shipping_aramex_allowed_domestic_additional_services %}
+                                                <input type="checkbox" name="shipping_aramex_allowed_domestic_additional_services[]" value="{{ daservice.value}}" checked="checked" />
+                                                {{ daservice.label }}
+                                            {% else %}
+                                                <input type="checkbox" name="shipping_aramex_allowed_domestic_additional_services[]" value="{{ daservice.value }}" />
+                                                {{ daservice.label }}
+                                            {% endif %} 
+                                        </label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <a onclick="$(this).parent().find(':checkbox').prop('checked', true);">{{ text_select_all }}</a> / <a onclick="$(this).parent().find(':checkbox').prop('checked', false);">{{ text_unselect_all }}</a>
+                        </div>
+                    </div>
+                    <div class="form-group required">
+                        <label class="col-sm-2 control-label">{{ entry_allowed_international_methods }}</label>
+                        <div class="col-sm-10">
+                            <div class="well well-sm" style="height: 150px; overflow: auto;">
+                                {% for key, iservice in shipping_allowed_international_methods %}
+                                    <div class="checkbox">
+                                        <label>
+                                            {% if iservice.value in shipping_aramex_allowed_international_methods %}
+                                                <input type="checkbox" name="shipping_aramex_allowed_international_methods[]" value="{{ iservice.value}}" checked="checked" />
+                                                {{ iservice.label }}
+                                            {% else %}
+                                                <input type="checkbox" name="shipping_aramex_allowed_international_methods[]" value="{{ iservice.value }}" />
+                                                {{ iservice.label }}
+                                            {% endif %} 
+
+                                        </label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <a onclick="$(this).parent().find(':checkbox').prop('checked', true);">{{ text_select_all }}</a> / <a onclick="$(this).parent().find(':checkbox').prop('checked', false);">{{ text_unselect_all }}</a></div>
+                    </div>
+                    <div class="form-group required">
+                        <label class="col-sm-2 control-label">{{ entry_allowed_international_additional_services }}</label>
+                        <div class="col-sm-10">
+                            <div class="well well-sm" style="height: 150px; overflow: auto;">
+                                {% for key, iaservice in shipping_allowed_international_additional_services %}
+                                    <div class="checkbox">
+                                        <label>
+                                            {% if iaservice.value in shipping_aramex_allowed_international_additional_services %}
+                                                <input type="checkbox" name="shipping_aramex_allowed_international_additional_services[]" value="{{ iaservice.value}}" checked="checked" />
+                                                {{ iaservice.label }}
+                                            {% else %}
+                                                <input type="checkbox" name="shipping_aramex_allowed_international_additional_services[]" value="{{ iaservice.value }}" />
+                                                {{ iaservice.label }}
+                                            {% endif %}
+                                        </label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <a onclick="$(this).parent().find(':checkbox').prop('checked', true);">{{ text_select_all }}</a> / <a onclick="$(this).parent().find(':checkbox').prop('checked', false);">{{ text_unselect_all }}</a></div>
+                    </div>
+                    <div class="form-group required">
+                        <label class="col-sm-2 control-label" for="input-weight-class"><span data-toggle="tooltip" title="">{{ entry_weight_class }}</span></label>
+                        <div class="col-sm-10">
+                            <select name="shipping_aramex_weight_class_id" id="input-weight-class" class="form-control">
+                                {% for weight_class in weight_classes %}
+                                    {% if weight_class.weight_class_id  ==  shipping_aramex_weight_class_id %}
+                                        <option value="{{ weight_class.weight_class_id }}" selected="selected">{{ weight_class.title }}</option>
+                                    {% else %}
+                                        <option value="{{ weight_class.weight_class_id }}">{{ weight_class.title }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-tax-class">{{ entry_tax_class }}</label>
+                        <div class="col-sm-10">
+                            <select name="shipping_aramex_tax_class_id" id="input-tax-class" class="form-control">
+                                <option value="0">{{ text_none }}</option>
+                                {% for tax_class in tax_classes %}
+                                    {% if tax_class.tax_class_id  ==  shipping_aramex_tax_class_id %}
+                                        <option value="{{ tax_class.tax_class_id }}" selected="selected">{{ tax_class.title }}</option>
+                                    {% else %}
+                                        <option value="{{ tax_class.tax_class_id }}">{{ tax_class.title }}</option>
+                                    {% endif %} 
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-geo-zone">{{ entry_geo_zone }}</label>
+                        <div class="col-sm-10">
+                            <select name="shipping_aramex_geo_zone_id" id="input-geo-zone" class="form-control">
+                                <option value="0">{{ text_all_zones }}</option>
+                                {% for geo_zone in geo_zones %}
+                                    {% if geo_zone.geo_zone_id  ==  shipping_aramex_geo_zone_id %}
+                                        <option value="{{ geo_zone.geo_zone_id }}" selected="selected">{{ geo_zone.name }}</option>
+                                    {% else %}
+                                        <option value="{{ geo_zone.geo_zone_id }}">{{ geo_zone.name }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group required">
+                        <label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+                        <div class="col-sm-10">
+                            <select name="shipping_aramex_status" id="input-status" class="form-control">
+                                {% if shipping_aramex_status %}
+                                    <option value="1" selected="selected">{{ text_enabled }}</option>
+                                    <option value="0">{{ text_disabled }}</option>
+                                {% else %}
+                                    <option value="1">{{ text_enabled }}</option>
+                                    <option value="0" selected="selected">{{ text_disabled }}</option>
+                                {% endif %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group required">
+                        <label class="col-sm-2 control-label" for="input-sort-order">{{ entry_sort_order }}</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="shipping_aramex_sort_order" value="{{ shipping_aramex_sort_order }}" id="input-sort-order" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ entry_shipper_details }}</h3>
+                    </div>
+
+                    <div class="form-group required">
+                        <label class="col-sm-2 control-label" for="input-aramex_shipper_name">{{ entry_name }}</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="shipping_aramex_shipper_name" value="{{ shipping_aramex_shipper_name }}"  id="input-aramex_shipper_name" class="form-control" />
+                            {% if error_shipper_name %}
+                                <div class="text-danger">{{ error_shipper_name }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-group required">
+                        <label class="col-sm-2 control-label" for="input-entry_email">{{ entry_email }}</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="shipping_aramex_shipper_email" value="{{ shipping_aramex_shipper_email }}"  id="input-entry_email" class="form-control" />
+                            {% if error_shipper_email %}
+                                <div class="text-danger">{{ error_shipper_email }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-group required">
+                        <label class="col-sm-2 control-label" for="input-entry_company">{{ entry_company }}</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="shipping_aramex_shipper_company" value="{{ shipping_aramex_shipper_company }}"  id="input-entry_company" class="form-control" />
+                            {% if error_shipper_company %}
+                                <div class="text-danger">{{ error_shipper_company }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="form-group required">
+                        <label class="col-sm-2 control-label" for="input-entry_address">{{ entry_address }}</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="shipping_aramex_shipper_address" value="{{ shipping_aramex_shipper_address }}"  id="input-entry_address" class="form-control" />
+                            {% if error_shipper_address %}
+                                <div class="text-danger">{{ error_shipper_address }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="form-group required">
+                        <label class="col-sm-2 control-label" for="input-entry_country_code">{{ entry_country_code }}</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="shipping_aramex_shipper_country_code" value="{{ shipping_aramex_shipper_country_code }}"  id="input-entry_country_code" class="form-control" />
+                            {% if error_shipper_country_code %}
+                                <div class="text-danger">{{ error_shipper_country_code }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="form-group required">
+                        <label class="col-sm-2 control-label" for="input-entry_city">{{ entry_city }}</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="shipping_aramex_shipper_city" value="{{ shipping_aramex_shipper_city }}"  id="input-entry_city" class="form-control" />
+                            {% if error_shipper_city %}
+                                <div class="text-danger">{{ error_shipper_city }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="form-group required">
+                        <label class="col-sm-2 control-label" for="input-entry_postal_code">{{ entry_postal_code }}</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="shipping_aramex_shipper_postal_code" value="{{ shipping_aramex_shipper_postal_code }}"  id="input-entry_postal_code" class="form-control" />
+                            {% if error_shipper_postal_code %}
+                                <div class="text-danger">{{ error_shipper_postal_code }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="form-group required">
+                        <label class="col-sm-2 control-label" for="input-entry_state">{{ entry_state }}</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="shipping_aramex_shipper_state" value="{{ shipping_aramex_shipper_state }}"  id="input-entry_state" class="form-control" />
+                            {% if error_shipper_state %}
+                                <div class="text-danger">{{ error_shipper_state }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="form-group required">
+                        <label class="col-sm-2 control-label" for="input-entry_phone">{{ entry_phone }}</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="shipping_aramex_shipper_phone" value="{{ shipping_aramex_shipper_phone }}"  id="input-entry_phone" class="form-control" />
+                            {% if error_shipper_phone %}
+                                <div class="text-danger">{{ error_shipper_phone }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ entry_default_service_configuration }}</h3>
+                    </div>
+                    <div class="form-group required">
+                        <label class="col-sm-2 control-label">{{ entry_auto_create_shipment }}</label>
+                        <div class="col-sm-10">
+                            <label class="radio-inline">
+                                {% if shipping_aramex_auto_create_shipment %}
+                                    <input type="radio" name="shipping_aramex_auto_create_shipment" value="1" checked="checked" />
+                                    {{ text_yes }}
+                                {% else %}
+                                    <input type="radio" name="shipping_aramex_auto_create_shipment" value="1" />
+                                    {{ text_yes }}
+                                {% endif %} 
+                            </label>
+                            <label class="radio-inline">
+                                {% if not shipping_aramex_auto_create_shipment %}
+                                    <input type="radio" name="shipping_aramex_auto_create_shipment" value="0" checked="checked" />
+                                    {{ text_no }}
+                                {% else %}
+                                    <input type="radio" name="shipping_aramex_auto_create_shipment" value="0" />
+                                    {{ text_no }}
+                                {% endif %}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group required" >
+                        <label class="col-sm-2 control-label">{{ entry_live_rate_calculation }}</label>
+                        <div class="col-sm-10">
+                            <label class="radio-inline">
+                                {% if shipping_aramex_live_rate_calculation %}
+                                    <input type="radio" name="shipping_aramex_live_rate_calculation" value="1" checked="checked" />
+                                    {{ text_yes }}
+                                {% else %}
+                                    <input type="radio" name="shipping_aramex_live_rate_calculation" value="1" />
+                                    {{ text_yes }}
+                                {% endif %}
+                            </label>
+                            <label class="radio-inline">
+                                {% if not shipping_aramex_live_rate_calculation %}
+                                    <input type="radio" name="shipping_aramex_live_rate_calculation" value="0" checked="checked" />
+                                    {{ text_no }}
+                                {% else %}
+                                    <input type="radio" name="shipping_aramex_live_rate_calculation" value="0" />
+                                    {{ text_no }}
+                                {% endif %}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group required" >
+                        <label class="col-sm-2 control-label">{{ entry_apilocationvalidator }}</label>
+                        <div class="col-sm-10">
+                            <label class="radio-inline">
+                                {% if shipping_aramex_api_location_validator %}
+                                    <input type="radio" name="shipping_aramex_api_location_validator" value="1" checked="checked" />
+                                    {{ text_yes }}
+                                {% else %}
+                                    <input type="radio" name="shipping_aramex_api_location_validator" value="1" />
+                                    {{ text_yes }}
+                                {% endif %} 
+
+                            </label>
+                            <label class="radio-inline">
+                                {% if not shipping_aramex_api_location_validator %}
+                                    <input type="radio" name="shipping_aramex_api_location_validator" value="0" checked="checked" />
+                                    {{ text_no }}
+                                {% else %}
+                                    <input type="radio" name="shipping_aramex_api_location_validator" value="0" />
+                                    {{ text_no }}
+                                {% endif %}
+
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group required" >
+                        <label class="col-sm-2 control-label">{{ entry_aramexcalculator }}</label>
+                        <div class="col-sm-10">
+                            <label class="radio-inline">
+                                {% if shipping_aramex_aramexcalculator %}
+                                    <input type="radio" name="shipping_aramex_aramexcalculator" value="1" checked="checked" />
+                                    {{ text_yes }}
+                                {% else %}
+                                    <input type="radio" name="shipping_aramex_aramexcalculator" value="1" />
+                                    {{ text_yes }}
+                                {% endif %}
+
+                            </label>
+                            <label class="radio-inline">
+                                {% if not shipping_aramex_aramexcalculator %}
+                                    <input type="radio" name="shipping_aramex_aramexcalculator" value="0" checked="checked" />
+                                    {{ text_no }}
+                                {% else %}
+                                    <input type="radio" name="shipping_aramex_aramexcalculator" value="0" />
+                                    {{ text_no }}
+                                {% endif %}
+                            </label>
+                        </div>
+                    </div>                    
+                    <div class="form-group required">
+                        <label class="col-sm-2 control-label" for="input-entry_default_rate">{{ entry_default_rate }}</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="shipping_aramex_default_rate" value="{{ shipping_aramex_default_rate }}"  id="input-entry_default_rate" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="form-group ">
+                        <label class="col-sm-2 control-label">{{ entry_allowed_domestic_methods }}</label>
+                        <div class="col-sm-10">
+                            <select name="shipping_aramex_default_allowed_domestic_methods" id="input-tax-class" class="form-control">
+                                <option value=""/>Select Domestic Methods</option>
+                                {% for key, dservice in shipping_allowed_domestic_methods %}
+                                    {% if dservice.value == shipping_aramex_default_allowed_domestic_methods %}
+                                        <option value="{{ dservice.value }}" selected/>{{ dservice.label }}</option>
+                                    {% else %}
+                                        <option value="{{ dservice.value }}"/>{{ dservice.label }}</option>
+                                    {% endif %} 
+                                {% endfor %}
+
+                            </select>
+                            {% if error_default_allowed_domestic_methods %}
+                                <div class="text-danger">{{ error_default_allowed_domestic_methods }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <label class="col-sm-2 control-label">{{ entry_allowed_domestic_additional_services }}</label>
+                        <div class="col-sm-10">
+                            <select name="shipping_aramex_default_allowed_domestic_additional_services" class="form-control">
+                                <option value=""/>Select Domestic Additional Services</option>
+                                {% for key, daservice in shipping_allowed_domestic_additional_services %}
+                                    {% if daservice.value == shipping_aramex_default_allowed_domestic_additional_services %}
+                                        <option value="{{ daservice.value }}" selected/>{{ daservice.label }}</option>
+                                    {% else %}
+                                        <option value="{{ daservice.value }}"/>{{ daservice.label }}</option>
+                                    {% endif %} 
+                                {% endfor %}
+
+                            </select>
+                            {% if error_default_allowed_domestic_additional_services %}
+                                <div class="text-danger">{{ error_default_allowed_domestic_additional_services }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <label class="col-sm-2 control-label">{{ entry_allowed_international_methods }}</label>
+                        <div class="col-sm-10">
+                            <select name="shipping_aramex_default_allowed_international_methods" class="form-control">
+                                <option value=""/>Select International Methods</option>
+                                {% for key, iservice in shipping_allowed_international_methods %}
+                                    {% if iservice.value == shipping_aramex_default_allowed_international_methods %}
+                                        <option value="{{ iservice.value }}" selected/>{{ iservice.label }}</option>
+                                    {% else %}
+                                        <option value="{{ iservice.value }}"/>{{ iservice.label }}</option>
+                                    {% endif %}
+                                {% endfor %}
+
+                            </select>
+                            {% if error_default_allowed_international_methods %}
+                                <div class="text-danger">{{ error_default_allowed_international_methods }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-group ">
+                        <label class="col-sm-2 control-label">{{ entry_allowed_international_additional_services }}</label>
+                        <div class="col-sm-10">
+                            <select name="shipping_aramex_default_allowed_international_additional_services" class="form-control">
+                                <option value=""/>Select International Additional Services</option>
+                                {% for key, iaservice in shipping_allowed_international_additional_services %}
+                                    {% if iaservice.value == shipping_aramex_default_allowed_international_additional_services %}
+                                        <option value="{{ iaservice.value }}" selected/>{{ iaservice.label }}</option>
+                                    {% else %}
+                                        <option value="{{ iaservice.value }}"/>{{ iaservice.label }}</option>
+                                    {% endif %} 
+                                {% endfor %}
+
+                            </select>
+                            {% if error_default_allowed_international_additional_services %}
+                                <div class="text-danger">{{ error_default_allowed_international_additional_services }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{{ footer }}

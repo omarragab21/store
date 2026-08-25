@@ -1,0 +1,37 @@
+<?php
+$_['eader_title '] =' عامل التصفية الضخم ';
+$_['name_price'] = 'السعر';
+$_['name_manufacturers'] = 'الشركات المصنعة';
+$_['name_rating'] = 'التصنيف' ;
+$_['name_search'] = 'بحث';
+$_['name_stock_status'] = "حالة المخزون" ;
+$_['name_location'] = 'الموقع' ;
+$_['name_length'] = 'الطول' ;
+$_['name_width'] = 'العرض' ;
+$_['name_height'] = 'الارتفاع' ;
+$_['name_weight'] = "الوزن" ;
+$_['name_mpn'] = 'MPN' ;
+$_['name_isbn'] = 'رقم ISBN' ;
+$_['name_sku'] = 'SKU' ;
+$_['name_upc'] = 'UPC' ;
+$_['name_ean'] = 'EAN' ;
+$_['name_jan'] = 'JAN' ;
+$_['name_model'] = 'موديل' ;
+$_['name_tags'] = 'العلامات';
+$_['name_vehicle'] = "مركبة" ;
+$_['name_discounts'] = 'خصم';
+$_['text_button_apply'] = 'تطبيق' ;
+$_['text_reset_all'] = 'إعادة تعيين الكل';
+$_['text_show_more'] = 'إظهار المزيد (٪ s)';
+$_['text_show_less'] = 'إظهار أقل';
+$_['text_display'] = "عرض" ;
+$_['text_grid'] = 'الشبكة';
+$_['text_list'] = 'قائمة' ;
+$_['text_loading'] = 'جارٍ التحميل ...';
+$_['text_select'] = 'تحديد ...';
+$_['text_go_to_top'] = 'الذهاب إلى الأعلى';
+$_['text_init_filter'] = 'تهيئة الفلتر';
+$_['text_initializing'] = 'التهيئة ...';
+$_['text_select'] = '---';
+$_['text_select_deselect_all'] = 'تحديد / إلغاء تحديد الكل';
+?>

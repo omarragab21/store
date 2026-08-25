@@ -1,0 +1,139 @@
+{% if mainstatus == 1 %}
+{% if loginotpstatus == 1 %}
+<!--otp code start here-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body text-center" id="tmdotpbox">
+        <form class="form-horizontal mobilebox" >
+          <div class="form-group">
+            <div class="col-sm-12">
+              <label class="col-sm-12 control-label">{{ entry_loginlabel }}</label>
+              <div class="col-sm-12">
+                <input class="form-control telephoneerror" name="telephone" type="text" placeholder="{{ entry_loginlabel }}">
+              </div>
+            </div>
+          </div>
+          <input type="button" value="{{ entry_submitbtn }}" id="" class="btn btn-primary button chk-telephone"/>
+        </form>
+     <form class="form-horizontal showotpbox" style="display:none">
+          <div class="form-group">
+            <div class="col-sm-12">
+              <label class="control-label">{{ entry_label2 }}</label>
+               <input type="text" name="otp" value="{{ otp }}" placeholder="{{ entry_label2 }}" class="login-input form-control" >
+            </div>
+          </div>
+          <div class="buttons">
+        <input type="button" value="{{ entry_submitbtn }}" id="" class="btn-primary button add-otp" />
+        <input type="button" value="{{ entry_resendotp }}" id="" class="btn-primary button resend-otp" />
+            </div>
+        </form>
+      </div>
+    </div>
+{% endif %}
+{% endif %}
+<script type="text/javascript">
+$('.chk-telephone').bind('click', function() {
+  $.ajax({
+  url: 'index.php?route=extension/tmdsms/tmd_otplogin/chkphonenumber',
+  type: 'post',
+  data: $('#tmdotpbox input[type=\'text\']'),
+  dataType: 'json',
+  beforeSend: function() {
+     $('.chk-telephone').button('loading');
+  },
+  complete: function() {
+    $('.chk-telephone').button('reset');
+  },
+
+  success: function(json) {
+  $('.alert, .alert-success, .text-danger').remove();
+
+      if (json['error']) {
+        $('.telephoneerror').after('<div class="text-danger">'+ json['error'] + '</div>');
+      }
+
+      if (json['success']) {
+        $('#tmdotpbox').before('<div class="success-box"><div class="alert alert-success" style="padding:10px;">'+ json['success'] +'</div> <img src="image/catalog/wait_new.gif" style="position:relative;left:33%;"/></div>');
+        $('.mobilebox').hide();
+        setTimeout(function(){
+        $('.success-box').hide();
+        $('.showotpbox').show();
+        }, 4000);
+      }
+    }
+    });
+  });
+
+
+$('.add-otp').bind('click', function() {
+  $.ajax({
+  url: 'index.php?route=extension/tmdsms/tmd_otplogin/addotp',
+  type: 'post',
+  data: $('#tmdotpbox input[type=\'text\']'),
+  dataType: 'json',
+  beforeSend: function() {
+     $('.add-otp').button('loading');
+  },
+  complete: function() {
+    $('.add-otp').button('reset');
+  },
+
+  success: function(json) {
+  $('.alert, .alert-success, .text-danger1').remove();
+
+      if (json['error']) {
+        $('.login-input').after('<div class="text-danger">'+ json['error'] + '</div>');
+      }
+
+      if (json['success']) {
+        $('#tmdotpbox').before('<div class="alert alert-success">'+ json['success'] +'<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+
+        $('input[name=otp]').val('');
+        if(json['redirect']){
+        location=json['redirect'];
+        }
+      }
+    }
+    });
+  });
+
+  $('.resend-otp').bind('click', function() {
+    $.ajax({
+      url: 'index.php?route=extension/tmdsms/tmd_otplogin/resendotp',
+      type: 'post',
+      data: $('#tmdotpbox input[type=\'text\']'),
+      dataType: 'json',
+      beforeSend: function() {
+      $('.resend-otp').button('loading');
+      },
+    complete: function() {
+      $('.resend-otp').button('reset');
+    },
+      success: function(json) {
+      $('.alert, .alert-success, .text-danger').remove();
+        $('#tmdotpbox').before('<div class="alert alert-success" style="padding:10px;">'+ json['success'] +'</div>');
+
+      }
+    });
+  });
+</script>
+<style>
+.membershipModal .modal-header{
+	border-bottom: none;
+}
+#tmdotpbox input[type="text"]{
+        width: 88%;
+    }
+    .oc2 #tmdotpbox .form-horizontal .form-group label + div,.oc2 #tmdotpbox .form-horizontal .form-group label{
+        width: 100%;
+    }
+    .membershipModal .modal-sm{
+        width: 340px !important;
+    }
+     @media(min-width:800px){
+        .padd0{padding: 0 1px; }
+    }
+</style>
+ <!--otp code end here-->

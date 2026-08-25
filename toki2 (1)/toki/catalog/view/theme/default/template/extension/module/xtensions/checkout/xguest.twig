@@ -1,0 +1,295 @@
+{% if force_redirect %}
+<script type="text/javascript">
+location = '{{ force_redirect }}';
+</script>
+{% else %} 
+{{ payment_modal_form }} 
+{{ shipping_required?shipping_modal_form:'' }} 
+<div id="guestPage" class="container">
+<div class="row equal is_guest_page">
+<div id="existingAddress">
+ <div class="col-md-9">
+<div id="guestPanel" {{ payment_address or shipping_address1 or address_modal?'':'style="display: none;"' }}>
+{% if shipping_address1 and shipping_required and not xshipping_method  %} 
+	<div class="alert alert-danger noshipping margintop20 marginbottom0">{{ shipping_error }}</div>
+{% endif %} 
+<div class="clearfix"></div>
+              <div class="row" >
+                {% if not shipping_required or same_shipping  %} 
+              		<input type="hidden" name="xshipping_address_check" value="1"  />
+            	{% else %} 
+              		<div class="col-md-12">	
+              		<div class="checkbox is_checkbox info-back-checkout text-center">
+              		<label for="shipping_check">
+                	<input onchange="same_guest_shipping(this,'{{ text_psaddress }}','{{ text_paddress }}',{{ payment_address?'true':'false' }})" type="checkbox" class="input-checkbox" name="xshipping_address_check" value="1" id="shipping_check" {{ shipping_same ?'checked="checked"':'' }} />
+        			{{ entry_shipping }} 
+              		</label>
+           	   </div>
+           	   		</div>
+            	{% endif %}           	              
+                <div class="payment-address-panel {{ not shipping_required or shipping_required and shipping_same?'col-md-12':'col-md-6' }}">
+                  <div class="panel-address">                   
+                   <div class="panel-address-heading address-type"><i class="fa fa-money" aria-hidden="true"></i>&nbsp;<span class="padd">{{ shipping_required and shipping_same or same_shipping? text_psaddress:text_paddress }}</span>
+                   {% if payment_address  %} 
+                   <small class="pull-right">
+                   {% if address_modal  %} 
+                   <a class="pointer" data-toggle="modal" data-target="#addressModalpayment" >{{ text_edit_address }}</a>
+                   {% else %} 
+                   <a class="pointer" onclick="toggleElement('#guestPanel, #guest_payment_panel');$('.col-md-3.lborder').addClass('xblur');">{{ text_edit_address }}</a>
+                   {% endif %}                   
+                   </small>
+                   {% endif %} 
+                   </div>                    
+                    <div class="panel-address-body payment-address{{ not payment_address?' no-address':''  }}">
+                    	<div class="text-justified">
+                    	<div class="selected-address">
+                    	{% if payment_address %}
+                   		{{ payment_address }}
+                   		{% else %}
+                   		<h4 class="text-center">
+                   		{% if address_modal %}
+                   		<a data-toggle="modal" data-target="#addressModalpayment">{{ text_address_new }}</a>
+                   		{% else %}
+                   		<a class="pointer" onclick="toggleElement('#guestPanel, #guest_payment_panel');"><span class="glyphicon glyphicon-plus"></span>{{ text_address_new }}</a>
+                   		{% endif %}                   		
+                   		</h4>
+                   		{% endif %}
+                    	</div>                  	
+                    </div>
+                  </div>
+                </div>
+                </div>
+                 {% if shipping_required and not same_shipping  %}
+                 <div class="col-md-6 shipping-address-panel xshipping" style="{% if shipping_same  %} {{ 'display:none;' }}{% endif %}">
+                  <div class="panel-address">                   
+                   <div class="panel-address-heading address-type"><i class="fa fa-address-card-o" aria-hidden="true"></i>&nbsp;{{ text_saddress }} 
+                   {% if payment_address  %}                   
+                   <small class="pull-right">
+                   {% if address_modal  %} 
+                   <a class="pointer" data-toggle="modal" data-target="#addressModalshipping" >{{ text_edit_address }}</a>
+                   {% else %} 
+                   <a class="pointer" onclick="toggleElement('#guestPanel, #guest_shipping_panel');$('.col-md-3.lborder').addClass('xblur');">{{ shipping_address1?text_edit_address:text_address_new }}</a>
+                   {% endif %}                                      
+                   </small>
+                   {% endif %} 
+                   </div>                    
+                    <div class="panel-address-body shipping-address{{ not shipping_address1?' no-address':''  }}" >
+                    	<div class="text-justified">
+                    	<div class="selected-address">
+                    	{% if shipping_address1  %} 
+                   		{{ shipping_address1 }} 
+                   		{% else %} 
+                   		<h4 class="text-center">
+                   		{% if address_modal  %} 
+                   		<a data-toggle="modal" data-target="#addressModalshipping">{{ text_address_new }}</a>
+                   		{% else %} 
+                   		<a class="pointer" onclick="toggleElement('#guestPanel, #guest_shipping_panel');"><span class="glyphicon glyphicon-plus"></span>{{ text_add_saddress }}</a>
+                   		{% endif %}                   		
+                   		</h4>
+                   		{% endif %} 
+                    	</div>                  	
+                    </div>
+                  </div>
+                </div>
+                </div>
+                 {% endif %}                          
+                <div class="clearfix"></div>                
+              </div>    
+			{% if not address_block  %} 
+				<div class="row">
+			  		{% if shipping_required and shipping_address1  %} 
+                	<div class="{{ display_comments?'col-md-6':'col-md-12' }} is_shipping_method_panel">
+                	<div id="shipping_method" class="container_panel">                	              
+        			<div class="heading"><i class="fa fa-truck" aria-hidden="true"></i>&nbsp;{{ text_shipping_method }}</div>
+          			<div class="shipping-table">
+          			{% if shipping_address1 and shipping_required and not xshipping_method  %} 
+					<div class="col-sm-12"><div class="alert alert-danger noshipping margintop20 marginbottom0">{{ shipping_error }}</div></div>
+					{% else %} 
+					{{ xshipping_method }} 
+					{% endif %} 
+					</div>
+          			</div>
+                </div>
+                {% endif %} 
+                {% if ((payment_address and not shipping_required) or (payment_address and shipping_address1 and shipping_required)) and display_comments  %} 
+                <div class="{{ shipping_required?'col-md-6':'col-md-12' }} is_comment_panel">
+                	<div id="comment">
+                		<div id="order-comment" class="container_panel" >              
+        					<div class="heading"><i class="fa fa-comment" aria-hidden="true"></i>&nbsp;{{ comment_text }}</div>
+        					<textarea name="comment" class="form-control" rows="3" placeholder="{{ comment_placeholder_text }}">{{ comment }}</textarea>
+        				</div>
+        			</div>
+                 </div>
+                {% endif %} 
+             </div>        
+             <div class="clearfix"></div>               
+             <div id="checkout-button row">
+			{% if (payment_address and not shipping_required) or (payment_address and shipping_address1 and shipping_required)  %}
+			{% if isMobile %}  
+    	      	<div id="options">{{ xoptions }}</div>
+    	      	<div class="clearfix"></div>
+      	    {% endif %} 
+              {% if error_stock_warning is not defined and error_minimum_warning is not defined  %} 
+              <div class="row margintop20">
+       			<div id="agree-panel" {{ shipping_address1 and shipping_required and not xshipping_method?'style="display:none;"':'' }} class="col-md-12 agree-panel">
+       			{% if text_agree  %}
+       				<div id="agreeText" class="col-md-6 agreeText">
+          			<label class="pointer checkbox is_checkbox"><input type="checkbox" class="input-checkbox" name="agree" value="1" {{ agree?'checked="checked"':'' }}><span>{{ text_agree }}</span></label>          			
+    				</div>
+    			{% endif %}
+    			<div class="{{ text_agree?'col-md-6 large-pull-right paddingright0':'col-md-12 nopadding' }}">
+    				<div class="progress progress-continue-disabled" id="progress-continue-disabled" {{ text_agree and not agree?'style="display: block"':'style="display: none"' }} >
+                    	<div data-trigger="focus" tabindex="0" data-placement="top" data-toggle="popover" title="{{ info_title }}" data-content="{{ agree_content }}" class="progress-bar" role="progressbar" id="button-payment-disabled" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100">
+                      		<span>{{ text_payment_continue }}<i class="fa fa-lock"></i></span>
+                    	</div>
+                	</div>
+        			<div class="progress progress-continue" id="progress-continue" {{ text_agree and not agree?'style="display: none"':'' }} >
+                    	<div class="progress-bar progress-bar-success" role="progressbar" onclick="callPaymentFromGuest();" id="button-payment" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                      		<span>{{ text_payment_continue }}</span>
+                    	</div>
+                 	</div>
+                 </div>
+        		</div>
+        		</div>
+        		{% else %} 
+			        {% if error_stock_warning is defined  %} 
+						<div class="alert alert-danger noshipping margintop20 marginbottom0">{{ error_stock_warning }}</div>
+					{% endif %} 
+					{% if error_minimum_warning is defined  %} 
+						<div class="alert alert-danger noshipping margintop20 marginbottom0">{{ error_minimum_warning }}</div>
+					{% endif %} 
+		       {% endif %}	
+      		   {% endif %} 
+</div>   		   
+{% endif %} 
+</div>
+{% if not address_modal  %} 
+<div id="guest_payment_panel" {{ payment_address or shipping_address1?'style="display: none;"':'' }} class="inlineaddress margintop20  zoomIn">{{ payment_inline_form }}</div>
+{% endif %} 
+{% if not address_modal and shipping_required  %} 
+<div id="guest_shipping_panel" style="display: none;" class="inlineaddress margintop20  zoomIn">{{ shipping_inline_form }}</div>
+{% endif %} 
+</div>
+</div>
+<div  class="col-md-3 lborder">
+<div id="sLoader" class="loader"></div>    
+{% if address_block and shipping_required and shipping_address1  %} 
+<div id="shipping_method" class="panel panel-green1">
+<div class="panel-heading"><i class="fa fa-truck" aria-hidden="true"></i>&nbsp;{{ text_shipping_method }}</div>
+<div class="shipping-table">
+{% if shipping_address1 and shipping_required and not xshipping_method  %} 
+<span class="xerror noshipping marginbottom0">{{ shipping_error }}</span>
+{% else %} 
+{{ xshipping_method }} 
+{% endif %} 
+</div>
+</div>
+{% endif %} 
+{% if ((payment_address and not shipping_required) or (payment_address and shipping_address1 and shipping_required)) and address_block and isMobile %}    
+<div id="options" class="animated1 zoomIn1">{{ xoptions }}</div>
+<div class="clearfix"></div>
+{% endif %} 
+{% if not shipping_required and not isMobile %}
+<div id="xcart" class="animated1 zoomIn1">{{ xcart }}</div>
+<div class="clearfix"></div>
+{% endif %} 
+{% if ((payment_address and not shipping_required) or (payment_address and shipping_address1 and shipping_required)) and address_block  %}        
+       			{% if error_stock_warning is not defined and error_minimum_warning is not defined  %} 
+       			<div id="agree-panel" {{ addresses and shipping_required and not xshipping_method?'style="display:none;"':'' }} class="agree-panel">
+       			{% if text_agree  %}
+       				<div id="agreeText" class="agreeText agreeTextalternate text-center">
+          				<label class="pointer checkbox is_checkbox"><input type="checkbox" class="input-checkbox" name="agree" value="1" {{ agree?'checked="checked"':'' }}><span>{{ text_agree }}</span></label>
+    				</div>       				
+    			{% endif %}    			
+    			<div class="progress progress-continue-disabled" id="progress-continue-disabled" {{ text_agree and not agree?'style="display: block"':'style="display: none"' }} >
+                    	<div data-trigger="focus" tabindex="0" data-placement="top" data-toggle="popover" title="{{ info_title }}" data-content="{{ agree_content }}" class="progress-bar" role="progressbar" id="button-payment-disabled" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100">
+                      		<span>{{ text_payment_continue }}<i class="fa fa-lock"></i></span>
+                    	</div>
+                </div>
+        		<div class="progress progress-continue" id="progress-continue" {{ text_agree and not agree?'style="display: none"':'' }} >
+                  	<div class="progress-bar progress-bar-success" onclick="callPaymentFromGuest();" role="progressbar" id="button-payment" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                  		<span>{{ text_payment_continue }}</span>
+                   	</div>
+                	</div>
+                 </div>   
+		{% else %} 
+			        {% if error_stock_warning is defined  %} 
+						<div class="alert alert-danger noshipping margintop20 marginbottom0">{{ error_stock_warning }}</div>
+					{% endif %} 
+					{% if error_minimum_warning is defined  %} 
+						<div class="alert alert-danger noshipping margintop20 marginbottom0">{{ error_minimum_warning }}</div>
+					{% endif %} 
+		       {% endif %}       		
+
+      {% endif %}
+{% if shipping_required or isMobile %}    
+<div id="xcart" class="animated1 zoomIn1">{{ xcart }}</div>
+<div class="clearfix"></div>
+{% endif %}
+{% if not isMobile %}
+<div id="options">{{ xoptions }}</div>    
+<div class="clearfix"></div>
+{% endif %}
+<div id="totals">{{ xtotals }}</div>  
+<div class="clearfix"></div>
+</div>
+</div></div>
+{% if mask  %} 
+<script type="text/javascript" src="catalog/view/javascript/xtensions/stylesheet/bs/js/jquery.maskedinput.min.js"></script>
+<script type="text/javascript">
+jQuery(function($){
+{% for key,value in mask %}	      
+$("#guestfieldspayment #{{ key }}").mask("{{ value }}");
+{% if shipping_required and not same_shipping  %} 
+$("#guestfieldsshipping #{{ key }}").mask("{{ value }}");
+{% endif %} 
+{% endfor %}
+});
+</script>
+{% endif %} 
+<script type="text/javascript" src="catalog/view/javascript/xtensions/stylesheet/bs/js/xcustom.js"></script>
+<script type="text/javascript">
+{% if not address_modal and not payment_address and not shipping_address1  %} 
+$(document).ready(function() {
+	$('.col-md-3.lborder').addClass('xblur');
+});
+{% endif %} 
+{% if address_modal and not payment_address and not shipping_address1  %} 
+$(document).ready(function() {
+    $('#addressModalpayment').modal('show');
+});
+{% else %}
+$(document).ready(function() {
+	$('body').removeClass('modal-open');
+});
+{% endif %} 
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip();
+    $('[data-toggle="popover"]').popover();
+  }); 
+$('input[type="checkbox"][name="agree"]').change(function() {
+  if(this.checked){
+      $('#progress-continue').css('display','block');
+      $('#progress-continue-disabled').css('display','none');
+    }else{
+      $('#progress-continue').css('display','none');
+      $('#progress-continue-disabled').css('display','block');        
+    }
+});
+</script>
+<script type="text/javascript">
+$('.date').datetimepicker({
+	language: '{{ datepicker }}',
+	pickTime: false
+});
+$('.time').datetimepicker({
+	language: '{{ datepicker }}',
+	pickDate: false
+});
+$('.datetime').datetimepicker({
+	language: '{{ datepicker }}',
+	pickDate: true,
+	pickTime: true
+});
+</script>
+{% endif %} 

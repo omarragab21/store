@@ -1,0 +1,96 @@
+{{ header }}
+<div id="product-product" class="pts-d-container container">
+  <ul class="pts-d-breadcrumbfff breadcrumb">
+    {% for breadcrumb in breadcrumbs %}
+    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+    {% endfor %}
+  </ul>
+     <div style="display:none" class="pts-d-alert pts-d-alert-danger pts-d-alert-dismissible"></div>
+  <div class="pts-d-row row">{{ column_left }}
+    {% if column_left and column_right %}
+    {% set class = 'col-sm-6 pts-d-row-col-sm-6' %}
+    {% elseif column_left or column_right %}
+    {% set class = 'col-sm-9 pts-d-row-col-sm-9' %}
+    {% else %}
+    {% set class = 'col-sm-12 pts-d-row-col-sm-12' %}
+    {% endif %}
+    <div id="content" class="{{ class }}">{{ content_top }}
+      <div class="pts-d-row row">{% if column_left or column_right %}
+        {% set class = 'col-sm-8 pts-d-row-col-sm-8' %}
+        {% else %}
+        {% set class = 'col-sm-12 pts-d-row-col-sm-12' %}
+        {% endif %}
+        <div class="{{ class }}">
+			<div class="row">
+			<div class="pts-d-row-col-sm-12 col-sm-12">
+		<h3 style="margin-bottom:20px;" class="box-heading">Choose from Designs</h3>
+		</div>
+		{% if templates %}
+		{% for template in templates %}
+				<div class="pts-d-row-col-sm-3 col-sm-3" style="text-align: center;margin-bottom:20px;">
+				<div class="product-thumb product-wrapper-pts-d " style="text-align: center;display: inline-block;">
+					<div class="image">
+					<div class="quickview-button-pts-d">
+					<a href="{{ template.href }}" class="btn btn-primary btn-lg btn-block button hint--top" ><i class="button-left-icon"></i><span class="button-cart-text">Start Designing</span><i class="button-right-icon"></i></a>
+					</div>
+						<a href="{{ template.href }}">
+							<img src="{{ template.thumb }}" alt="{{ template.name }}" title="{{ template.name }}" class="img-responsive"/>
+						</a>
+					</div>
+					<div style="padding-top: 12px;" class="caption">
+						<h4><a href="{{ template.href }}">{{ template.name }}</a></h4>
+					</div>
+				</div>
+				</div>
+					{% endfor %}
+					{% else %}
+					<div class="pts-d-alert alert pts-d-alert-danger alert-danger">{{ no_data }}</div>
+					{% endif %}
+			</div>
+		</div>
+		</div>
+      {{ content_bottom }}</div>
+    {{ column_right }}</div>
+</div>
+<style>
+.quickview-button-pts-d {
+    -webkit-backface-visibility: hidden;
+}
+.quickview-button-pts-d {
+    position: absolute;
+    z-index: 999;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s;
+	}
+	.product-wrapper-pts-d:hover .quickview-button-pts-d, .product-list-item:hover .quickview-button-pts-d {
+    opacity: 1;
+    visibility: visible;
+}
+.quickview-button-pts-d a {
+display: flex;
+-webkit-box-pack: center;
+}
+.product-wrapper-pts-d {
+    border-width: 1px;
+    border-style: solid;
+    border-color: #ccc;
+    padding: 8px;
+	-webkit-box-flex: 1;
+}
+.product-wrapper-pts-d:hover {
+    border-color: #484848;
+	transition: all 0.3s;
+}
+.product-wrapper-pts-d .caption {
+    min-height: unset !important;
+}
+.product-wrapper-pts-d a:hover {
+	text-decoration:none;
+}
+</style>
+{{ footer }} 

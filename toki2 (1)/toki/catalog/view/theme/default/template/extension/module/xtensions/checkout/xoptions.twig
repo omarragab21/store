@@ -1,0 +1,107 @@
+{% if   inline_view  %} 
+{% if   display_coupons or display_vouchers or display_rewards or display_comments  %}
+<div class="col-md-12 paddingright0 paddingleft0">
+<div class="panel panel-green1 couponpanel">
+<div class="panel-heading"><i class="fa fa-tags" aria-hidden="true"></i>&nbsp;{{ text_options }}</div>
+<div id="xoptions-content">
+  {% if   display_coupons  %}
+  {% if not dropdown_coupons %}
+  <form role="form" id="form_add_coupon" action="#" method="post" enctype="multipart/form-data">
+  <div id="coupon-panel" class="cvc-panel coupon-panel">
+  		<div class="input-group group{{ coupon_value?' filled':'' }}">
+     		<input name="coupon" type="text" value="{{ coupon_value }}" class="inputMaterial" />
+     		<label>{{ coupon_apply_text }}&nbsp;<i class="fa fa-scissors" aria-hidden="true"></i></label>
+      		<div class="input-group-addon"><button id="couponbtn1" type="submit"><i class="cvcapply fa fa-check"></i></button></div>
+    </div>
+  </div>
+  </form>
+  {% else %}
+  	<div class="cvc-panel">
+  		<div class="input-group group{{ coupon_value?' filled':'' }}">
+     		<input type="text" value="{{ coupon_value }}" readonly class="inputMaterial showdropdowncoupon pointer" link="{{ link_coupon }}"/>
+     		<label>{{ coupon_apply_text }}&nbsp;<i class="fa fa-scissors" aria-hidden="true"></i></label>
+      		<div class="input-group-addon btn-cvc-small"><button class="showdropdowncoupon" link="{{ link_coupon }}">{{ is_coupon_set?text_edit_coupon:text_select_coupon }}</button></div>      		
+    	</div>
+  </div>
+  {% endif %}
+  {% endif %} 
+  {% if   display_vouchers  %}
+  <form role="form" id="form_add_voucher" action="#" method="post" enctype="multipart/form-data">
+  <div id="voucher-panel" class="cvc-panel voucher-panel">
+  		<div class="input-group group">
+     		<input name="voucher" value="{{ voucher_value }}" type="text" class="inputMaterial"  />
+     		<label>{{ voucher_apply_text }}&nbsp;<i class="fa fa-tag" aria-hidden="true"></i></label>
+      		<div class="input-group-addon"><button id="voucherbtn1" type="submit"><i class="cvcapply fa fa-check"></i></button></div>
+    </div>
+  </div>
+  </form>
+  {% endif %} 
+  {% if   display_rewards  %}
+  <form role="form" id="form_add_reward" action="#" method="post" enctype="multipart/form-data">
+  <div id="reward-panel" class="cvc-panel reward-panel">
+  		<div class="input-group group filledalways">
+     		<input name="reward" value="{{ reward_value }}" type="text" placeholder="{{ reward_text }}" class="numeric inputMaterial" />
+     		<label>{{ text_use_reward }}</label>
+      		<div class="input-group-addon"><button id="rewardbtn1" type="submit"><i class="cvcapply fa fa-check"></i></button></div>
+    </div>
+  </div>
+  </form>
+  {% endif %} 
+  {% if   display_comments  %} 
+  <div id="comment-panel" class="form-group cvc-panel">
+  	<div class="row">
+		<span class="col-xs-6">{{ comment_text }}</span>
+		<div class="col-xs-6 text-right"><a data-toggle="modal" data-target="#commentModal"><i class="fa fa-comment" aria-hidden="true"></i>&nbsp;{{ comment_apply_text1 }}</a></div>
+	</div>           
+</div>
+{% endif %} 
+</div>
+</div>
+</div>
+{% endif %} 
+{% else %} 
+{% if   display_coupons or display_vouchers or display_rewards or display_comments  %}
+<div class="col-md-12 paddingright0 paddingleft0">
+<div class="panel panel-green1 couponpanel">
+        <div class="panel-heading"><i class="fa fa-tags" aria-hidden="true"></i>&nbsp;{{ text_options }}</div>
+		<div id="xoptions-content">
+          <table class="table">
+          <tbody>
+          	{% if   display_coupons  %}
+          	<tr>
+           	<td>{{ coupon_text }}</td>
+			<td class="text-right">
+			{% if dropdown_coupons %}
+				<a class="btn btn-cvc-small showdropdowncoupon" link="{{ link_coupon }}">{{ is_coupon_set?text_edit_coupon:text_select_coupon }}</a>
+			{% else %}
+				<a class="btn btn-cvc-small" data-toggle="modal" data-target="#couponModal">{{ coupon_apply_text }}</a>
+			{% endif %}
+			</td>
+            </tr>
+            {% endif %} 
+            {% if   display_vouchers  %}
+            <tr>          
+           	<td>{{ voucher_text }}</td>
+			<td class="text-right"><a class="btn btn-cvc-small" data-toggle="modal" data-target="#voucherModal">{{ voucher_apply_text }}</a></td>
+            </tr>
+            {% endif %} 
+            {% if   display_rewards  %}
+          	<tr>
+           	<td>{{ reward_text }}</td>
+			<td class="text-right"><a class="btn btn-cvc-small" data-toggle="modal" data-target="#rewardModal">{{ reward_apply_text }}</a></td>
+            </tr>
+            {% endif %}           
+            {% if   display_comments  %} 
+            <tr>
+           	<td>{{ comment_text }}</td>
+			<td class="text-right"><a class="btn btn-cvc-small" data-toggle="modal" data-target="#commentModal">{{ comment_apply_text1 }}</a></td>
+            </tr>
+            {% endif %}
+            </tbody>            
+            </table>
+            </div>
+</div>
+</div>
+{% endif %} 
+{% endif %} 
+<script type="text/javascript" src="catalog/view/javascript/xtensions/stylesheet/bs/js/xcustom.js"></script>

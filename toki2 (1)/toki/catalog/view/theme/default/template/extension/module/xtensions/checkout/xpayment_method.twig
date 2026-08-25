@@ -1,0 +1,138 @@
+<div class="container">
+<div class="row equal">
+<div id="paymentPage" class="col-md-9">
+<ul class="hidden nav nav-pills nav-wizard hidden-xs">
+  <li class="{{ isLogged?'locked"':'unlocked'}}"><a {{ isLogged?'':'onclick="click1();"'}}>{{ text_checkout_step_1 }}{{ isLogged?'<i class="fa fa-lock"></i>':''}}</a><div class="nav-arrow"></div></li>
+  <li class="unlocked"><div class="nav-wedge"></div><a onclick="click2();">{{ text_checkout_step_2 }}</a><div class="nav-arrow"></div></li>
+  <li class="active"><div class="nav-wedge"></div><a>{{ text_checkout_step_3 }}</a></li>
+</ul>
+<div class="row youpaytext">
+<div class="col-xs-6">{{ text_payment_method }}</div>
+<div class="col-xs-6 text-right">{{ text_you_pay }}<span class="youpay">{{ total }}</span></div>
+</div>
+{% if not payment_methods  %}
+<div class="alert alert-danger margintopbottom20">{{ error_payment_warning }}</div>
+{% else %}
+{% if accordion_view  %}
+<div class="panel-group" id="payment-accordion" role="tablist" aria-multiselectable="false">
+{% for payment_method in payment_methods %} 
+{% if  payment_method.code == code or not code  %}{% set code = payment_method.code %}{% endif %}  
+  <div class="panel">
+    <div class="panel-heading" role="tab" id="heading{{ payment_method.code }}">
+    	 <h4 class="panel-title">     
+          <a aria-expanded="{{ code == payment_method.code?'true':'false' }}" id="anchor{{ payment_method.code }}" class="heading-panel{{ code == payment_method.code?'':' collapsed' }}" payment_method="{{ payment_method.code }}" role="button" data-toggle="collapse" data-parent="#payment-accordion" data-target="#collapse{{ payment_method.code }}" aria-controls="collapse{{ payment_method.code }}">          
+          <label>{{ payment_method.title }}</label>
+          </a>
+        </h4>
+        {% if    payment_images[payment_method.code] is defined and payment_images[payment_method.code]  %} 
+        <div class="payment_images"><img class="payment_method_img" src="image/{{ payment_images[payment_method.code] }}"/></div>
+        {% endif %}        
+    </div>      
+      <div id="collapse{{ payment_method.code }}" class="panel-collapse collapse {{ code == payment_method.code?'in':'' }}" role="tabpanel" aria-labelledby="heading{{ payment_method.code }}">
+      <div id="panel-body{{ payment_method.code }}" class="panel-body">        
+      </div>
+    </div>
+  </div> 
+{% endfor %} 
+</div>
+{% else %} 
+<div class="row equal bordertop">
+<div class="col-md-3 nopadding">
+<div class="pside-bar">
+<nav class="nav-sidebar">
+<ul id="paymentMethodTab" class="nav nav-tabs tabs-left">
+{% for payment_method in payment_methods %} 
+	{% if    payment_method.code == code or not code  %} 
+      {% set code = payment_method.code %}      	
+    	  <li id="t{{ payment_method.code }}" class="active pointer payment_method_list">
+    {% else %} 
+    	<li class="pointer" id="t{{ payment_method.code }}">
+    {% endif %}	  
+			<a payment_method="{{ payment_method.code }}" data-toggle="tab">{{ payment_method.title }} 
+			{% if    payment_images[payment_method.code] is defined and payment_images[payment_method.code]  %} 
+        		<span class="payment_images is_list"><img class="payment_method_img" src="image/{{ payment_images[payment_method.code] }}"/></span>
+        	{% endif %}</a></li>
+{% endfor %} 
+</ul>
+</nav>   
+</div>
+</div>
+<!--col-md-3 ends-->
+<div class="col-md-9"><!--col-md-9 starts-->
+<div id="paymentMethodTabContent" class="tab-content" >
+<div class="panel panel-default"><div class="panel-body">
+<div id="pLoader" class="loader"></div>
+<div class="tab-pane fade in active" id="payment-method-content">
+<div id="spayment-method-content" class="center text-center"></div>
+</div>
+</div></div>      
+</div>
+</div>
+</div>
+{% endif %} 
+{% endif %} 
+</div>
+<div class="col-md-3 lborder">
+<div class="clearfix"></div>
+
+<div class="panel-default" >
+<div >
+<div id="xcart" class="animated1 zoomIn1">{{ xcart }}</div>
+<div id="totals" class="animated1 zoomIn1">{{ xtotals }}</div>
+</div>
+</div>
+{% if display_shipping_address %}
+<div class="panel panel-default sidepanel" >
+<div class="panel-heading sidepanel">
+<div class="panel-title shippingS">
+<span><i class="fa fa-home"></i></span>&nbsp;<span>{{ shipping_address_title }}</span>
+</div>
+</div>                                      
+<div class="panel-body sidepanel text-muted">
+<span>{{ shipaddress }}</span>
+{% if display_shipping_method and shipping_method is defined  %}  
+<div><span class="bold">{{ shipping_method }}</span><span class="scost bold">{{ shipping_method_cost }}</span></div>  
+{% endif %}              
+</div>   
+<div class="panel-footer sidepanel">
+<div class="pchange"><a class="pointer underline">{{ text_change_address }}</a></div>
+</div>                        
+</div>
+{% endif %}
+{% if display_payment_address %}
+<div class="panel panel-default sidepanel" >
+<div class="panel-heading sidepanel">
+<div class="panel-title shippingS">
+<span><i class="fa fa-home"></i></span>&nbsp;<span>{{ payment_address_title }}</span>
+</div>
+</div>                                      
+<div class="panel-body sidepanel text-muted">
+<span>{{ payaddress }}</span>            
+</div>   
+<div class="panel-footer sidepanel">
+<div class="pchange"><a class="pointer underline">{{ text_change_address }}</a></div>
+</div>                        
+</div>
+{% endif %}
+</div>
+</div>
+</div>
+{% if payment_methods %}
+<script type="text/javascript">
+var payment_method_code = '{{ code is defined?code:"" }}';
+
+$(document).ready(function(){
+{% if accordion_view  %} 
+    $('.panel-heading a').on('click',function(e){
+        if($(this).parents('.panel').children('.panel-collapse').hasClass('in')){
+            e.stopPropagation();
+            e.preventDefault();
+        }
+    });
+	loadPaymentMethodAccordion(payment_method_code);	
+{% else %}	
+	loadPaymentMethodTab(payment_method_code);		
+{% endif %} 
+});
+</script>
+{% endif %} 

@@ -1,0 +1,1350 @@
+{{ header }}{{ column_left }} 
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-newsletter" onclick="$('#form-newsletter').attr('action','{{ staysave}}');$('#form-newsletter').submit(); " data-toggle="tooltip" title="" class="btn btn-primary"><i class="fa fa-save"></i> {{ button_savestay }}</button>
+    
+        <button type="submit" form="form-newsletter" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %} 
+        <li><a href="{{ breadcrumb['href'] }}">{{ breadcrumb['text'] }}</a></li>
+        {% endfor %} 
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if (error_warning) %} 
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }} 
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %} 
+	 {% if success %}
+    <div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> {{ success }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+      </div>
+
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-newsletter" class="form-horizontal">
+
+            <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab-general" data-toggle="tab" aria-expanded="true">{{ tab_general }}</a></li>
+            <li class=""><a href="#tab-layout" data-toggle="tab" aria-expanded="false">{{ tab_layout }}</a></li>
+            <li class=""><a href="#tab-footer" data-toggle="tab" aria-expanded="false">{{ tab_footer }}</a></li>
+            <li class=""><a href="#tab-popup" data-toggle="tab" aria-expanded="false">{{ tab_popup }}</a></li>
+            <li class=""><a href="#tab-verify" data-toggle="tab" aria-expanded="false">{{ tab_verifypage }}</a></li>
+            <li class=""><a href="#tab-unsbscribe" data-toggle="tab" aria-expanded="false">{{ tab_unsubscribe }}</a></li>
+            <li class=""><a href="#tab-custom" data-toggle="tab" aria-expanded="false">{{ tab_customcss }}</a></li>
+  
+          </ul>
+           <div class="tab-content">
+            <div class="tab-pane active" id="tab-general">
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-tmdnewsletter_status">{{ entry_status }}</label>
+            <div class="col-sm-10">
+              <select name="tmdnewsletter_status" id="input-tmdnewsletter_status" class="form-control">
+                {% if (tmdnewsletter_status) %} 
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %} 
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+                {% endif %} 
+              </select>
+            </div>
+          </div>
+              <legend>{{ text_verification_mail }}</legend>
+                  
+             <div class="form-group">
+                  <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ help_verification_mail }}">{{ entry_verification_req }}</span></label>
+                  <div class="col-sm-10">
+                    <div class="btn-group" data-toggle="buttons"> 
+                     {% if (tmdnewsletter_verification) %} 
+                      <label class="btn btn-success btn-sm active">
+                      <input type="radio" name="tmdnewsletter_verification" value="1" checked="checked" />
+                      {{ text_yes }} 
+                      </label>
+                      {% else %} 
+                       <label class="btn btn-success btn-sm">
+                        <input type="radio" name="tmdnewsletter_verification" value="1" />
+                        {{ text_yes }}
+                      </label>    
+                    {% endif %}
+                        
+                    {% if (not tmdnewsletter_verification) %}
+                      <label class="btn btn-success btn-sm active">
+                      <input type="radio" name="tmdnewsletter_verification" value="0" checked="checked" />
+                      {{ text_no }}
+                      </label>
+                    {% else %} 
+                       <label class="btn btn-success btn-sm">
+                        <input type="radio" name="tmdnewsletter_verification" value="0" />
+                         {{ text_no }}
+                      </label> 
+                    {% endif %} 
+                   </div>
+                </div>
+             </div>
+
+             <div id="verifcation-chng" {% if (tmdnewsletter_verification == 0) %} 
+              style="display:none;"
+                 {% endif %} >  
+              <ul class="nav nav-tabs" id="language">
+                {% for language in languages %} 
+                <li><a href="#language{{ language['language_id'] }}" data-toggle="tab"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /> {{ language['name'] }}</a></li>
+                {% endfor %} 
+              </ul>
+              <div class="tab-content">
+                   {% for language in languages %} 
+                     <div class="tab-pane" id="language{{ language['language_id'] }}">
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-name{{ language['language_id'] }}">{{ entry_subject }}</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="tmdnewsletter_verificationmail[{{ language['language_id'] }}][subject]" value="{{ tmdnewsletter_verificationmail[language['language_id']] is defined ? tmdnewsletter_verificationmail[language['language_id']]['subject'] : '' }}" placeholder="{{ entry_subject }}" id="input-name{{ language['language_id'] }}" class="form-control" />
+                     
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-description{{ language['language_id'] }}">{{ entry_message }}</label>
+                    <div class="col-sm-10">
+                      <textarea name="tmdnewsletter_verificationmail[{{ language['language_id'] }}][message]" placeholder="{{ entry_message }}" id="input-description{{ language['language_id'] }}" data-toggle="summernote" data-lang="{{ summernote }}" class="form-control">{{ tmdnewsletter_verificationmail[language['language_id']] is defined ? tmdnewsletter_verificationmail[language['language_id']]['message'] : '' }}</textarea>
+                    </div>
+                  </div>
+                  </div>
+
+                     {% endfor %} 
+
+                   </div>
+                </div>
+
+                      <legend>{{ text_after_confirmation }}</legend>
+                  
+             <div class="form-group">
+                  <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ text_after_confirmation }}">{{ entry_confirmation_req }}</span></label>
+                  <div class="col-sm-10">
+                    <div class="btn-group" data-toggle="buttons">
+                      {% if (tmdnewsletter_confirmation) %} 
+                      <label class="btn btn-success btn-sm active">    
+                          <input type="radio" name="tmdnewsletter_confirmation" value="1" checked="checked" />
+                          {{ text_yes }}
+                      </label>
+                      {% else %} 
+                      <label class="btn btn-success btn-sm">    
+                        <input type="radio" name="tmdnewsletter_confirmation" value="1" />
+                        {{ text_yes }} 
+                      </label>
+                      {% endif %} 
+                    
+                      {% if (not tmdnewsletter_confirmation) %} 
+                      <label class="btn btn-success btn-sm active">    
+                        <input type="radio" name="tmdnewsletter_confirmation" value="0" checked="checked" />
+                        {{ text_no }} 
+                      </label>
+                      {% else %}
+                      <label class="btn btn-success btn-sm">   
+                          <input type="radio" name="tmdnewsletter_confirmation" value="0" />
+                          {{ text_no }}
+                      </label>
+                      {% endif %} 
+                    </div>
+                  </div>
+                </div>
+                <div id="confirmation-chng" {% if (tmdnewsletter_confirmation == 0) %} 
+              style="display:none;"
+                 {% endif %} >
+                  <ul class="nav nav-tabs" id="languages">
+                {% for language in languages %} 
+                <li><a href="#languages{{ language['language_id'] }}" data-toggle="tab"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /> {{ language['name'] }}</a></li>
+                {% endfor %} 
+              </ul>
+              <div class="tab-content">
+                   {% for language in languages %} 
+                     <div class="tab-pane" id="languages{{ language['language_id'] }}">
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-name{{ language['language_id'] }}">{{ entry_subject }}</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="tmdnewsletter_confirmationmail[{{ language['language_id'] }}][subject]" value="{{ tmdnewsletter_confirmationmail[language['language_id']] is defined ? tmdnewsletter_confirmationmail[language['language_id']]['subject'] : '' }}" placeholder="{{ entry_subject }}" id="input-name{{ language['language_id'] }}" class="form-control" />
+                
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-description{{ language['language_id'] }}">{{ entry_message }}</label>
+                    <div class="col-sm-10">
+                      <textarea name="tmdnewsletter_confirmationmail[{{ language['language_id'] }}][message]" placeholder="{{ entry_message }}" id="input-description{{ language['language_id'] }}" data-toggle="summernote" data-lang="{{ summernote }}" class="form-control">{{ tmdnewsletter_confirmationmail[language['language_id']] is defined ? tmdnewsletter_confirmationmail[language['language_id']]['message'] : '' }}</textarea>
+                    </div>
+                    </div>
+                  </div>
+                     {% endfor %} 
+                  </div>
+                </div>
+                <div class="col-sm-offset-2 col-sm-3">
+                      <br>
+                      <table class="table table-bordered">
+                        <thead>
+                          <tr><td>Names</td><td>Short Codes</td>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>Logo</td><td>{logo}</td>
+                          </tr>
+                          <tr>
+                            <td>Store Name</td><td>{store}</td>
+                          </tr>                         
+                          <tr>
+                            <td>Subscriber Name</td><td>{name}</td>
+                          </tr>
+                          <tr>
+                            <td>Subscriber Email</td><td>{email}</td>
+                          </tr>
+                          <tr>
+                            <td>Verification Link</td><td>{verify_link}</td>
+                          </tr>
+                          <tr>
+                            <td>Unsubscribe Link</td><td>{unsubscribe_link}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+              </div>
+                    
+              <div class="tab-pane" id="tab-layout">
+               
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="input-tmdnewsletter_layoutstatus">{{ entry_status }}</label>
+            <div class="col-sm-10">
+              <select name="tmdnewsletter_layoutstatus" id="input-tmdnewsletter_layoutstatus" class="form-control">
+                {% if (tmdnewsletter_layoutstatus) %} 
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %} 
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+                {% endif %} 
+              </select>
+            </div>
+          </div>
+
+                <div class="form-group">
+                  <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ entry_displaytitle }}">{{ entry_displaytitle }}</span></label>
+                  <div class="col-sm-10">
+                    <div class="btn-group" data-toggle="buttons">
+                      {% if (tmdnewsletter_displaytitle) %}
+                      <label class="btn btn-success btn-sm active"> 
+                          <input type="radio" name="tmdnewsletter_displaytitle" value="1" checked="checked" />
+                          {{ text_yes }} 
+                     </label>
+                      {% else %} 
+                    <label class="btn btn-success btn-sm">   <input type="radio" name="tmdnewsletter_displaytitle" value="1" />
+                      {{ text_yes }} 
+                    </label>
+                      {% endif %} 
+                   
+                   
+                      {% if (not tmdnewsletter_displaytitle) %}
+                    <label class="btn btn-success btn-sm active">    
+                      <input type="radio" name="tmdnewsletter_displaytitle" value="0" checked="checked" />
+                      {{ text_no }} 
+                    </label>
+                      {% else %} 
+                    <label class="btn btn-success btn-sm"> 
+                      <input type="radio" name="tmdnewsletter_displaytitle" value="0" />
+                      {{ text_no }} 
+                      {% endif %} 
+                    </label>    
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ entry_displayname }}">{{ entry_displayname }}</span></label>
+                  <div class="col-sm-10">
+                    <div class="btn-group" data-toggle="buttons">
+                      {% if (tmdnewsletter_displayname == 1) %} 
+                    <label class="btn btn-success btn-sm active">     
+                      <input type="radio" name="tmdnewsletter_displayname" value="1" checked="checked" />
+                      {{ text_yes }} 
+                    </label>
+                      {% else %} 
+                   <label class="btn btn-success btn-sm">
+                      <input type="radio" name="tmdnewsletter_displayname" value="1" />
+                      {{ text_yes }} 
+                   </label>
+                      {% endif %} 
+                   
+                        {% if (tmdnewsletter_displayname == 2) %} 
+                    <label class="btn btn-success btn-sm active">     
+                      <input type="radio" name="tmdnewsletter_displayname" value="2" checked="checked" />
+                      {{ text_yes_required }} 
+                    </label>
+                      {% else %} 
+                    <label class="btn btn-success btn-sm">    
+                      <input type="radio" name="tmdnewsletter_displayname" value="2" />
+                      {{ text_yes_required }} 
+                    </label>
+                      {% endif %} 
+                   
+                      {% if (tmdnewsletter_displayname == 0) %} 
+                    <label class="btn btn-success btn-sm active">     
+                      <input type="radio" name="tmdnewsletter_displayname" value="0" checked="checked" />
+                      {{ text_no }} 
+                    </label>
+                      {% else %} 
+                    <label class="btn btn-success btn-sm">
+                      <input type="radio" name="tmdnewsletter_displayname" value="0" />
+                      {{ text_no }} 
+                    </label>
+                      {% endif %} 
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ entry_displaydesc }}">{{ entry_displaydesc }}</span></label>
+                  <div class="col-sm-10">
+                    <div class="btn-group" data-toggle="buttons">
+                      {% if (tmdnewsletter_displaydesc) %}
+                      <label class="btn btn-success btn-sm active">     
+                      <input type="radio" name="tmdnewsletter_displaydesc" value="1" checked="checked" />
+                      {{ text_yes }}
+                    </label>
+                      {% else %} 
+                    <label class="btn btn-success btn-sm">
+                      <input type="radio" name="tmdnewsletter_displaydesc" value="1" />
+                      {{ text_yes }}
+                    </label>
+                      {% endif %} 
+                   
+                      {% if (not tmdnewsletter_displaydesc) %} 
+                    <label class="btn btn-success btn-sm active">     
+                      <input type="radio" name="tmdnewsletter_displaydesc" value="0" checked="checked" />
+                      {{ text_no }} 
+                    </label>
+                      {% else %} 
+                    <label class="btn btn-success btn-sm">
+                      <input type="radio" name="tmdnewsletter_displaydesc" value="0" />
+                      {{ text_no }} 
+                    </label>    
+                      {% endif %} 
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ entry_displayicon }}"> {{ entry_displayicon }}</span></label>
+                  <div class="col-sm-10">
+                    <div class="btn-group" data-toggle="buttons">
+                      {% if (tmdnewsletter_displayicon) %} 
+                      <label class="btn btn-success btn-sm active">    
+                      <input type="radio" name="tmdnewsletter_displayicon" value="1" checked="checked" />
+                      {{ text_yes }} 
+                      </label>
+                      {% else %} 
+                      <label class="btn btn-success btn-sm">
+                      <input type="radio" name="tmdnewsletter_displayicon" value="1" />
+                      {{ text_yes }} 
+                      </label>
+                      {% endif %} 
+                   
+                      {% if (not tmdnewsletter_displayicon) %} 
+                      <label class="btn btn-success btn-sm active">
+                      <input type="radio" name="tmdnewsletter_displayicon" value="0" checked="checked" />
+                      {{ text_no }} 
+                      </label>
+                      {% else %} 
+                      <label class="btn btn-success btn-sm">
+                      <input type="radio" name="tmdnewsletter_displayicon" value="0" />
+                      {{ text_no }} 
+                      </label>
+                      {% endif %} 
+                    </div>
+                  </div>
+                </div> 
+<!-- new code start-->
+                <div class="form-group">
+                  <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ help_privcy }}"> {{ entry_privcy }}</span></label>
+                  <div class="col-sm-10">
+                    <div class="btn-group" data-toggle="buttons">
+                      {% if (tmdnewsletter_agree) %} 
+                      <label class="btn btn-success btn-sm active">    
+                      <input type="radio" name="tmdnewsletter_agree" value="1" checked="checked" />
+                      {{ text_yes }} 
+                      </label>
+                      {% else %} 
+                      <label class="btn btn-success btn-sm">
+                      <input type="radio" name="tmdnewsletter_agree" value="1" />
+                      {{ text_yes }} 
+                      </label>
+                      {% endif %} 
+                   
+                      {% if (not tmdnewsletter_agree) %} 
+                      <label class="btn btn-success btn-sm active">
+                      <input type="radio" name="tmdnewsletter_agree" value="0" checked="checked" />
+                      {{ text_no }} 
+                      </label>
+                      {% else %} 
+                      <label class="btn btn-success btn-sm">
+                      <input type="radio" name="tmdnewsletter_agree" value="0" />
+                      {{ text_no }} 
+                      </label>
+                      {% endif %} 
+                    </div>
+                  </div>
+                </div>
+<!-- new code end-->
+                 <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-name{{ language['language_id'] }}"> {{ entry_iconclass }}</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="tmdnewsletter_iconclass" value="{{ tmdnewsletter_iconclass }}" placeholder="{{ entry_iconclass }}" id="input-name" class="form-control" />                   
+                    </div>
+                  </div>
+                      <ul class="nav nav-tabs" id="language-layout">
+                {% for language in languages %} 
+                <li><a href="#language-layout{{ language['language_id'] }}" data-toggle="tab"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /> {{ language['name'] }}</a></li>
+                {% endfor %} 
+              </ul>
+              <div class="tab-content">
+                   {% for language in languages %} 
+                     <div class="tab-pane" id="language-layout{{ language['language_id'] }}">
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-name{{ language['language_id'] }}">{{ entry_title }}</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="tmdnewsletter_layout[{{ language['language_id'] }}][title]" value="{{ tmdnewsletter_layout[language['language_id']] is defined ? tmdnewsletter_layout[language['language_id']]['title'] : '' }}" placeholder="Title" id="input-name{{ language['language_id'] }}" class="form-control" />
+                     
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-description{{ language['language_id'] }}">{{ entry_desc }}</label>
+                    <div class="col-sm-10">
+                      <textarea name="tmdnewsletter_layout[{{ language['language_id'] }}][description]" placeholder="{{ entry_message }}" id="input-description{{ language['language_id'] }}" data-toggle="summernote" data-lang="{{ summernote }}" class="form-control">{{ tmdnewsletter_layout[language['language_id']] is defined ? tmdnewsletter_layout[language['language_id']]['description'] : '' }}</textarea>
+                    </div>
+                  </div>
+                   <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-name{{ language['language_id'] }}">{{ entry_privacytext }}</label>
+                    <div class="col-sm-10">
+                      <textarea name="tmdnewsletter_layout[{{ language['language_id'] }}][privacytext]" placeholder="{{ entry_privacytext }}" id="input-description{{ language['language_id'] }}" data-toggle="summernote" data-lang="{{ summernote }}" class="form-control">{{ tmdnewsletter_layout[language['language_id']] is defined ? tmdnewsletter_layout[language['language_id']]['privacytext'] : '' }}</textarea>
+                      
+                    </div>
+                  </div>
+                 <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-name{{ language['language_id'] }}">{{ entry_successmessage }}</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="tmdnewsletter_layout[{{ language['language_id'] }}][successmessage]" value="{{ tmdnewsletter_layout[language['language_id']] is defined ? tmdnewsletter_layout[language['language_id']]['successmessage'] : '' }}" placeholder="{{ entry_successmessage }}" id="input-name{{ language['language_id'] }}" class="form-control" />
+                      
+                    </div>
+                  </div> 
+                  
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-name{{ language['language_id'] }}">{{ entry_name }} </label>
+                    <div class="col-sm-10">
+                      <input type="text" name="tmdnewsletter_layout[{{ language['language_id'] }}][name]" value="{{ tmdnewsletter_layout[language['language_id']] is defined ? tmdnewsletter_layout[language['language_id']]['name'] : '' }}" placeholder="{{ entry_name }}" id="input-name{{ language['language_id'] }}" class="form-control" />
+                 
+                    </div>
+                  </div>  
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-name{{ language['language_id'] }}">{{ entry_email }} </label>
+                    <div class="col-sm-10">
+                      <input type="text" name="tmdnewsletter_layout[{{ language['language_id'] }}][email]" value="{{ tmdnewsletter_layout[language['language_id']] is defined ? tmdnewsletter_layout[language['language_id']]['email'] : '' }}" placeholder="{{ entry_email }}" id="input-name{{ language['language_id'] }}" class="form-control" />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-name{{ language['language_id'] }}">{{ entry_button }} </label>
+                    <div class="col-sm-10">
+                      <input type="text" name="tmdnewsletter_layout[{{ language['language_id'] }}][button]" value="{{ tmdnewsletter_layout[language['language_id']] is defined ? tmdnewsletter_layout[language['language_id']]['button'] : '' }}" placeholder="{{ entry_button }}" id="input-name{{ language['language_id'] }}" class="form-control" />
+                 
+                    </div>
+                  </div>
+                  
+
+
+                  </div>
+                     {% endfor %} 
+                </div>
+              </div>
+                        <div class="tab-pane" id="tab-footer">
+                          <div class="form-group">
+                          <label class="col-sm-2 control-label" for="input-tmdnewsletter_footerstatus">{{ entry_status }}</label>
+                          <div class="col-sm-10">
+                            <select name="tmdnewsletter_footerstatus" id="input-tmdnewsletter_footerstatus" class="form-control">
+                              {% if (tmdnewsletter_footerstatus) %} 
+                              <option value="1" selected="selected">{{ text_enabled }}</option>
+                              <option value="0">{{ text_disabled }}</option>
+                              {% else %} 
+                              <option value="1">{{ text_enabled }}</option>
+                              <option value="0" selected="selected">{{ text_disabled }}</option>
+                              {% endif %} 
+                            </select>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                  <label class="col-sm-2 control-label">{{ entry_applylayout }}</label>
+                  <div class="col-sm-10">
+                    <div class="well well-sm" style="height: 150px; overflow: auto;">
+                       {% for layout in layouts %} 
+                      <div class="checkbox">
+                        <label>
+                      {% if layout.layout_id in tmdnewsletter_footer_applyonlayout %}
+
+                          <input type="checkbox" name="tmdnewsletter_footer_applyonlayout[]" value="{{ layout['layout_id'] }}" checked="checked" />
+                          {{ layout['name'] }} 
+                          {% else %} 
+                          <input type="checkbox" name="tmdnewsletter_footer_applyonlayout[]" value="{{ layout['layout_id'] }}" />
+                          {{ layout['name'] }} 
+                          {% endif %} 
+                        </label>
+                      </div>
+                      {% endfor %} 
+                      
+                    </div>
+                  </div>
+                </div>
+                         <div class="form-group">
+                  <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ entry_displaytitle }}">{{ entry_displaytitle }}</span></label>
+                  <div class="col-sm-10">
+                    <div class="btn-group" data-toggle="buttons">
+                      {% if (tmdnewsletter_footer_displaytitle) %}
+                    <label class="btn btn-success btn-sm active">
+                      <input type="radio" name="tmdnewsletter_footer_displaytitle" value="1" checked="checked" />
+                      {{ text_yes }} 
+                    </label>
+                      {% else %} 
+                    <label class="btn btn-success btn-sm">
+                      <input type="radio" name="tmdnewsletter_footer_displaytitle" value="1" />
+                      {{ text_yes }} 
+                    </label>
+                      {% endif %} 
+
+                      {% if (not tmdnewsletter_footer_displaytitle) %} 
+                    <label class="btn btn-success btn-sm active">
+                      <input type="radio" name="tmdnewsletter_footer_displaytitle" value="0" checked="checked" />
+                      {{ text_no }} 
+                    </label>
+                      {% else %} 
+                    <label class="btn btn-success btn-sm">
+                      <input type="radio" name="tmdnewsletter_footer_displaytitle" value="0" />
+                      {{ text_no }}
+                    </label>    
+                      {% endif %} 
+                    </div>
+                  </div>
+                </div>
+              <div class="form-group">
+                  <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ entry_displayname }}">{{ entry_displayname }}</span></label>
+                  <div class="col-sm-10">
+                    <div class="btn-group" data-toggle="buttons">
+                      {% if (tmdnewsletter_footer_displayname == 1) %} 
+                    <label class="btn btn-success btn-sm active">
+                      <input type="radio" name="tmdnewsletter_footer_displayname" value="1" checked="checked" />
+                      {{ text_yes }} 
+                    </label>
+                      {% else %} 
+                    <label class="btn btn-success btn-sm">
+                      <input type="radio" name="tmdnewsletter_footer_displayname" value="1" />
+                      {{ text_yes }} 
+                    </label>
+                      {% endif %} 
+                   
+                      {% if (tmdnewsletter_footer_displayname == 2) %} 
+                    <label class="btn btn-success btn-sm active">
+                      <input type="radio" name="tmdnewsletter_footer_displayname" value="2" checked="checked" />
+                      {{ text_yes_required }}
+                     </label>
+                      {% else %} 
+                    <label class="btn btn-success btn-sm">
+                      <input type="radio" name="tmdnewsletter_footer_displayname" value="2" />
+                      {{ text_yes_required }} 
+                     </label>
+                      {% endif %} 
+                    
+                      {% if (tmdnewsletter_footer_displayname == 0) %}
+                    <label class="btn btn-success btn-sm active">
+                      <input type="radio" name="tmdnewsletter_footer_displayname" value="0" checked="checked" />
+                      {{ text_no }} 
+                     </label>
+                      {% else %} 
+                    <label class="btn btn-success btn-sm">
+                      <input type="radio" name="tmdnewsletter_footer_displayname" value="0" />
+                      {{ text_no }} 
+                     </label>
+                      {% endif %} 
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-contanercolor">{{ entry_bgcolor }}</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="tmdnewsletter_footer_backgroundcolor" value="{{ tmdnewsletter_footer_backgroundcolor }}"  id="input-contanercolor" class="form-control color" placeholder=""/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-contanercolor">{{ entry_fontcolor }}</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="tmdnewsletter_footer_fontcolor" value="{{ tmdnewsletter_footer_fontcolor }}"  id="input-contanercolor" class="form-control color" placeholder=""/>
+                    </div>
+                </div>
+                  <ul class="nav nav-tabs" id="language-footer">
+                {% for language in languages %} 
+                <li><a href="#language-footer{{ language['language_id'] }}" data-toggle="tab"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /> {{ language['name'] }}</a></li>
+                {% endfor %} 
+              </ul>
+              <div class="tab-content">
+                   {% for language in languages %} 
+                     <div class="tab-pane" id="language-footer{{ language['language_id'] }}">
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-name{{ language['language_id'] }}">{{ entry_title }}</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="tmdnewsletter_footer[{{ language['language_id'] }}][title]" value="{{ tmdnewsletter_footer[language['language_id']] is defined ? tmdnewsletter_footer[language['language_id']]['title'] : '' }}" placeholder="Title" id="input-name{{ language['language_id'] }}" class="form-control" />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-description{{ language['language_id'] }}">{{ entry_desc }}</label>
+                    <div class="col-sm-10">
+                      <textarea name="tmdnewsletter_footer[{{ language['language_id'] }}][description]" placeholder="{{ entry_message }}" id="input-description{{ language['language_id'] }}" data-toggle="summernote" data-lang="{{ summernote }}" class="form-control">{{ tmdnewsletter_footer[language['language_id']] is defined ? tmdnewsletter_footer[language['language_id']]['description'] : '' }}</textarea>
+                    </div>
+                  </div>
+                 <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-name{{ language['language_id'] }}">{{ entry_successmessage }}</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="tmdnewsletter_footer[{{ language['language_id'] }}][successmessage]" value="{{ tmdnewsletter_footer[language['language_id']] is defined ? tmdnewsletter_footer[language['language_id']]['successmessage'] : '' }}" placeholder="{{ entry_successmessage }}" id="input-name{{ language['language_id'] }}" class="form-control" />
+                  
+                    </div>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-name{{ language['language_id'] }}">{{ entry_name }} </label>
+                    <div class="col-sm-10">
+                      <input type="text" name="tmdnewsletter_footer[{{ language['language_id'] }}][name]" value="{{ tmdnewsletter_footer[language['language_id']] is defined ? tmdnewsletter_footer[language['language_id']]['name'] : '' }}" placeholder="{{ entry_name }}" id="input-name{{ language['language_id'] }}" class="form-control" />
+                 
+                    </div>
+                  </div>  
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-name{{ language['language_id'] }}">{{ entry_email }} </label>
+                    <div class="col-sm-10">
+                      <input type="text" name="tmdnewsletter_footer[{{ language['language_id'] }}][email]" value="{{ tmdnewsletter_footer[language['language_id']] is defined ? tmdnewsletter_footer[language['language_id']]['email'] : '' }}" placeholder="{{ entry_email }}" id="input-name{{ language['language_id'] }}" class="form-control" />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-name{{ language['language_id'] }}">{{ entry_button }} </label>
+                    <div class="col-sm-10">
+                      <input type="text" name="tmdnewsletter_footer[{{ language['language_id'] }}][button]" value="{{ tmdnewsletter_footer[language['language_id']] is defined ? tmdnewsletter_footer[language['language_id']]['button'] : '' }}" placeholder="{{ entry_button }}" id="input-name{{ language['language_id'] }}" class="form-control" />
+                 
+                    </div>
+                  </div>
+
+                  </div>
+                     {% endfor %} 
+                </div>
+           </div>        
+
+                  <div class="tab-pane" id="tab-popup">
+                          <div class="form-group">
+                          <label class="col-sm-2 control-label" for="input-tmdnewsletter_popupstatus">{{ entry_popupstatus }}</label>
+                          <div class="col-sm-10">
+                            <select name="tmdnewsletter_popupstatus" id="input-tmdnewsletter_popupstatus" class="form-control">
+                              {% if (tmdnewsletter_popupstatus) %} 
+                              <option value="1" selected="selected">{{ text_enabled }}</option>
+                              <option value="0">{{ text_disabled }}</option>
+                              {% else %} 
+                              <option value="1">{{ text_enabled }}</option>
+                              <option value="0" selected="selected">{{ text_disabled }}</option>
+                              {% endif %} 
+                            </select>
+                          </div>
+                        </div>
+
+                        <div class="form-group">
+                  <label class="col-sm-2 control-label">{{ entry_applylayout }}</label>
+                  <div class="col-sm-10">
+                    <div class="well well-sm" style="height: 150px; overflow: auto;">
+                       {% for layout in layouts %} 
+                      <div class="checkbox">
+                        <label>
+                      {% if layout.layout_id in tmdnewsletter_popup_applyonlayout %}
+                          <input type="checkbox" name="tmdnewsletter_popup_applyonlayout[]" value="{{ layout['layout_id'] }}" checked="checked" />
+                          {{ layout['name'] }} 
+                          {% else %} 
+                          <input type="checkbox" name="tmdnewsletter_popup_applyonlayout[]" value="{{ layout['layout_id'] }}" />
+                          {{ layout['name'] }} 
+                          {% endif %} 
+                        </label>
+                      </div>
+                      {% endfor %} 
+                      
+                    </div>
+                  </div>
+                </div>
+                
+                  
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">{{ entry_bgimage }}</label>
+                    <div class="col-sm-10"><a href="" id="thumb-bgimage" data-toggle="image" class="img-thumbnail"><img src="{{ thumbs }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                      <input type="hidden" name="tmdnewsletter_popupbgimage" value="{{ tmdnewsletter_popupbgimage }}" id="input-tmdnewsletter_popupbgimage" />
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                  <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ entry_displaytitle }}">{{ entry_displaytitle }}</span></label>
+                  <div class="col-sm-10">
+                    <div class="btn-group" data-toggle="buttons">
+                      {% if (tmdnewsletter_popup_displaytitle) %}
+                    <label class="btn btn-success btn-sm active">
+                      <input type="radio" name="tmdnewsletter_popup_displaytitle" value="1" checked="checked" />
+                      {{ text_yes }} 
+                    </label>
+                      {% else %} 
+                    <label class="btn btn-success btn-sm">
+                      <input type="radio" name="tmdnewsletter_popup_displaytitle" value="1" />
+                      {{ text_yes }} 
+                    </label>
+                      {% endif %} 
+                    
+                    
+                      {% if (not tmdnewsletter_popup_displaytitle) %} 
+                    <label class="btn btn-success btn-sm active">
+                      <input type="radio" name="tmdnewsletter_popup_displaytitle" value="0" checked="checked" />
+                      {{ text_no }} 
+                    </label>
+                      {% else %} 
+                    <label class="btn btn-success btn-sm">
+                      <input type="radio" name="tmdnewsletter_popup_displaytitle" value="0" />
+                      {{ text_no }}
+                    </label>
+                      {% endif %} 
+                    </div>
+                  </div>
+                </div>
+
+              <div class="form-group">
+                  <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ entry_displayname }}">{{ entry_displayname }}</span></label>
+                  <div class="col-sm-10">
+                    <div class="btn-group" data-toggle="buttons">
+                      {% if (tmdnewsletter_popup_displayname == 1) %} 
+                    <label class="btn btn-success btn-sm active">
+                      <input type="radio" name="tmdnewsletter_popup_displayname" value="1" checked="checked" />
+                      {{ text_yes }} 
+                    </label>
+                      {% else %}
+                    <label class="btn btn-success btn-sm">
+                      <input type="radio" name="tmdnewsletter_popup_displayname" value="1" />
+                      {{ text_yes }} 
+                    </label>
+                      {% endif %} 
+                    
+                     {% if (tmdnewsletter_popup_displayname == 2) %} 
+                    <label class="btn btn-success btn-sm active">
+                      <input type="radio" name="tmdnewsletter_popup_displayname" value="2" checked="checked" />
+                      {{ text_yes_required }} 
+                    </label>
+                      {% else %}
+                    <label class="btn btn-success btn-sm">
+                      <input type="radio" name="tmdnewsletter_popup_displayname" value="2" />
+                      {{ text_yes_required }} 
+                    </label>
+                      {% endif %} 
+                    
+                      {% if (tmdnewsletter_popup_displayname == 0) %} 
+                    <label class="btn btn-success btn-sm active">
+                      <input type="radio" name="tmdnewsletter_popup_displayname" value="0" checked="checked" />
+                      {{ text_no }} 
+                    </label>
+                      {% else %}
+                    <label class="btn btn-success btn-sm">
+                      <input type="radio" name="tmdnewsletter_popup_displayname" value="0" />
+                      {{ text_no }} 
+                    </label>
+                      {% endif %} 
+                    </div>
+                  </div>
+                </div>
+            
+            <div class="form-group hide">
+                  <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ help_review_guest }}">{{ entry_re_open }}</span></label>
+                  <div class="col-sm-10">
+                    <label class="radio-inline">
+                      {% if (tmdnewsletter_popup_reopen) %} 
+                      <input type="radio" name="tmdnewsletter_popup_reopen" value="1" checked="checked" />
+                      {{ text_yes }} 
+                      {% else %} 
+                      <input type="radio" name="tmdnewsletter_popup_reopen" value="1" />
+                      {{ text_yes }} 
+                      {% endif %} 
+                    </label>
+                    <label class="radio-inline">
+                      {% if (not tmdnewsletter_popup_reopen) %} 
+                      <input type="radio" name="tmdnewsletter_popup_reopen" value="0" checked="checked" />
+                      {{ text_no }} 
+                      {% else %} 
+                      <input type="radio" name="tmdnewsletter_popup_reopen" value="0" />
+                      {{ text_no }} 
+                      {% endif %} 
+                    </label>
+                  </div>
+                </div>
+
+               
+                  <ul class="nav nav-tabs" id="language-popup">
+                {% for language in languages %} 
+                <li><a href="#language-popup{{ language['language_id'] }}" data-toggle="tab"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /> {{ language['name'] }}</a></li>
+                {% endfor %} 
+              </ul>
+              <div class="tab-content">
+                   {% for language in languages %} 
+                     <div class="tab-pane" id="language-popup{{ language['language_id'] }}">
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-name{{ language['language_id'] }}">{{ entry_title }}</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="tmdnewsletter_popup[{{ language['language_id'] }}][title]" value="{{ tmdnewsletter_popup[language['language_id']] is defined ? tmdnewsletter_popup[language['language_id']]['title'] : '' }}" placeholder="Title" id="input-name{{ language['language_id'] }}" class="form-control" />
+                     </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-description{{ language['language_id'] }}">{{ entry_desc }}</label>
+                    <div class="col-sm-10">
+                      <textarea name="tmdnewsletter_popup[{{ language['language_id'] }}][description]" placeholder="{{ entry_message }}" id="input-description{{ language['language_id'] }}" data-toggle="summernote" data-lang="{{ summernote }}" class="form-control">{{ tmdnewsletter_popup[language['language_id']] is defined ? tmdnewsletter_popup[language['language_id']]['description'] : '' }}</textarea>
+                    </div>
+                  </div>
+                 <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-name{{ language['language_id'] }}">{{ entry_successmessage }}</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="tmdnewsletter_popup[{{ language['language_id'] }}][successmessage]" value="{{ tmdnewsletter_popup[language['language_id']] is defined ? tmdnewsletter_popup[language['language_id']]['successmessage'] : '' }}" placeholder="{{ entry_successmessage }}" id="input-name{{ language['language_id'] }}" class="form-control" />
+                      
+                    </div>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-name{{ language['language_id'] }}">{{ entry_name }} </label>
+                    <div class="col-sm-10">
+                      <input type="text" name="tmdnewsletter_popup[{{ language['language_id'] }}][name]" value="{{ tmdnewsletter_popup[language['language_id']] is defined ? tmdnewsletter_popup[language['language_id']]['name'] : '' }}" placeholder="{{ entry_name }}" id="input-name{{ language['language_id'] }}" class="form-control" />
+                 
+                    </div>
+                  </div>  
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-name{{ language['language_id'] }}">{{ entry_email }} </label>
+                    <div class="col-sm-10">
+                      <input type="text" name="tmdnewsletter_popup[{{ language['language_id'] }}][email]" value="{{ tmdnewsletter_popup[language['language_id']] is defined ? tmdnewsletter_popup[language['language_id']]['email'] : '' }}" placeholder="{{ entry_email }}" id="input-name{{ language['language_id'] }}" class="form-control" />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-name{{ language['language_id'] }}">{{ entry_button }} </label>
+                    <div class="col-sm-10">
+                      <input type="text" name="tmdnewsletter_popup[{{ language['language_id'] }}][button]" value="{{ tmdnewsletter_popup[language['language_id']] is defined ? tmdnewsletter_popup[language['language_id']]['button'] : '' }}" placeholder="{{ entry_button }}" id="input-name{{ language['language_id'] }}" class="form-control" />
+                 
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-name{{ language['language_id'] }}">{{ entry_buttondont }} </label>
+                    <div class="col-sm-10">
+                      <input type="text" name="tmdnewsletter_popup[{{ language['language_id'] }}][button_dontshow]" value="{{ tmdnewsletter_popup[language['language_id']] is defined ? tmdnewsletter_popup[language['language_id']]['button_dontshow'] : '' }}" placeholder="{{ entry_buttondont }}" id="input-name{{ language['language_id'] }}" class="form-control" />
+                 
+                    </div>
+                  </div>
+
+                  </div>
+                     {% endfor %} 
+                </div>
+           </div> 
+                      <div class="tab-pane" id="tab-verify">
+                          
+
+                         <div class="form-group">
+                  <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ entry_displaytitle }}">{{ entry_displaytitle }}</span></label>
+                  <div class="col-sm-10">
+                    <div class="btn-group" data-toggle="buttons">
+                      {% if (tmdnewsletter_verify_displaytitle) %} 
+                    <label class="btn btn-success btn-sm active">
+                      <input type="radio" name="tmdnewsletter_verify_displaytitle" value="1" checked="checked" />
+                      {{ text_yes }} 
+                    </label>
+                      {% else %} 
+                    <label class="btn btn-success btn-sm">
+                      <input type="radio" name="tmdnewsletter_verify_displaytitle" value="1" />
+                      {{ text_yes }} 
+                    </label>
+                      {% endif %} 
+                    
+                      {% if (not tmdnewsletter_verify_displaytitle) %} 
+                    <label class="btn btn-success btn-sm active">
+                      <input type="radio" name="tmdnewsletter_verify_displaytitle" value="0" checked="checked" />
+                      {{ text_no }} 
+                    </label>
+                      {% else %} 
+                    <label class="btn btn-success btn-sm">
+                      <input type="radio" name="tmdnewsletter_verify_displaytitle" value="0" />
+                      {{ text_no }} 
+                    </label>
+                      {% endif %} 
+                    </div>
+                  </div>
+                </div>
+             
+                  <div class="form-group">
+                  <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ entry_displaydesc }}">{{ entry_displaydesc }}</span></label>
+                  <div class="col-sm-10">
+                    <div class="btn-group" data-toggle="buttons">
+                      {% if (tmdnewsletter_verify_displaydiscription) %}
+                    <label class="btn btn-success btn-sm active">
+                      <input type="radio" name="tmdnewsletter_verify_displaydiscription" value="1" checked="checked" />
+                      {{ text_yes }} 
+                    </label>
+                      {% else %} 
+                    <label class="btn btn-success btn-sm">
+                      <input type="radio" name="tmdnewsletter_verify_displaydiscription" value="1" />
+                      {{ text_yes }} 
+                    </label>
+                      {% endif %} 
+                   
+                      {% if (not tmdnewsletter_verify_displaydiscription) %}
+                    <label class="btn btn-success btn-sm active">
+                      <input type="radio" name="tmdnewsletter_verify_displaydiscription" value="0" checked="checked" />
+                      {{ text_no }} 
+                    </label>
+                      {% else %} 
+                    <label class="btn btn-success btn-sm">
+                      <input type="radio" name="tmdnewsletter_verify_displaydiscription" value="0" />
+                      {{ text_no }} 
+                    </label>
+                      {% endif %} 
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ entry_displaylogo }}">{{ entry_displaylogo }}</span></label>
+                  <div class="col-sm-10">
+                    <div class="btn-group" data-toggle="buttons">
+                      {% if (tmdnewsletter_verify_displaylogo) %} 
+                    <label class="btn btn-success btn-sm active">
+                      <input type="radio" name="tmdnewsletter_verify_displaylogo" value="1" checked="checked" />
+                      {{ text_yes }} 
+                    </label>
+                      {% else %} 
+                    <label class="btn btn-success btn-sm">
+                      <input type="radio" name="tmdnewsletter_verify_displaylogo" value="1" />
+                      {{ text_yes }}
+                    </label>
+                      {% endif %} 
+                     {% if (not tmdnewsletter_verify_displaylogo) %} 
+                    <label class="btn btn-success btn-sm active">
+                      <input type="radio" name="tmdnewsletter_verify_displaylogo" value="0" checked="checked" />
+                      {{ text_no }} 
+                    </label>
+                      {% else %} 
+                    <label class="btn btn-success btn-sm">
+                      <input type="radio" name="tmdnewsletter_verify_displaylogo" value="0" />
+                      {{ text_no }}
+                    </label>
+                      {% endif %} 
+                    </div>
+                  </div>
+                </div>
+
+                 <div class="form-group">
+                  <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ entry_show_dec_btn }}">{{ entry_show_dec_btn }}</span></label>
+                  <div class="col-sm-10">
+                    <div class="btn-group" data-toggle="buttons">
+                      {% if (tmdnewsletter_verify_displaydecline) %} 
+                    <label class="btn btn-success btn-sm active">
+                      <input type="radio" name="tmdnewsletter_verify_displaydecline" value="1" checked="checked" />
+                      {{ text_yes }} 
+                    </label>
+                      {% else %} 
+                    <label class="btn btn-success btn-sm ">
+                      <input type="radio" name="tmdnewsletter_verify_displaydecline" value="1" />
+                      {{ text_yes }} 
+                    </label>
+                      {% endif %} 
+                    
+                     {% if (not tmdnewsletter_verify_displaydecline) %}
+                    <label class="btn btn-success btn-sm active">
+                      <input type="radio" name="tmdnewsletter_verify_displaydecline" value="0" checked="checked" />
+                      {{ text_no }} 
+                    </label>
+                      {% else %} 
+                    <label class="btn btn-success btn-sm">
+                      <input type="radio" name="tmdnewsletter_verify_displaydecline" value="0" />
+                      {{ text_no }} 
+                    </label>
+                      {% endif %} 
+                    </div>
+                  </div>
+                </div>
+                  <ul class="nav nav-tabs" id="language-verify">
+                {% for language in languages %} 
+                <li><a href="#language-verify{{ language['language_id'] }}" data-toggle="tab"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /> {{ language['name'] }}</a></li>
+                {% endfor %} 
+              </ul>
+              <div class="tab-content">
+                   {% for language in languages %} 
+                     <div class="tab-pane" id="language-verify{{ language['language_id'] }}">
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-name{{ language['language_id'] }}">{{ entry_title }}</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="tmdnewsletter_verify[{{ language['language_id'] }}][title]" value="{{ tmdnewsletter_verify[language['language_id']] is defined ? tmdnewsletter_verify[language['language_id']]['title'] : '' }}" placeholder="Title" id="input-name{{ language['language_id'] }}" class="form-control" />
+                      
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-description{{ language['language_id'] }}">{{ entry_desc }}</label>
+                    <div class="col-sm-10">
+                      <textarea name="tmdnewsletter_verify[{{ language['language_id'] }}][description]" placeholder="{{ entry_message }}" id="input-description{{ language['language_id'] }}" data-toggle="summernote" data-lang="{{ summernote }}" class="form-control">{{ tmdnewsletter_verify[language['language_id']] is defined ? tmdnewsletter_verify[language['language_id']]['description'] : '' }}</textarea>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-verifysuccessmessage{{ language['language_id'] }}">{{ entry_verify_succmsg }}</label>
+                    <div class="col-sm-10">
+                      <textarea name="tmdnewsletter_verify[{{ language['language_id'] }}][verifysuccessmessage]" placeholder="{{ entry_message }}" id="input-verifysuccessmessage{{ language['language_id'] }}" data-toggle="summernote" data-lang="{{ summernote }}" class="form-control">{{ tmdnewsletter_verify[language['language_id']] is defined ? tmdnewsletter_verify[language['language_id']]['verifysuccessmessage'] : '' }}</textarea>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-declinesuccessmessage{{ language['language_id'] }}">{{ entry_decline_succmsg }}</label>
+                    <div class="col-sm-10">
+                      <textarea name="tmdnewsletter_verify[{{ language['language_id'] }}][declinesuccessmessage]" placeholder="" id="input-declinesuccessmessage{{ language['language_id'] }}" data-toggle="summernote" data-lang="{{ summernote }}" class="form-control">{{ tmdnewsletter_verify[language['language_id']] is defined ? tmdnewsletter_verify[language['language_id']]['declinesuccessmessage'] : '' }}</textarea>
+                    </div>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-invalidmessage{{ language['language_id'] }}">{{ entry_invalid_msg }} </label>
+                    <div class="col-sm-10">
+                      <input type="text" name="tmdnewsletter_verify[{{ language['language_id'] }}][invalidmessage]" value="{{ tmdnewsletter_verify[language['language_id']] is defined ? tmdnewsletter_verify[language['language_id']]['invalidmessage'] : '' }}" placeholder="{{ entry_invalid_msg }}" id="input-invalidmessage{{ language['language_id'] }}" class="form-control" />
+                 
+                    </div>
+                  </div>  
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-confirmbutton{{ language['language_id'] }}">{{ entry_confirm_btn }} </label>
+                    <div class="col-sm-10">
+                      <input type="text" name="tmdnewsletter_verify[{{ language['language_id'] }}][confirmbutton]" value="{{ tmdnewsletter_verify[language['language_id']] is defined ? tmdnewsletter_verify[language['language_id']]['confirmbutton'] : '' }}" placeholder="{{ entry_confirm_btn }}" id="input-confirmbutton{{ language['language_id'] }}" class="form-control" />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-declinebutton{{ language['language_id'] }}">{{ entry_decline_btn }} </label>
+                    <div class="col-sm-10">
+                      <input type="text" name="tmdnewsletter_verify[{{ language['language_id'] }}][declinebutton]" value="{{ tmdnewsletter_verify[language['language_id']] is defined ? tmdnewsletter_verify[language['language_id']]['declinebutton'] : '' }}" placeholder="{{ entry_decline_btn }} " id="input-declinebutton{{ language['language_id'] }}" class="form-control" />
+                    </div>
+                  </div>
+                  
+                  
+
+                  </div>
+                     {% endfor %} 
+                </div>
+           </div>    
+
+          <div class="tab-pane" id="tab-unsbscribe">
+
+           <table id="filter" class="table table-striped table-bordered table-hover">
+            <thead>
+              <tr>
+                <td class="text-left">{{ entry_title }}</td>
+                <td></td>
+              </tr>
+            </thead>
+            <tbody>
+              {% set unsbscribe_row = 0 %} 
+             {% for tmdnewsletter_unsbscribe_reason in tmdnewsletter_unsbscribe_reasons %} 
+              <tr id="unsbscribe-row{{ unsbscribe_row }}">
+                <td class="text-left" style="width: 70%;">
+                  {% for language in languages %} 
+                  <div class="input-group"><span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span>
+                    <input type="text" name="tmdnewsletter_unsbscribe_reason[{{ unsbscribe_row }}][description][{{ language['language_id'] }}][title]" value="{{ tmdnewsletter_unsbscribe_reason['description'][language['language_id']] is defined ? tmdnewsletter_unsbscribe_reason['description'][language['language_id']]['title'] : '' }}" placeholder="{{ entry_title }}" class="form-control" />
+                  </div>
+                  {% endfor %} 
+                </td>
+                   
+              
+                <td class="text-left"><button type="button" onclick="$('#unsbscribe-row{{ unsbscribe_row }}').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>
+              </tr>
+              {% set unsbscribe_row = unsbscribe_row + 1 %} 
+               {% endfor %} 
+               </tbody>
+            <tfoot>
+              <tr>
+                <td></td>
+                <td class="text-left"><a onclick="unsubscribeRow();" data-toggle="tooltip" title="Add" class="btn btn-primary"><i class="fa fa-plus-circle"></i></a></td>
+              </tr>
+            </tfoot>
+          </table>
+
+                 <div class="form-group">
+                  <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ entry_displaytitle }}">{{ entry_displaytitle }}</span></label>
+                  <div class="col-sm-10">
+                    <div class="btn-group" data-toggle="buttons">
+                      {% if (tmdnewsletter_unsbscribe_displaytitle) %} 
+                    <label class="btn btn-success btn-sm active">
+                      <input type="radio" name="tmdnewsletter_unsbscribe_displaytitle" value="1" checked="checked" />
+                      {{ text_yes }} 
+                    </label>
+                      {% else %} 
+                    <label class="btn btn-success btn-sm">
+                      <input type="radio" name="tmdnewsletter_unsbscribe_displaytitle" value="1" />
+                      {{ text_yes }} 
+                    </label>
+                      {% endif %} 
+                    
+                   {% if (not tmdnewsletter_unsbscribe_displaytitle) %} 
+                    <label class="btn btn-success btn-sm active">
+                      <input type="radio" name="tmdnewsletter_unsbscribe_displaytitle" value="0" checked="checked" />
+                      {{ text_no }} 
+                    </label>
+                      {% else %} 
+                    <label class="btn btn-success btn-sm">
+                      <input type="radio" name="tmdnewsletter_unsbscribe_displaytitle" value="0" />
+                      {{ text_no }}
+                    </label>
+                      {% endif %} 
+                    </div>
+                  </div>
+                </div>
+             
+                  <div class="form-group">
+                  <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ entry_displaydesc }}">{{ entry_displaydesc }}</span></label>
+                  <div class="col-sm-10">
+                    <div class="btn-group" data-toggle="buttons">
+                      {% if (tmdnewsletter_unsbscribe_displaydiscription) %} 
+                    <label class="btn btn-success btn-sm active">
+                      <input type="radio" name="tmdnewsletter_unsbscribe_displaydiscription" value="1" checked="checked" />
+                      {{ text_yes }} 
+                    </label>
+                      {% else %} 
+                    <label class="btn btn-success btn-sm">
+                      <input type="radio" name="tmdnewsletter_unsbscribe_displaydiscription" value="1" />
+                      {{ text_yes }} 
+                    </label>
+                      {% endif %} 
+                    
+                      {% if (not tmdnewsletter_unsbscribe_displaydiscription) %} 
+                    <label class="btn btn-success btn-sm active">
+                      <input type="radio" name="tmdnewsletter_unsbscribe_displaydiscription" value="0" checked="checked" />
+                      {{ text_no }} 
+                    </label>
+                      {% else %} 
+                    <label class="btn btn-success btn-sm">
+                      <input type="radio" name="tmdnewsletter_unsbscribe_displaydiscription" value="0" />
+                      {{ text_no }} 
+                    </label>
+                      {% endif %} 
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ entry_displaylogo }}">{{ entry_displaylogo }}</span></label>
+                  <div class="col-sm-10">
+                   <div class="btn-group" data-toggle="buttons">
+                      {% if (tmdnewsletter_unsbscribe_displaylogo) %} 
+                    <label class="btn btn-success btn-sm active">
+                      <input type="radio" name="tmdnewsletter_unsbscribe_displaylogo" value="1" checked="checked" />
+                      {{ text_yes }} 
+                    </label>
+                      {% else %} 
+                    <label class="btn btn-success btn-sm">
+                      <input type="radio" name="tmdnewsletter_unsbscribe_displaylogo" value="1" />
+                      {{ text_yes }}
+                    </label>
+                      {% endif %} 
+                   
+                      {% if (not tmdnewsletter_unsbscribe_displaylogo) %} 
+                    <label class="btn btn-success btn-sm active">
+                      <input type="radio" name="tmdnewsletter_unsbscribe_displaylogo" value="0" checked="checked" />
+                      {{ text_no }} 
+                    </label>
+                      {% else %} 
+                    <label class="btn btn-success btn-sm">
+                      <input type="radio" name="tmdnewsletter_unsbscribe_displaylogo" value="0" />
+                      {{ text_no }}
+                    </label>
+                      {% endif %} 
+                    </div>
+                  </div>
+                </div>
+
+                  <ul class="nav nav-tabs" id="language-unsbscribe">
+                {% for language in languages %} 
+                <li><a href="#language-unsbscribe{{ language['language_id'] }}" data-toggle="tab"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /> {{ language['name'] }}</a></li>
+                {% endfor %} 
+              </ul>
+              <div class="tab-content">
+                   {% for language in languages %} 
+                     <div class="tab-pane" id="language-unsbscribe{{ language['language_id'] }}">
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-name{{ language['language_id'] }}">title</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="tmdnewsletter_unsbscribe[{{ language['language_id'] }}][title]" value="{{ tmdnewsletter_unsbscribe[language['language_id']] is defined ? tmdnewsletter_unsbscribe[language['language_id']]['title'] : '' }}" placeholder="Title" id="input-name{{ language['language_id'] }}" class="form-control" />
+                    
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-description{{ language['language_id'] }}">Description</label>
+                    <div class="col-sm-10">
+                      <textarea name="tmdnewsletter_unsbscribe[{{ language['language_id'] }}][description]" placeholder="{{ entry_message }}" id="input-description{{ language['language_id'] }}" data-toggle="summernote" data-lang="{{ summernote }}" class="form-control">{{ tmdnewsletter_unsbscribe[language['language_id']] is defined ? tmdnewsletter_unsbscribe[language['language_id']]['description'] : '' }}</textarea>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-unsbscribe_successmessage{{ language['language_id'] }}">Unsubscribe Success Message</label>
+                    <div class="col-sm-10">
+                      <textarea name="tmdnewsletter_unsbscribe[{{ language['language_id'] }}][unsbscribe_successmessage]" placeholder="{{ entry_message }}" id="input-unsbscribe_successmessage{{ language['language_id'] }}" data-toggle="summernote" data-lang="{{ summernote }}" class="form-control">{{ tmdnewsletter_unsbscribe[language['language_id']] is defined ? tmdnewsletter_unsbscribe[language['language_id']]['unsbscribe_successmessage'] : '' }}</textarea>
+                    </div>
+                  </div>
+
+                  
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-invalidmessage{{ language['language_id'] }}">{{ entry_invalid_msg }} </label>
+                    <div class="col-sm-10">
+                      <input type="text" name="tmdnewsletter_unsbscribe[{{ language['language_id'] }}][invalidmessage]" value="{{ tmdnewsletter_unsbscribe[language['language_id']] is defined ? tmdnewsletter_unsbscribe[language['language_id']]['invalidmessage'] : '' }}" placeholder="{{ entry_invalid_msg }}" id="input-invalidmessage{{ language['language_id'] }}" class="form-control" />
+                 
+                    </div>
+                  </div>  
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-confirmbutton{{ language['language_id'] }}">{{ entry_confirm_btn }} </label>
+                    <div class="col-sm-10">
+                      <input type="text" name="tmdnewsletter_unsbscribe[{{ language['language_id'] }}][confirmbutton]" value="{{ tmdnewsletter_unsbscribe[language['language_id']] is defined ? tmdnewsletter_unsbscribe[language['language_id']]['confirmbutton'] : '' }}" placeholder="{{ entry_confirm_btn }}" id="input-confirmbutton{{ language['language_id'] }}" class="form-control" />
+                    </div>
+                  </div>
+                </div>
+                     {% endfor %} 
+                </div>
+           </div>  
+
+                 <div class="tab-pane" id="tab-custom">
+                    <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-tmdnewsletter_customcss">{{ entry_customcss }}</label>
+                    <div class="col-sm-10">
+                      <textarea name="tmdnewsletter_customcss" placeholder="{{ entry_customcss }}" id="input-tmdnewsletter_customcss" class="form-control" rows="9">{{ tmdnewsletter_customcss }}</textarea>
+                    </div>
+                  </div>
+               </div>
+           </form>
+
+              
+    </div>
+  </div>
+</div>
+
+<script src="view/javascript/colorbox/jquery.minicolors.js"></script>
+<link rel="stylesheet" href="view/stylesheet/jquery.minicolors.css">
+<script type="text/javascript" src="view/javascript/summernote/summernote.js"></script>
+  <link href="view/javascript/summernote/summernote.css" rel="stylesheet" />
+  <script type="text/javascript" src="view/javascript/summernote/summernote-image-attributes.js"></script> 
+  <script type="text/javascript" src="view/javascript/summernote/opencart.js"></script> 
+  
+
+<script type="text/javascript"><!--
+$('#language a:first').tab('show');
+$('#languages a:first').tab('show');
+$('#language-layout a:first').tab('show');
+$('#language-footer a:first').tab('show');
+$('#language-popup a:first').tab('show');
+$('#language-verify a:first').tab('show');
+$('#language-unsbscribe a:first').tab('show');
+
+$(document).ready( function() {
+  $('.color').each( function() {
+        $(this).minicolors({
+      control: $(this).attr('data-control') || 'hue',
+          defaultValue: $(this).attr('data-defaultValue') || '',
+          inline: $(this).attr('data-inline') === 'true',
+          letterCase: $(this).attr('data-letterCase') || 'lowercase',
+          opacity: $(this).attr('data-opacity'),
+          position: $(this).attr('data-position') || 'bottom left',
+          change: function(hex, opacity) {
+            if( !hex ) return;
+            if( opacity ) hex += ', ' + opacity;
+            try {
+              console.log(hex);
+            } catch(e) {}
+      },
+      theme: 'bootstrap'
+    });
+  });
+});
+
+  $('input[name=\'tmdnewsletter_verification\']').on('change', function() {
+    var value = $( 'input[name=tmdnewsletter_verification]:checked' ).val();
+    if(value==1){
+      $('#verifcation-chng').show(); 
+    }else{
+      $('#verifcation-chng').hide();
+    
+    }
+});
+
+  $('input[name=\'tmdnewsletter_confirmation\']').on('change', function() {
+    var value = $( 'input[name=tmdnewsletter_confirmation]:checked' ).val();
+    if(value==1){
+      $('#confirmation-chng').show();
+    }else{
+      $('#confirmation-chng').hide();
+    
+    }
+});
+//--></script>
+
+<script type="text/javascript"><!--
+var unsbscribe_row = {{ unsbscribe_row }};
+
+function unsubscribeRow() {
+  html  = '<tr id="unsbscribe-row' + unsbscribe_row + '">'; 
+    html += '  <td class="text-left" style="width: 70%;">';
+  {% for language in languages %} 
+  html += '  <div class="input-group">';
+  html += '    <span class="input-group-addon"><img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /></span><input type="text" name="tmdnewsletter_unsbscribe_reason[' + unsbscribe_row + '][description][{{ language['language_id'] }}][title]" value="" placeholder="{{ entry_name }}" class="form-control" />';
+    html += '  </div>';
+  {% endfor %} 
+  html += '  </td>';
+
+
+
+  html += '  <td class="text-left"><button type="button" onclick="$(\'#unsbscribe-row' + unsbscribe_row + '\').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
+  
+  html += '</tr>';  
+  
+  $('#filter tbody').append(html);
+  
+  unsbscribe_row++;
+}
+//--></script>
+
+
+  <script type="text/javascript"><!--
+$('#button-filter').on('click', function() {
+  var url = 'index.php?route=extension/module/tmdnewsletter&user_token={{ user_token }}';
+
+  var filter_email = $('input[name=\'filter_email\']').val();
+
+  if (filter_email) {
+    url += '&filter_email=' + encodeURIComponent(filter_email);
+  }
+
+  var filter_date = $('input[name=\'filter_date\']').val();
+
+  if (filter_date) {
+    url += '&filter_date=' + encodeURIComponent(filter_date);
+  }
+
+
+  location = url;
+});
+//--></script>
+
+  <script type="text/javascript"><!--
+$('.date').datetimepicker({
+  pickTime: false
+});
+//--></script>
+<style>
+    .btn-success {
+        color: #fff;
+        background-color: #afafaf;
+        border-color: #afafaf;
+    }
+    .btn-success:hover,.btn-success:active:hover, .btn-success.active:hover, .open > .btn-success.dropdown-toggle:hover, .btn-success:active:focus, .btn-success.active:focus, .open > .btn-success.dropdown-toggle:focus, .btn-success:active.focus, .btn-success.active.focus, .open > .btn-success.dropdown-toggle.focus, .btn-success:active, .btn-success.active, .open > .btn-success.dropdown-toggle{
+    	background-color:#33ccff;
+    	border-color:#33ccff;
+    }
+</style>
+{{ footer }}

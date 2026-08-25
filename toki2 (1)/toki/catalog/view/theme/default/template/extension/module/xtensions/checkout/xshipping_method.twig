@@ -1,0 +1,25 @@
+{% if shipping_methods  %}            
+<table class="table">
+{% for shipping_method in shipping_methods %}          
+{% if not shipping_method.error  %} 
+{% for quote in shipping_method.quote %} 
+<tbody><tr>
+<td><label for="{{ quote.code }}">
+{% if quote.code == shipping_code or not shipping_code  %} 
+{% set shipping_code = quote.code %} 
+<input type="radio" class="input-radio" name="shipping_method" value="{{ quote.code }}" id="{{ quote.code }}" checked="checked" />
+{% else %} 
+<input type="radio" class="input-radio" name="shipping_method" value="{{ quote.code }}" id="{{ quote.code }}" />
+{% endif %} 
+{{ quote.title }}</label></td>
+<td class="text-right"><label class="text-strong" for="{{ quote.code }}">{{ quote.text }}</label></td>
+</tr></tbody>
+{% endfor %} 
+{% else %} 
+<tbody><tr>
+<td colspan="2"><div class="xerror">{{ shipping_method.error }}</div></td>
+</tr></tbody>
+{% endif %} 
+{% endfor %} 
+</table>
+{% endif %}

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<!--[if IE 8 ]><html dir="{{ direction }}" lang="{{ lang }}" class="ie8"><![endif]-->
+<!--[if IE 9 ]><html dir="{{ direction }}" lang="{{ lang }}" class="ie9"><![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html dir="{{ direction }}" lang="{{ lang }}">
+<!--<![endif]-->
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>{{ title }}</title>
+    <base href="{{ base }}"/>
+    {% if description %}
+        <meta name="description" content="{{ description }}"/>
+    {% endif %}
+    {% if keywords %}
+        <meta name="keywords" content="{{ keywords }}"/>
+    {% endif %}
+    <script src="catalog/view/javascript/jquery/jquery-2.1.1.min.js" type="text/javascript"></script>
+    <script src="catalog/view/javascript/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+
+    <script src="catalog/view/javascript/jquery-ui.js" type="text/javascript"></script>
+
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.15.0/css/all.css" crossorigin="anonymous"/>
+
+    <link href="catalog/view/javascript/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <link href="catalog/view/theme/default/stylesheet/animate.css" rel="stylesheet">
+
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:400,400i,300,700" rel="stylesheet" type="text/css"/>
+    {% if direction == 'rtl' %}
+
+        <link href="catalog/view/javascript/bootstrap/css/bootstrap-a.css" rel="stylesheet" media="screen"/>
+        <link href="catalog/view/theme/default/stylesheet/jquery.pushmenu-ar.css" rel="stylesheet">
+        <script src="catalog/view/javascript/jquery.pushmenu-ar.min.js" type="text/javascript"></script>
+        <link href="catalog/view/theme/default/stylesheet/stylesheet-a.css" rel="stylesheet">
+    {% else %}
+    <link href="catalog/view/javascript/bootstrap/css/bootstrap.css" rel="stylesheet" media="screen"/>
+    <link href="catalog/view/theme/default/stylesheet/jquery.pushmenu.css" rel="stylesheet">
+        <script src="catalog/view/javascript/jquery.pushmenu.min.js" type="text/javascript"></script>
+    <link href="catalog/view/theme/default/stylesheet/stylesheet.css" rel="stylesheet">
+    {% endif %}
+
+    <script src="catalog/view/javascript/sweetalert2.min.js" type="text/javascript"></script>
+    <link href="catalog/view/theme/default/stylesheet/sweetalert2.min.css" rel="stylesheet">
+
+    {% for style in styles %}
+        <link href="{{ style.href }}" type="text/css" rel="{{ style.rel }}" media="{{ style.media }}"/>
+    {% endfor %}
+    {% for script in scripts %}
+        <script src="{{ script }}" type="text/javascript"></script>
+    {% endfor %}
+    <script src="catalog/view/javascript/jquery.matchHeight-min.js" type="text/javascript"></script>
+    <script src="catalog/view/javascript/common.js" type="text/javascript"></script>
+    {% for link in links %}
+        <link href="{{ link.href }}" rel="{{ link.rel }}"/>
+    {% endfor %}
+    {% for analytic in analytics %}
+        {{ analytic }}
+    {% endfor %}
+
+    {{ config_javascript }}
+
+				{% if mfp_robots_value %} <meta name="robots" content="{{ mfp_robots_value }}" />{% endif %}
+				</head>
+			
+<body class="{{ class }}">
+<div class="site">
+<div class="site-outer">
+
+
+            <nav class="mp-menu mp-cover" id="mp-menu">
+            <div class="mp-level" data-level="1">
+                <ul>
+
+
+                    <div class="service-box ">
+                        <a title="CLOSE X" href="javascript:;" class="mp-back mp-back1"><i class="da-times"></i></a>
+
+                        <div class="vendor">
+                            {% if (welcome_message is defined) %}  {{ welcome_message }}  {% else %}
+                                <span class="text-welcome"> {{ text_hala }}</span>
+                            {% endif %}
+                        </div>
+                        {% if (not logged) %}
+                            <a class="btn btn-primary btn-block" href="index.php?route=account/register">
+                                {{ text_log_reg }}
+
+                            </a>
+                        {% endif %}
+                    </div>
+
+
+                    <li>
+                        <a href="{{ base }}" >
+                            <i class="fa fa-home"></i> <span>{{ text_home }}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a title="Menu item 5" href="javascript:;"><i class="da-drawer-circle"></i> {{ text_category }}
+                            <i class="fa fa-angle-left"></i></a>
+                        <div class="mp-level" data-level="2"><a href="javascript:;" class="mp-back">{{ text_back }}</a>
+                            <strong>{{ text_category }}</strong>
+
+
+                            <ul class="sub-menu third-level">
+                                {% for category_1 in categories2 %}
+                                    {% if (category_1['children']) %}
+                                        <li><a href="javascript:;">{{ category_1['name'] }} <i class="fa fa-angle-left"></i></a>
+                                            <div class="mp-level" data-level="3"><a href="javascript:;" class="mp-back">{{ text_back }}</a>
+                                                <strong>{{ category_1['name'] }}</strong>
+
+                                                <ul class="sub-menu third-level">
+                                                    {% for category_2 in category_1['children'] %}
+                                                        {% if (category_2['children']) %}
+                                                            <li><a title="{{ category_2['href'] }}" href="javascript:;">{{ category_2['name'] }} <i class="fa fa-angle-left"></i></a>
+                                                                <div class="mp-level" data-level="3"><a href="javascript:;"
+                                                                            class="mp-back">{{ text_back }}</a>
+                                                                    <strong>{{ category_2['name'] }}</strong>
+
+                                                                    <ul class="sub-menu third-level">
+                                                                        {% for category_3 in category_2['children'] %}
+                                                                            <li>
+                                                                                <a href="{{ category_3['href'] }}">{{ category_3['name'] }}</a>
+                                                                            </li>
+                                                                        {% endfor %}
+                                                                    </ul>
+
+                                                                </div>
+                                                            </li>
+                                                        {% else %}
+                                                            <li>
+                                                                <a href="{{ category_2['href'] }}">{{ category_2['name'] }}</a>
+                                                            </li>
+                                                        {% endif %}
+                                                    {% endfor %}
+
+                                                </ul>
+
+                                            </div>
+                                        </li>
+                                    {% else %}
+                                        <li><a href="{{ category_1['href'] }}">{{ category_1['name'] }}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+
+
+                        </div>
+                    </li>
+
+                    <li>
+                        <a title="{{ text_account }}" href="javascript:;"><i
+                                    class="da-flag-circle"></i> {{ text_account }}
+                            <i class="fa fa-angle-left"></i></a>
+                        <div class="mp-level" data-level="2"><a href="javascript:;" class="mp-back">{{ text_back }}</a>
+                            <strong>{{ text_account }}</strong>
+                            <ul class="sub-menu third-level">
+                                {% if (logged) %}
+                                    <li><a href="{{ account }}"><i class="fa fa-circle-o"></i>{{ text_account }}</a>
+                                    </li>
+                                    <li><a href="{{ order }}"><i class="fa fa-circle-o"></i>{{ text_order }}</a></li>
+                                    <li><a href="{{ transaction }}"><i class="fa fa-circle-o"></i>{{ text_transaction }}
+                                        </a>
+                                    </li>
+                                    <li><a href="{{ download }}"><i class="fa fa-circle-o"></i>{{ text_download }}</a>
+                                    </li>
+                                    <li><a href="{{ logout }}"><i class="fa fa-circle-o"></i>{{ text_logout }}</a></li>
+                                {% else %}
+                                    <li><a href="{{ register }}"><i class="fa fa-circle-o"></i>{{ text_register }}</a>
+                                    </li>
+                                    <li><a href="{{ login }}"><i class="fa fa-circle-o"></i>{{ text_login }}</a></li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </li>
+                    <!-- <li><a href="{{ manufacturer }}"><i class="da-label-circle"></i> {{ text_manufacturer }}</a></li> -->
+                    <li>{{ currency }}</li>
+
+                    
+                    <!-- <li><a href="{{ wishlist }}"><i class="da-heart-circle"></i> {{ text_wishlist }}</a></li> -->
+
+                    <li><a href="{{ contact }}"><i class="da-question-circle"></i> {{ text_contact }}</a></li>
+
+                </ul>
+            </div>
+        </nav>
+
+
+
+ <header>
+            <section id="search-header">
+                <button class="close"><i class="fa fa-times"></i></button>
+                {{ search }}
+            </section>
+
+            <div class="top-head">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <div class="tel">
+                                <a href="tel:{{ telephone }}">
+                                <img src="catalog/view/theme/default/stylesheet/phone.png">
+                                <span class="hidden-xs">{{ telephone }}</span>
+                                </a>
+                            </div>
+                            <div class="tel2">
+                                <a class="open-search hidden-lg hidden-md" href="#">
+                                        <span id="search-total"></span>
+                                    </a>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                            <div class="top-lang">
+                                <ul class="list-unstyled head-content-list">
+                                    <li class="hidden-xs">{{ currency }}</li>
+                                    <li>{{ language }}</li>
+                                    <li class="dropdown head-list">
+                                        <a href="{{ account }}" title="{{ text_account }}">
+                                            <span id="account-total"></span>
+                                            {% if logged %}
+                                            <span class="hidden-xs hidden-sm hidden-md">{{ text_account }}</span>
+                                            {% else %}
+                                            <span class="hidden-xs hidden-sm hidden-md">{{ text_account2 }}</span>
+                                            {% endif %}
+                                        </a>
+                                    <ul class="dropdown-menu dropdown-menu-right">
+                                        {% if logged %}
+                                            <li><a href="{{ account }}">{{ text_account }}</a></li>
+                                            <li><a href="{{ order }}">{{ text_order }}</a></li>
+                                            <li><a href="{{ transaction }}">{{ text_transaction }}</a></li>
+                                            <li><a href="{{ download }}">{{ text_download }}</a></li>
+                                            <li><a href="{{ logout }}">{{ text_logout }}</a></li>
+                                        {% else %}
+                                            <li class="regis"><a href="{{ register }}">{{ text_register }}</a></li>
+                                            <li class="regis"><a href="{{ login }}">{{ text_login }}</a></li>
+                                        {% endif %}
+                                    </ul>
+                                </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="main-header" >
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-4 col-sm-4  col-xs-6">
+                            <div class="re-content">
+                                <div class="re">
+                                    <div class="re re-bar">
+                                        <div class="visible-sm visible-xs"><a href="javascript:;" id="trigger" class="burger" title="Open"></a></div>
+                                    </div>
+                                    <div id="logo">{% if logo %}<a href="{{ home }}"><img src="{{ logo }}" title="{{ name }}"
+                                                                                          alt="{{ name }}" class="img-responsive"/>
+                                            </a>{% else %}
+                                            <h1><a href="{{ home }}">{{ name }}</a></h1>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-4 col-sm-4  col-xs-4 hidden-sm hidden-xs">
+                            <div class="top-search hidden-sm hidden-xs">
+
+                         <div class="adv-search clearfix">
+              <div class="col-sm-3">
+                        <select name="category_id" class="form-control selectpicker">
+                          <option value="0">{{ text_category }}</option>
+                          {% for category_1 in categories_1 %} 
+                          {% if (category_1['category_id'] == category_id) %} 
+                          <option value="{{ category_1['category_id'] }}" selected="selected">{{ category_1['name'] }}</option>
+                          {% else %} 
+                          <option value="{{ category_1['category_id'] }}">{{ category_1['name'] }}</option>
+                          {% endif %} 
+                          {% for category_2 in category_1['children'] %} 
+                          {% if (category_2['category_id'] == category_id) %} 
+                          <option value="{{ category_2['category_id'] }}" selected="selected">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ category_2['name'] }}</option>
+                          {% else %} 
+                          <option value="{{ category_2['category_id'] }}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ category_2['name'] }}</option>
+                          {% endif %} 
+                          {% for category_3 in category_2['children'] %} 
+                          {% if (category_3['category_id'] == category_id) %} 
+                          <option value="{{ category_3['category_id'] }}" selected="selected">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ category_3['name'] }}</option>
+                          {% else %} 
+                          <option value="{{ category_3['category_id'] }}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ category_3['name'] }}</option>
+                          {% endif %} 
+                          {% endfor %} 
+                          {% endfor %} 
+                          {% endfor %} 
+                        </select>
+                      </div>
+                      <div class="col-sm-8 col-xs-10">
+                        <input type="text" name="search" value="" placeholder="{{ text_search }}" id="input-search" class="form-control" />
+                      </div>
+
+                      
+
+                      <div class="col-sm-1 col-xs-1"><button type="button" id="button-search" class="btn" ><img src="catalog/view/theme/default/stylesheet/search.png"></button>
+                      </div>
+
+                    </div>
+
+                            </div>
+                            
+                        </div>
+                        
+                        <div class="col-lg-3 col-md-4 col-sm-4  col-xs-6 ">
+                            <ul class="list-unstyled head-content-list">
+
+                                
+                                <li class="head-list">
+                                    <div class="dark-mode">
+                                        <span class="trans"><i class="fa fa-sun"></i></span>
+                                        <span class="trans"><i class="fa fa-moon"></i></span>
+                                    </div>
+                                </li>
+
+                                <li class="head-list"><a href="{{ wishlist }}" id="wishlist-total" >
+                                        <span>{{ text_wishlist }}</span>
+
+                                    </a>
+
+                                </li>
+
+                                <li class="head-list">
+                                    {{ cart }}
+                                </li>
+                                
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bootom-head hidden-sm hidden-xs">
+                <div class="container">
+                    {{ menu }}
+                </div>
+            </div>
+
+<div class="loader-over-lay">
+        <div class="loader">
+                {% if logo %}
+               <img src="{{ logo }}"  class="img-responsive"/>           
+                {% endif %}
+        </div>
+    </div>
+        </header>
+
+
+
+
+
+

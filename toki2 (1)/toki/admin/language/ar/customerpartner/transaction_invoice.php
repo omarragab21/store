@@ -1,0 +1,136 @@
+<?php
+// Heading
+$_['heading_title']              = 'الطلبات';
+
+// Text
+$_['text_list']                  = 'قائمه الطلبات';
+$_['text_add']                   = 'اضافة طلب';
+$_['text_edit']                  = 'تعديل طلب';
+$_['text_transaction_details']   = 'تفاصيل الصفقه';
+$_['text_customer_detail']       = 'تفاصيل العميل';
+$_['text_option']                = 'خيارات';
+$_['text_store']                 = 'متجر';
+$_['text_date_added']            = 'تم إضافة التاريخ';
+$_['text_payment_method']        = 'طريقة الدفع او السداد';
+$_['text_shipping_method']       = 'طريقة الشحن';
+$_['text_customer']              = 'عميل';
+$_['text_customer_group']        = 'مجموعة العملاء';
+$_['text_email']                 = 'البريد الإلكتروني';
+$_['text_telephone']             = 'رقم الجوال';
+$_['text_invoice']               = 'فاتورة الصفقة';
+$_['text_reward']                = 'نقاط مكافأة';
+$_['text_affiliate']             = 'شركة تابعة';
+$_['text_order']                 = 'طلب (#%s)';
+$_['text_payment_address']       = 'عنوان الدفع';
+$_['text_shipping_address']      = 'عنوان الشحن';
+$_['text_comment']               = 'تعليق الزبون';
+$_['text_history']               = 'تاريخ الطلب';
+$_['text_history_add']           = 'أضف محفوظات الطلب';
+$_['text_account_custom_field']  = 'حقول الحساب المخصصة';
+$_['text_payment_custom_field']  = 'الحقول المخصصة لعنوان الدفع';
+$_['text_shipping_custom_field'] = 'الحقول المخصصة لعنوان الشحن';
+$_['text_browser']               = 'المستعرض';
+$_['text_ip']                    = 'عنوان IP';
+$_['text_forwarded_ip']          = 'IP المعاد توجيهه';
+$_['text_user_agent']            = 'وكيل المستخدم';
+$_['text_accept_language']       = 'قبول اللغة';
+$_['text_transaction_id']        = 'رقم المعاملة:';
+$_['text_fax']                   = 'فاكس:';
+$_['text_website']               = 'الموقع الالكتروني:';
+$_['text_invoice_no']            = 'رقم الفاتورة.:';
+$_['text_invoice_date']          = 'تاريخ الفاتورة:';
+$_['text_sku']                   = 'SKU:';
+$_['text_upc']                   = 'UPC:';
+$_['text_ean']                   = 'EAN:';
+$_['text_jan']                   = 'JAN:';
+$_['text_isbn']                  = 'ISBN:';
+$_['text_mpn']                   = 'MPN:';
+$_['text_missing']               = 'الطلبات المفقودة';
+$_['text_default']               = 'تقصير';
+$_['text_product']               = 'أضف منتج(s)';
+$_['text_voucher']               = 'أضف قسيمة(s)';
+$_['text_shipping']              = 'شحن';
+$_['text_contact']               = 'اتصال';
+$_['text_reward_added']          = 'النجاح: تمت إضافة نقاط المكافأة!';
+$_['text_reward_removed']        = 'النجاح: تم حذف نقاط المكافأة!';
+$_['text_commission_added']      = 'النجاح: تمت إضافة العمولة!';
+$_['text_commission_removed']    = 'نجاح: تمت إزالة العمولة!';
+$_['text_restock']               = 'نجاح: تمت إعادة تخزين المنتجات!';
+$_['text_upload']                = 'نجاح: تمت إعادة تخزين المنتجات!';
+$_['text_picklist']              = 'مذكرة إيفاد';
+$_['text_transaction_method']    = ' طريقة المعاملة: ';
+$_['text_transaction_amount']    = 'قيمة التحويل: ';
+
+// Column
+$_['column_order_id']            = 'رقم التعريف الخاص بالطلب';
+$_['column_customer']            = 'عميل';
+$_['column_status']              = 'حالة';
+$_['column_date_added']          = 'تم إضافة التاريخ';
+$_['column_date_modified']       = 'Date Modified';
+$_['column_total']               = 'مجموع';
+$_['column_product']             = 'المنتج';
+$_['column_model']               = 'نموذج';
+$_['column_quantity']            = 'الكمية';
+$_['column_price']               = 'سعر الوحدة';
+$_['column_comment']             = 'تعليق';
+$_['column_notify']              = 'إخطار العميل';
+$_['column_location']            = 'موقع';
+$_['column_reference']           = 'المرجعي';
+$_['column_action']              = 'عمل';
+$_['column_weight']              = 'وزن المنتج';
+$_['column_product_name']        = 'اسم المنتج';
+$_['column_seller_amount']       = 'مبلغ البائع';
+$_['column_admin_amount']        = 'مبلغ المسؤول';
+
+// Entry
+$_['entry_store']                = 'المتجر';
+$_['entry_customer']             = 'العميل';
+$_['entry_customer_group']       = 'محموعه العملاء';
+$_['entry_firstname']            = 'الاسم الاول';
+$_['entry_lastname']             = 'الاسم الاخير';
+$_['entry_email']                = 'البريد الالكتروني';
+$_['entry_telephone']            = 'رقم الجوال';
+$_['entry_fax']                  = 'فاكس';
+$_['entry_address']              = 'اختر العنوان';
+$_['entry_company']              = 'شركة';
+$_['entry_address_1']            = 'عنوان 1';
+$_['entry_address_2']            = 'عنوان 2';
+$_['entry_city']                 = 'مدينة';
+$_['entry_postcode']             = 'الرمز البريدي';
+$_['entry_country']              = 'دولة';
+$_['entry_zone']                 = 'منطقة / حالة';
+$_['entry_zone_code']            = 'منطقة / رمز الدولة';
+$_['entry_product']              = 'اختر المنتج';
+$_['entry_option']               = 'إختر خيارا(s)';
+$_['entry_quantity']             = 'كمية';
+$_['entry_to_name']              = 'المتلقي \'s اسم';
+$_['entry_to_email']             = 'المتلقي\'s البريد الالكتروني';
+$_['entry_from_name']            = 'المرسل\'s اسم';
+$_['entry_from_email']           = 'المرسل\'s البريد الالكتروني';
+$_['entry_theme']                = 'موضوع شهادة الهدية';
+$_['entry_message']              = 'الرسالة';
+$_['entry_amount']               = 'مقدار';
+$_['entry_affiliate']            = 'شركة تابعة';
+$_['entry_order_status']         = 'حالة الطلب';
+$_['entry_notify']               = 'بإخطار العملاء';
+$_['entry_override']             = 'تجاوز';
+$_['entry_comment']              = 'تعليق';
+$_['entry_currency']             = 'العملة';
+$_['entry_shipping_method']      = 'طريقة الشحن';
+$_['entry_payment_method']       = 'طريقة الدفع او السداد';
+$_['entry_coupon']               = 'الكوبون';
+$_['entry_voucher']              = 'فاتورة';
+$_['entry_reward']               = 'جائزة';
+    $_['entry_order_id']         = 'رقم التعريف الخاص بالطلب';
+$_['entry_total']                = 'المجموع';
+$_['entry_date_added']           = 'تم إضافة التاريخ';
+$_['entry_date_modified']        = 'التاريخ عدل';
+
+// Help
+$_['help_override']              = 'إذا تم حظر طلب العملاء من تغيير حالة الطلب بسبب تمديد تمكين إلغاء مكافحة الاحتيال.';
+
+// Error
+$_['error_warning']              = 'تحذير: يرجى التحقق من النموذج بعناية بحثًا عن أخطاء!';
+$_['error_permission']           = 'تحذير: ليس لديك إذن بتعديل الأوامر!';
+$_['error_action']               = 'تحذير: تعذر إكمال هذا الإجراء!';
+$_['error_filetype']			 = 'نوع الملف غير صالح!';

@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1,
+    "code": "smsa",
+    "name_ar": "سمسا إكسبريس (SMSA Express)",
+    "name_en": "SMSA Express",
+    "cost_sar": 25,
+    "delivery_time": "1-2 أيام عمل",
+    "logo": "smsa.png"
+  },
+  {
+    "id": 2,
+    "code": "aramex",
+    "name_ar": "أرامكس للشحن السريع (Aramex)",
+    "name_en": "Aramex Logistics",
+    "cost_sar": 28,
+    "delivery_time": "2-3 أيام عمل",
+    "logo": "aramex.png"
+  },
+  {
+    "id": 3,
+    "code": "toki_express",
+    "name_ar": "مرسول وتوصيل توكي السريع (Toki Express)",
+    "name_en": "Toki Express Instant Delivery",
+    "cost_sar": 15,
+    "delivery_time": "خلال 3 ساعات (داخل الرياض وجدة)",
+    "logo": "toki_express.png"
+  }
+]

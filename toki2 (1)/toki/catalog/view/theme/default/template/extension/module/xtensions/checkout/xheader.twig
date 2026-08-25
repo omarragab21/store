@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<!--[if IE 8 ]><html dir="{{ direction }}" lang="{{ lang }}" class="ie8"><![endif]-->
+<!--[if IE 9 ]><html dir="{{ direction }}" lang="{{ lang }}" class="ie9"><![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html dir="{{ direction }}" lang="{{ lang }}">
+<!--<![endif]-->
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>{{ title }}</title>
+<base href="{{ base }}" />
+{% if description  %} 
+<meta name="description" content="{{ description }}" />
+{% endif %} 
+{% if keywords  %} 
+<meta name="keywords" content= "{{ keywords }}" />
+{% endif %} 
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+{% if icon  %} 
+<link href="{{ icon }}" rel="icon" />
+{% endif %} 
+{% for link in links %} 
+<link href="{{ link.href }}" rel="{{ link.rel }}" />
+{% endfor %} 
+<link rel="stylesheet" href="catalog/view/javascript/xtensions/stylesheet/bs/css/bootstrap.min.css">
+<link rel="stylesheet" href="catalog/view/javascript/xtensions/stylesheet/bs/css/jquery-ui.min.css">
+{% if direction == 'rtl'  %} 
+<link rel="stylesheet" href="catalog/view/javascript/xtensions/stylesheet/bs/css/bootstrap-rtl.min.css">
+{% endif %} 
+<link href="catalog/view/javascript/xtensions/stylesheet/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="catalog/view/javascript/xtensions/stylesheet/bs/js/datetimepicker/bootstrap-datetimepicker.min.css" type="text/css" rel="stylesheet" media="screen" />
+{% for style in styles %} 
+<link rel="{{ style.rel }}" type="text/css" href="{{ style.href }}" media="screen" />
+{% endfor %} 
+{% if custom_css  %} 
+<style type="text/css">
+{{ custom_css }} 
+</style>
+{% endif %} 
+<script src="catalog/view/javascript/xtensions/stylesheet/bs/js/jquery-2.1.1.min.js"></script>
+<script src="catalog/view/javascript/xtensions/stylesheet/bs/js/jquery-ui.min.js"></script>
+<script src="catalog/view/javascript/xtensions/stylesheet/bs/js/bootstrap.min.js"></script>
+<script src="catalog/view/javascript/xtensions/stylesheet/bs/js/nprogress.js"></script>
+<script src="catalog/view/javascript/xtensions/stylesheet/bs/js/datetimepicker/moment.min.js" type="text/javascript"></script>
+<script src="catalog/view/javascript/xtensions/stylesheet/bs/js/datetimepicker/moment-with-locales.min.js" type="text/javascript"></script>
+<script src="catalog/view/javascript/xtensions/stylesheet/bs/js/datetimepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+{% for script in scripts %} 
+<script src="{{ script }}" type="text/javascript"></script>
+{% endfor %} 
+{% for analytic in analytics %} 
+{{ analytic }} 
+{% endfor %} 
+</head>
+<body>
+<nav class="navbar">
+{% if not hide_top_bar %}
+<nav id="top" class="info-back-top">
+<div class="container">
+<div class="row">
+{% if not hide_currency_switcher and currencies|length > 1  %} 
+<div class="pull-left">
+<form action="{{ action }}" method="post" enctype="multipart/form-data" id="currency">
+  <div class="btn-group">
+    <button class="btn btn-link dropdown-toggle" data-toggle="dropdown">
+    {% for currency in currencies %} 
+    {% if  currency.symbol_left and currency.code == currency_code  %} 
+    <strong>{{ currency.symbol_left }}</strong>
+    {% elseif currency.symbol_right and currency.code == currency_code  %} 
+    <strong>{{ currency.symbol_right }}</strong>
+    {% endif %} 
+    {% endfor %} 
+    <span class="hidden-xs hidden-sm hidden-md">{{ text_currency }}</span> <i class="fa fa-caret-down"></i></button>
+    <ul class="dropdown-menu">
+      {% for currency in currencies %} 
+      {% if    currency.symbol_left  %} 
+      <li><button class="currency-select btn btn-link btn-block" type="button" name="{{ currency.code }}">{{ currency.symbol_left }} {{ currency.title }}</button></li>
+      {% else %} 
+      <li><button class="currency-select btn btn-link btn-block" type="button" name="{{ currency.code }}">{{ currency.symbol_right }} {{ currency.title }}</button></li>
+      {% endif %} 
+      {% endfor %} 
+    </ul>
+  </div>
+  <input type="hidden" name="currency_code" value="" />
+  <input type="hidden" name="redirect" value="{{ redirect }}" />
+</form>
+</div>
+{% endif %} 
+{% if not hide_language_switcher and languages|length > 1  %} 
+<div class="pull-left">
+<form action="{{ action_lang }}" method="post" enctype="multipart/form-data" id="language">
+  <div class="btn-group">
+    <button class="btn btn-link dropdown-toggle" data-toggle="dropdown">
+    {% for language in languages %} 
+    {% if    language.code == language_code  %} 
+    <img src="catalog/language/{{ language.code }}/{{ language.code }}.png" alt="{{ language.name }}" title="{{ language.name }}">
+    {% endif %} 
+    {% endfor %} 
+    <span class="hidden-xs hidden-sm hidden-md">{{ text_language }}</span> <i class="fa fa-caret-down"></i></button>
+    <ul class="dropdown-menu">
+      {% for language in languages %} 
+      <li><a href="{{ language.code }}"><img src="catalog/language/{{ language.code }}/{{ language.code }}.png" alt="{{ language.name }}" title="{{ language.name }}" /> {{ language.name }}</a></li>
+      {% endfor %} 
+    </ul>
+  </div>
+  <input type="hidden" name="language_code" value="" />
+  <input type="hidden" name="redirect_language" value="{{ redirect }}" />
+</form>
+</div>
+{% endif %} 
+<div id="top-links" class="nav pull-right">
+      <ul class="list-inline">        
+        <li>{{ text_logged }}</li>
+      </ul>
+    </div>
+</div>
+</div>
+</nav>
+{% endif %}
+<div id="navbar2">
+<div class="container">
+<div id="headermain">
+<div class="col-headermain col-headermain-logo" data-sort="1">
+<div id="logo">
+   {% if logo  %} 
+   <a href="{{ home }}"><img src="{{ logo }}" title="{{ name }}" alt="{{ name }}" class="img-responsive xlogo" /></a>
+   {% else %} 
+   <h1><a href="{{ home }}">{{ name }}</a></h1>
+   {% endif %} 
+</div>
+</div>
+<div class="col-headermain col-headermain-steps" data-sort="2">
+<div class="row bs-wizard">                
+<div id="step1" class="col-xs-4 bs-wizard-step disabled"> 
+<div class="text-center bs-wizard-stepnum text-muted"><span id="click1">{{ text_checkout_option }}<i id="undo1" style="{{ logged?'':'display:none;' }}" class="fa {{ logged?'fa-lock':'fa-edit' }}"></i></span></div>
+<div class="progress"><div class="progress-bar"></div></div>
+<a class="bs-wizard-dot"></a>
+</div>               
+<div id="step2" class="col-xs-4 bs-wizard-step disabled">
+<div class="text-center bs-wizard-stepnum text-muted"><span id="click2">{{ text_checkout_account }}<i id="undo2" style="display:none;" class="fa fa-edit"></i></span></div>  
+<div class="progress"><div class="progress-bar"></div></div>				  
+<a class="bs-wizard-dot"></a>
+</div>                
+<div id="step3" class="col-xs-4 bs-wizard-step disabled">
+<div class="text-center bs-wizard-stepnum text-muted"><span id="click3">{{ text_checkout_confirm }}</span></div>
+<div class="progress"><div class="progress-bar"></div></div>
+<a class="bs-wizard-dot"></a>
+</div>
+</div>
+</div>
+<div class="col-headermain col-headermain-lock" data-sort="0">
+<div class="text-muted security-message"><i class="fa fa-lock"></i>&nbsp;{{ text_ssl_msg }}</div>
+</div>
+</div>
+<div class="clearfix"></div>
+</div>
+</div>
+</nav>
+<script type="text/javascript">
+/*
+$(document).ready(function(){
+	$("#headermain").append($("#headermain .col-headermain").get().sort(function(a, b) {
+    return parseInt($(a).attr("data-sort").match(/\d+/), 10)
+         - parseInt($(b).attr("data-sort").match(/\d+/), 10);
+	}));
+});
+*/
+</script>

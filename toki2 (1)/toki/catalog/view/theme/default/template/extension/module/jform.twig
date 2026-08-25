@@ -1,0 +1,217 @@
+<div class="col-sm-{{ form_width }}">
+	<!--
+	<h1>
+		<span>{{ jform_description.heading_title }}</span>
+	</h1>
+	-->
+	<div id="jfrom">
+		{% if jform_description.admin_body %}
+		<div>
+			{{ jform_description.admin_body }}
+		</div>
+		{% endif %}
+		
+		<form method="post" enctype="multipart/form-data" class="form-horizontal">
+		<input type="hidden" name="jform_id" value="{{ jform.jform_id }}" />
+		{% for field in jform_field %}
+		<div class="col-sm-{{ field.width }}" style="margin-right: 5px;">
+			<div class="form-group {{ field.required ? 'required' :'' }}">
+			<label class="control-label" for="field-{{ field.jform_field_id }}">{{ field['field_description'].title }} </label>
+			
+			{% if field.type == 'text' %}
+			<input type="text" class="form-control" name="field{{ field.jform_field_id }}" id="field-{{ field.jform_field_id }}" placeholder="{{ field.value }}" />
+			{% elseif field.type == 'email' %}
+			<input type="text" class="form-control" name="field{{ field.jform_field_id }}" id="field-{{ field.jform_field_id }}" placeholder="{{ field.value }}" />
+			{% elseif field.type == 'textarea' %}
+			<textarea id="field-{{ field.jform_field_id }}" name="field{{ field.jform_field_id }}" placeholder="{{ field.value }}" class="form-control" rows="5"></textarea>
+			{% elseif field.type == 'date' %}
+				<div class="input-group date" id="field-{{ field.jform_field_id }}">
+                <input type="text" name="field{{ field.jform_field_id }}" value="{{ field.value }}" data-date-format="YYYY-MM-DD" class="form-control" />
+                <span class="input-group-btn">
+                <button class="btn btn-default" type="button"><i class="fa fa-calendar"></i></button>
+                </span>
+			    </div>
+			{% elseif field.type == 'datetime' %}
+				<div class="input-group datetime" id="field-{{ field.jform_field_id }}">
+                <input type="text" name="field{{ field.jform_field_id }}" value="" data-date-format="YYYY-MM-DD HH:mm" class="form-control" />
+                <span class="input-group-btn">
+                <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+                </span>
+			   </div>
+			{% elseif field.type == 'file' %}
+				<input type="file" name="field{{ field.jform_field_id }}" id="field-{{ field.jform_field_id }}" class="btn btn-default btn-block" />
+            {% else %} 
+				{% set option = field.value|split(',') %}
+				{% if field.type =='select' %}
+						<select id="field-{{ field.jform_field_id }}" name="field{{ field.jform_field_id }}" class="form-control">
+						{% for val in option %}
+						<option value="{{ val }}">{{ val }}</option>
+						{% endfor %}
+						</select>
+				{% elseif field.type == 'multiselect' %}
+						<select id="field-{{ field.jform_field_id }}" name="field{{ field.jform_field_id }}[]" multiple="multiple" class="form-control">
+						{% for val in option %}
+						<option value="{{ val }}">{{ val }}</option>
+						{% endfor %}
+						</select>
+				{% elseif field.type == 'checkbox' %}
+					<div id="field-{{ field.jform_field_id }}">
+						{% for val in option %}
+						<div class="checkbox" id="field-{{ field.jform_field_id }}">
+						<label>
+						<input type="checkbox" name="field{{ field.jform_field_id }}[]" value="{{ val }}" class="form-control" />{{ val }}
+						</label>
+						</div>
+						{% endfor %}
+					</div>
+				{% elseif field.type == 'radio' %}
+						<div id="field-{{ field.jform_field_id }}">
+						{% for val in option %}
+						<div class="radio">
+						<label>
+						<input name="field{{ field.jform_field_id }}" type="radio" value="{{ val }}" class="form-control" />{{ val }}
+						</label>
+						</div>
+						{% endfor %}
+						</div>
+					
+				{% endif %}
+			{% endif %}
+			</div>
+		</div>
+		{% endfor %}
+		<div class="row col-sm-{{ jform.form_width }}">
+		{{ captcha }}
+		<div class="buttons">
+          <div class="pull-left">
+            <a class="btn btn-primary" id="jfrom-submit" onclick="validate({{ jform.jform_id }});">{{ jform_description.send_button }}</a>
+          </div>
+        </div>
+		</div>
+		</form>
+	</div>
+</div>
+<script type="text/javascript"><!--
+function formsubmit(id){
+		$.ajax({
+			url: 'index.php?route=extension/module/jform/formsubmit',
+			type: 'post',
+			data: new FormData($('#jfrom form')[0]), //$('#jfrom  input[type=\'file\'], input[type=\'text\'], #jfrom input[type=\'hidden\'], #jfrom input[type=\'radio\']:checked, #jfrom input[type=\'checkbox\']:checked, #jfrom select, #jfrom textarea'),
+			dataType: 'json',
+			cache: false,
+			contentType: false,
+			processData: false,
+			beforeSend: function() {
+				$('#jfrom-submit').button('loading');
+			},
+			complete: function() {
+				$('#jfrom-submit').button('reset');
+			},
+			success: function(json) {
+				$('.alert, .text-danger').remove();
+				$("input[type=text], textarea").val("");
+				$("input[type=checkbox]").attr("checked", false);
+				$('#jfrom-submit').before('<div class="alert tex-success">' + json['message'] +'</div>');
+			},
+			error: function(xhr, ajaxOptions, thrownError) {
+				alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+			}
+		});
+}
+
+function validate(id){
+	$.ajax({
+		url: 'index.php?route=extension/module/jform/validate',
+		type: 'post',
+		data: new FormData($('#jfrom form')[0]), //$('#jfrom  input[type=\'file\'], input[type=\'text\'], #jfrom input[type=\'hidden\'], #jfrom input[type=\'radio\']:checked, #jfrom input[type=\'checkbox\']:checked, #jfrom select, #jfrom textarea'),
+		dataType: 'json',
+		cache: false,
+		contentType: false,
+		processData: false,
+		success: function(json) {
+			$('.alert, .text-danger').remove();
+			
+			if(json['error'] || json['field_id']){
+				$('#field-' + json['field_id']).after('<div class="text-danger">Error: ' + json['error'] + '</div>');
+				$('#jfrom-submit').before('<div class="text-danger">Please check error!!!</div>');
+			}else if(json['error_captcha']){
+				$('#input-captcha').after('<div class="text-danger">Error: ' + json['error_captcha'] + '</div>');
+			}else{
+				formsubmit();
+			}
+		},
+        error: function(xhr, ajaxOptions, thrownError) {
+            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+        }
+	});
+}
+//--></script>
+<script type="text/javascript"><!--
+$('.date').datetimepicker({
+	pickTime: false
+});
+
+$('.datetime').datetimepicker({
+	pickDate: true,
+	pickTime: true
+});
+
+$('.time').datetimepicker({
+	pickDate: false
+});
+<?php /*
+$('button[id^=\'button-upload\']').on('click', function() {
+	var node = this;
+	
+	id = $('input[name=\'jform_id\']').val();
+	//alert(id);
+	$('#form-upload').remove();
+
+	$('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input type="file" name="file" /></form>');
+
+	$('#form-upload input[name=\'file\']').trigger('click');
+
+	if (typeof timer != 'undefined') {
+    	clearInterval(timer);
+	}
+
+	timer = setInterval(function() {
+		if ($('#form-upload input[name=\'file\']').val() != '') {
+			clearInterval(timer);
+
+			$.ajax({
+				url: 'index.php?route=extension/module/jform/upload&jform_id=' + id,
+				type: 'post',
+				dataType: 'json',
+				data: new FormData($('#form-upload')[0]),
+				cache: false,
+				contentType: false,
+				processData: false,
+				beforeSend: function() {
+					$(node).button('loading');
+				},
+				complete: function() {
+					$(node).button('reset');
+				},
+				success: function(json) {
+					$('.text-danger').remove();
+
+					if (json.error']) {
+						$(node).parent().find('input').after('<div class="text-danger">' + json.error'] + '</div>');
+					}
+
+					if (json.success']) {
+						alert(json.success']);
+
+						$(node).parent().find('input').attr('value', json.code']);
+					}
+				},
+				error: function(xhr, ajaxOptions, thrownError) {
+					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+				}
+			});
+		}
+	}, 500);
+});
+*/ ?>
+//--></script>

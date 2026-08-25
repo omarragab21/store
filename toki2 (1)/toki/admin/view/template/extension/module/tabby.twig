@@ -1,0 +1,239 @@
+{{ header }}{{ column_left }}
+<div id="content">
+    <div class="page-header">
+        <div class="container-fluid">
+            <div class="pull-right">
+                <button type="submit" form="form_module" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+                <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+            </div>
+            <h1>{{ heading_title }}</h1>
+            <ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+                <li><a href="{{ breadcrumb['href'] }}">{{ breadcrumb['text'] }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="container-fluid">
+        {% if error_warning %}
+        <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+        {% endif %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+            </div>
+            <div class="panel-body">
+                <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form_module" class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input_status">{{ entry_status }}</label>
+                        <div class="col-sm-10">
+                            <select name="module_tabby_status" id="input_status" class="form-control">
+                                {% if status %}
+                                <option value="1" selected="selected">{{ text_enabled }}</option>
+                                <option value="0">{{ text_disabled }}</option>
+                                {% else %}
+                                <option value="1">{{ text_enabled }}</option>
+                                <option value="0" selected="selected">{{ text_disabled }}</option>
+                                {% endif %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input_status">{{ entry_countries }}</label>
+                        <div class="col-sm-10">
+                            <select name="module_tabby_countries[]" id="input_countries" class="form-control" multiple size=4>
+                                {% for country in countries %}
+                                    {% if country.selected %}
+                                    <option value="{{ country.iso_code_2 }}" selected="selected">{{ country.name }}</option>
+                                    {% else %}
+                                    <option value="{{ country.iso_code_2 }}">{{ country.name }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-merchant_code">{{ entry_merchant_code }}</label>
+                        <div class="col-sm-10">
+                            <select name="module_tabby_merchant_code_currency" id="input-merchant_code" class="form-control">
+                                {% if merchant_code_currency %}
+                                    <option value="1" selected="selected">{{ text_enabled }}</option>
+                                    <option value="0">{{ text_disabled }}</option>
+                                {% else %}
+                                    <option value="1">{{ text_enabled }}</option>
+                                    <option value="0" selected="selected">{{ text_disabled }}</option>
+                                {% endif %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-integration_type">{{ entry_integration_type }}</label>
+                        <div class="col-sm-10">
+                            <select name="module_tabby_integration_type" id="input-integration_type" class="form-control">
+                                {% if integration_type %}
+                                    <option value="1" selected="selected">{{ text_it_redirect }}</option>
+                                    <option value="0">{{ text_it_popup }}</option>
+                                {% else %}
+                                    <option value="1">{{ text_it_redirect }}</option>
+                                    <option value="0" selected="selected">{{ text_it_popup }}</option>
+                                {% endif %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input_sort_order">{{ entry_sort_order }}</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="module_tabby_sort_order" value="{{ sort_order }}" placeholder="{{ entry_sort_order}}" id="input_sort_order" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group required">
+                        <label class="col-sm-2 control-label" for="input_public_key">{{ entry_public_key }}</label>
+                        <div class="col-sm-10">
+                            <input type="password" name="module_tabby_public_key" value="{{ public_key }}" placeholder="{{ entry_public_key }}" id="input_public_key" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group required">
+                        <label class="col-sm-2 control-label" for="input_secret_key">{{ entry_secret_key }}</label>
+                        <div class="col-sm-10">
+                            <input type="password" name="module_tabby_secret_key" value="{{ secret_key }}" placeholder="{{ entry_secret_key }}" id="input_secret_key" class="form-control" />
+                        </div>
+                    </div>
+                    <!--<div class="form-group">
+                        <label class="col-sm-2 control-label" for="input_deletion_timeout"><span data-toggle="tooltip" title="{{ help_deletion_timeout }}">{{ entry_deletion_timeout }}</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="module_tabby_deletion_timeout" value="{{ deletion_timeout }}" placeholder="{{ entry_deletion_timeout }}" id="input_deletion_timeout" class="form-control" />
+                        </div>
+                    </div>-->
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input_promo">{{ entry_promo }}</label>
+                        <div class="col-sm-10">
+                            <select name="module_tabby_promo" id="input_promo" class="form-control">
+                                {% if promo %}
+                                <option value="1" selected="selected">{{ text_enabled }}</option>
+                                <option value="0">{{ text_disabled }}</option>
+                                {% else %}
+                                <option value="1">{{ text_enabled }}</option>
+                                <option value="0" selected="selected">{{ text_disabled }}</option>
+                                {% endif %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input_cart_promo">{{ entry_cart_promo }}</label>
+                        <div class="col-sm-10">
+                            <select name="module_tabby_cart_promo" id="input_cart_promo" class="form-control">
+                                {% if cart_promo %}
+                                <option value="1" selected="selected">{{ text_enabled }}</option>
+                                <option value="0">{{ text_disabled }}</option>
+                                {% else %}
+                                <option value="1">{{ text_enabled }}</option>
+                                <option value="0" selected="selected">{{ text_disabled }}</option>
+                                {% endif %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input_promo_theme">{{ entry_promo_theme }}</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="module_tabby_promo_theme" value="{{ promo_theme }}" id="input_promo_theme" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input_promo_limit">{{ entry_promo_limit }}</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="module_tabby_promo_limit" value="{{ promo_limit }}" placeholder="{{ entry_promo_limit }}" id="input_promo_limit" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-order-status">{{ entry_order_status }}</label>
+                        <div class="col-sm-10">
+                            <select name="module_tabby_order_status_id" id="input-order-status" class="form-control">
+                                {% for order_status in order_statuses %}
+                                    {% if order_status.order_status_id == order_status_id %}
+                                        <option value="{{ order_status.order_status_id }}" selected="selected">{{ order_status.name }}</option>
+                                    {% else %}
+                                        <option value="{{ order_status.order_status_id }}">{{ order_status.name }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-order-status-capture">{{ entry_order_status_capture }}</label>
+                        <div class="col-sm-10">
+                            <select name="module_tabby_capture_status_id" id="input-order-status-capture" class="form-control">
+                                {% for order_status in order_statuses %}
+                                    {% if order_status.order_status_id == capture_status_id %}
+                                        <option value="{{ order_status.order_status_id }}" selected="selected">{{ order_status.name }}</option>
+                                    {% else %}
+                                        <option value="{{ order_status.order_status_id }}">{{ order_status.name }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-order-status-refund">{{ entry_order_status_refund }}</label>
+                        <div class="col-sm-10">
+                            <select name="module_tabby_refund_status_id" id="input-order-status-refund" class="form-control">
+                                {% for order_status in order_statuses %}
+                                    {% if order_status.order_status_id == refund_status_id %}
+                                        <option value="{{ order_status.order_status_id }}" selected="selected">{{ order_status.name }}</option>
+                                    {% else %}
+                                        <option value="{{ order_status.order_status_id }}">{{ order_status.name }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-order-status-cancel">{{ entry_order_status_cancel }}</label>
+                        <div class="col-sm-10">
+                            <select name="module_tabby_cancel_status_id" id="input-order-status-cancel" class="form-control">
+                                {% for order_status in order_statuses %}
+                                    {% if order_status.order_status_id == cancel_status_id %}
+                                        <option value="{{ order_status.order_status_id }}" selected="selected">{{ order_status.name }}</option>
+                                    {% else %}
+                                        <option value="{{ order_status.order_status_id }}">{{ order_status.name }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input-geo-zone">{{ entry_capture_on }}</label>
+                        <div class="col-sm-10">
+                            <select name="module_tabby_capture_on" id="input-capture-on" class="form-control">
+                                <option value="no_capture">{{ text_no_capture }}</option>
+                                {% for capture in captures %}
+                                    {% if capture == capture_on %}
+                                        <option value="{{ capture }}" selected="selected">{{ capture }}</option>
+                                    {% else %}
+                                        <option value="{{ capture }}">{{ capture }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="input_debug">{{ entry_debug }}</label>
+                        <div class="col-sm-10">
+                            <select name="module_tabby_debug" id="input_debug" class="form-control">
+                                {% if debug %}
+                                <option value="1" selected="selected">{{ text_enabled }}</option>
+                                <option value="0">{{ text_disabled }}</option>
+                                {% else %}
+                                <option value="1">{{ text_enabled }}</option>
+                                <option value="0" selected="selected">{{ text_disabled }}</option>
+                                {% endif %}
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{{ footer }}

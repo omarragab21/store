@@ -1,0 +1,51 @@
+{% if currencies|length > 1 %}
+  <div class=" hidden-xs curr">
+    <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-currency">
+      <div class="btn-group">
+        <button class="btn cur btn-link dropdown-toggle" data-toggle="dropdown">
+          <img src="catalog/view/theme/default/stylesheet/currency.png">
+
+          {{ text_currency }} <i class="fa fa-angle-down"></i></button>
+        <ul class="dropdown-menu">
+          {% for currency in currencies %}
+            {% if (currency['symbol_left']) %}
+              <li><button class="currency-select btn btn-link btn-block" type="button" name="{{ currency['code'] }}">{{ currency['symbol_left'] }} {{ currency['title'] }}</button></li>
+            {% else %}
+              <li><button class="currency-select btn btn-link btn-block" type="button" name="{{ currency['code'] }}">{{ currency['symbol_right'] }} {{ currency['title'] }}</button></li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </div>
+      <input type="hidden" name="code" value="" />
+      <input type="hidden" name="redirect" value="{{ redirect }}" />
+    </form>
+  </div>
+
+
+  <a class="visible-xs" title="{{ text_currency }}" href="javascript:;"><i class="da-bulb-circle"></i>
+    {{ text_currency }}
+    {% for currency in currencies %}
+      {% if (currency['symbol_left'] and currency['code'] == code) %}
+        <b>{{ currency['symbol_left'] }}</b>
+      {% elseif (currency['symbol_right'] and currency['code'] == code) %}
+        <b>{{ currency['symbol_right'] }}</b>
+      {% endif %}
+    {% endfor %}
+    <i class="fa fa-angle-left"></i></a>
+  <form action="{{ action }}" class=" visible-xs" method="post" enctype="multipart/form-data" id="form-currency">
+    <div class="mp-level" data-level="2"> <a href="javascript:;" class="mp-back">{{ text_back }}</a> <strong>{{ text_currency }}</strong>
+      <ul class="sub-menu third-level">
+        {% for currency in currencies %}
+          {% if (currency['symbol_left']) %}
+            <li><a class="currency-select " type="button" name="{{ currency['code'] }}"><i class="fa fa-circle-o"></i> {{ currency['symbol_left'] }} {{ currency['title'] }}</a></li>
+          {% else %}
+            <li><a class="currency-select " type="button" name="{{ currency['code'] }}"><i class="fa fa-circle-o"></i> {{ currency['symbol_right'] }} {{ currency['title'] }}</a></li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+    <input type="hidden" name="code" value="" />
+    <input type="hidden" name="redirect" value="{{ redirect }}" />
+  </form>
+
+{% endif %}

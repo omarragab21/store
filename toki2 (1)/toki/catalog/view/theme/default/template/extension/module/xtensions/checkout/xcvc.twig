@@ -1,0 +1,112 @@
+{% if    display_coupons  %} 
+<div id="couponModal" class="modal fixed dropdownModal nobottom"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+    <form role="form" id="form_add_coupon" action="#" method="post" enctype="multipart/form-data">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"></span></button>
+        <h4 class="modal-title">{{ coupon_apply_text }}</h4>
+      </div>
+      <div class="modal-body margintop20" id="coupon-panel">
+      	<div class="loader cvcLoader"></div>
+      	<div class="input-group group{{ coupon_value?' filled':'' }}">
+     		<input name="coupon" type="text" value="{{ coupon_value }}" class="inputMaterial"  />
+     		<label>{{ coupon_placeholder }}&nbsp;<i class="fa fa-scissors" aria-hidden="true"></i></label>
+     		<div class="input-group-addon"><button id="couponbtn1" type="submit"><i class="cvcapply fa fa-check"></i></button></div>
+    	</div>
+    	<div class="showonsuccess" style="display: none;">
+	    <div class="circle-loader">
+		  <div class="checkmark draw"></div>
+		</div>
+	    <div class="text-center"><a data-dismiss="modal" class="btn btn-coupon btnwidth200">{{ button_close }}</a></div>
+	    </div>    
+   		</div>  
+   	</form>   
+    </div>
+  </div>
+</div>
+{% endif %} 
+{% if    display_vouchers  %} 
+<div id="voucherModal" class="modal fixed dropdownModal nobottom"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+    <form role="form" id="form_add_voucher" action="#" method="post" enctype="multipart/form-data">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"></span></button>
+        <h4 class="modal-title">{{ voucher_apply_text }}</h4>
+      </div>
+      <div class="modal-body margintop20" id="voucher-panel">
+      	<div class="loader cvcLoader"></div>
+      	<div class="input-group group{{ voucher_value?' filled':'' }}">
+     		<input name="voucher" type="text" value="{{ voucher_value }}" class="inputMaterial"  />
+     		<label>{{ voucher_placeholder }}&nbsp;<i class="fa fa-tag" aria-hidden="true"></i></label>
+     		<div class="input-group-addon"><button id="voucherbtn1" type="submit"><i class="cvcapply fa fa-check"></i></button></div>
+    	</div>
+    	<div class="showonsuccess" style="display: none;">
+	    <div class="circle-loader">
+		  <div class="checkmark draw"></div>
+		</div>
+	    <div class="text-center"><a data-dismiss="modal" class="btn btn-coupon btnwidth200">{{ button_close }}</a></div>
+	    </div>    
+   		</div>  
+   		</form>   
+    </div>
+  </div>
+</div>
+{% endif %} 
+{% if    display_rewards  %} 
+<div id="rewardModal" class="modal fixed dropdownModal nobottom"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+    <form  role="form" id="form_add_reward" action="#" method="post" enctype="multipart/form-data">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"></span></button>
+        <h4 class="modal-title">{{ reward_apply_text }}</h4>
+      </div>
+      <div class="modal-body margintop20" id="reward-panel">
+      	<div class="loader cvcLoader"></div>
+      	<div class="input-group group{{ reward_value?' filled':'' }}">
+     		<input name="reward" type="text" value="{{ reward_value }}" class="inputMaterial"  />
+     		<label>{{ text_use_reward }}</label>
+     		<div class="input-group-addon"><button id="rewardbtn1" type="submit"><i class="cvcapply fa fa-check"></i></button></div>
+    	</div>
+    	<div class="showonsuccess" style="display: none;">
+	    <div class="circle-loader">
+		  <div class="checkmark draw"></div>
+		</div>
+	    <div class="text-center"><a data-dismiss="modal" class="btn btn-coupon btnwidth200">{{ button_close }}</a></div>
+	    </div>    
+   		</div>    
+   	</form> 
+    </div>
+  </div>
+</div>
+{% endif %} 
+{% if    display_comments  %} 
+<div id="commentModal" class="modal fixed dropdownModal nobottom"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+    <form role="form" id="form_add_comment" action="#" method="post" enctype="multipart/form-data">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only"></span></button>
+        <h4 class="modal-title">{{ comment_apply_text }}</h4>
+      </div>
+      <div class="modal-body margintop20" id="comment-panel">
+      	<div class="loader cvcLoader"></div>
+      	<div class="group{{ comment?' filled':'' }}">
+     		<textarea rows="8" cols="40" class="inputMaterial" name="comment">{{ comment }}</textarea>
+     		<label>{{ comment_apply_text }}</label>
+    	</div>
+    	<div class="buttons"><button id="commentbtn" type="submit" class="btn btn-success width100">{{ comment_apply_text }}</button></div>
+    	<div class="showonsuccess" style="display: none;">
+	    <div class="circle-loader">
+		  <div class="checkmark draw"></div>
+		</div>
+	    <div class="text-center"><a data-dismiss="modal" class="btn btn-coupon btnwidth200">{{ button_close }}</a></div>
+	    </div>
+    	</div>     
+   		</form>
+    </div>
+  </div>
+</div>
+{% endif %}

@@ -1,0 +1,9 @@
+.oct_switch{position:relative;display:inline-block;width:60px;height:34px}
+.oct_switch input{display:none}
+.oct_slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color:#ccc;-webkit-transition:.4s;transition:.4s}
+.oct_slider:before{position:absolute;content:"";height:26px;width:26px;left:4px;bottom:4px;background-color:#fff;-webkit-transition:.4s;transition:.4s}
+input:checked + .oct_slider{background-color:#2196F3}
+input:focus + .oct_slider{box-shadow:0 0 1px #2196F3}
+input:checked + .oct_slider:before{-webkit-transform:translateX(26px);-ms-transform:translateX(26px);transform:translateX(26px)}
+.oct_slider.oct_round{border-radius:34px}
+.oct_slider.oct_round:before{border-radius:50%}

@@ -1,0 +1,838 @@
+{{ header }}{{ column_left }} 
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <button id="apply" data-toggle="tooltip" title="{{ button_apply }}" class="btn btn-success"><i class="fa fa-save"></i> {{ button_apply }}</button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+      </div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %} 
+        <li><a href="{{ breadcrumb['href'] }}">{{ breadcrumb['text'] }}</a></li>
+        {% endfor %} 
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if (error_warning) %} 
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i>{{ error_warning }} 
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %} 
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i>{{ text_edit }}</h3>
+      </div>
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form" class="form-horizontal">
+          <div class="row">
+            <div class="col-sm-3">
+              <ul id="method-list" class="nav nav-pills nav-stacked">
+                <li class="active"><a href="#tab-general" data-toggle="tab"><i class="fa fa-cogs" aria-hidden="true"></i> {{ text_general_setting }}</a></li>
+                <li><a href="#tab-layout" data-toggle="tab"><i class="fa fa-desktop" aria-hidden="true"></i> {{ tab_layout }}</a></li>
+                <li><a href="#tab-setting-1" data-toggle="tab"><i class="fa fa-list-ul" aria-hidden="true"></i> {{ text_product_details }}</a></li>
+                <li><a href="#tab-setting-3" data-toggle="tab"><i class="fa fa-language" aria-hidden="true"></i> {{ text_language_settings }}</a></li>
+                <li><a href="#tab-setting-4" data-toggle="tab"><i class="fa fa-magic" aria-hidden="true"></i> {{ text_styles_setting }}</a></li>
+                <li><a href="#tab-support" data-toggle="tab"><i class="fa fa-support" aria-hidden="true"></i> {{ tab_support }}</a></li>
+              </ul>
+            </div>
+            <div class="col-sm-9">
+              <div class="tab-content">
+                <!-- General -->
+                <div class="tab-pane active" id="tab-general">
+                  <fieldset>
+                    <legend class="pqv-legend">{{ text_general_setting }}</legend>
+                    <div class="form-group">
+                      <label class="col-sm-4 control-label">{{ text_status }}</label>
+                      <div class="col-sm-8">
+                        <div class="btn-group" data-toggle="buttons">
+                          {% if (status == '1') %} 
+                          <label class="btn btn-success md-btn active"><input type="radio" name="status" value="1" checked="checked">{{ text_enabled }}</label>
+                          <label class="btn btn-danger md-btn"><input type="radio" name="status" value="0">{{ text_disabled }}</label>
+                          {% else %} 
+                          <label class="btn btn-success md-btn"><input type="radio" name="status" value="1">{{ text_enabled }}</label>
+                          <label class="btn btn-danger md-btn active"><input type="radio" name="status" value="0" checked="checked">{{ text_disabled }}</label>
+                          {% endif %} 
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-4 control-label">{{ entry_show_pqv_button }}</label>
+                      <div class="col-sm-8">
+                        <div class="btn-group" data-toggle="buttons">
+                          {% if (show_pqv_button == '1') %} 
+                          <label class="btn btn-success md-btn active"><input type="radio" name="show_pqv_button" value="1" checked="checked">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn"><input type="radio" name="show_pqv_button" value="0">{{ text_disabled }}</label>
+                          {% else %} 
+                          <label class="btn btn-success md-btn"><input type="radio" name="show_pqv_button" value="1">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn active"><input type="radio" name="show_pqv_button" value="0" checked="checked">{{ text_disabled }}</label>
+                          {% endif %} 
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-4 control-label">{{ entry_show_on_mobile }}</label>
+                      <div class="col-sm-8">
+                        <div class="btn-group" data-toggle="buttons">
+                          {% if (show_on_mobile == '1') %} 
+                          <label class="btn btn-success md-btn active"><input type="radio" name="show_on_mobile" value="1" checked="checked">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn"><input type="radio" name="show_on_mobile" value="0">{{ text_disabled }}</label>
+                          {% else %} 
+                          <label class="btn btn-success md-btn"><input type="radio" name="show_on_mobile" value="1">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn active"><input type="radio" name="show_on_mobile" value="0" checked="checked">{{ text_disabled }}</label>
+                          {% endif %} 
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-4 control-label">{{ entry_open_by_click_on_image }}</label>
+                      <div class="col-sm-8">
+                        <div class="btn-group" data-toggle="buttons">
+                          {% if (open_by_click_on_image == '1') %} 
+                          <label class="btn btn-success md-btn active"><input type="radio" name="open_by_click_on_image" value="1" checked="checked">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn"><input type="radio" name="open_by_click_on_image" value="0">{{ text_disabled }}</label>
+                          {% else %} 
+                          <label class="btn btn-success md-btn"><input type="radio" name="open_by_click_on_image" value="1">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn active"><input type="radio" name="open_by_click_on_image" value="0" checked="checked">{{ text_disabled }}</label>
+                          {% endif %} 
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-4 control-label">{{ entry_open_by_click_on_link }}</label>
+                      <div class="col-sm-8">
+                        <div class="btn-group" data-toggle="buttons">
+                          {% if (open_by_click_on_link == '1') %} 
+                          <label class="btn btn-success md-btn active"><input type="radio" name="open_by_click_on_link" value="1" checked="checked">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn"><input type="radio" name="open_by_click_on_link" value="0">{{ text_disabled }}</label>
+                          {% else %} 
+                          <label class="btn btn-success md-btn"><input type="radio" name="open_by_click_on_link" value="1">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn active"><input type="radio" name="open_by_click_on_link" value="0" checked="checked">{{ text_disabled }}</label>
+                          {% endif %} 
+                        </div>
+                      </div>
+                    </div>
+                  </fieldset>
+                  <fieldset>
+                    <legend>{{ text_customer_group }}</legend>
+                    <div class="form-group">
+                      <label class="col-sm-4 control-label">{{ entry_customer_group }}</label>
+                      <div class="col-sm-8">
+                        <div class="well well-sm" style="min-height: 100px;">
+                          <div class="checkbox">
+                            <label><input type="checkbox" name="use_for_guests" value="1" {{ use_for_guests ? 'checked="checked"' : '' }}>{{ text_guest }}</label>
+                          </div>
+                          {% for group in customer_groups %} 
+                          <div class="checkbox">
+                            <label><input type="checkbox" name="use_for_customer_groups[{{ group['customer_group_id'] }}]" value="1" {{ use_for_customer_groups[group['customer_group_id']] ? 'checked="checked"' : '' }}>{{ group['name'] }}</label>
+                          </div>
+                          {% endfor %} 
+                        </div>
+                        <button type="button" class="btn btn-primary btn-sm" id="btn-select-all">{{ btn_select_all }}</button>
+                        <button type="button" class="btn btn-warning btn-sm" id="btn-unselect-all">{{ btn_unselect_all }}</button>
+                      </div>
+                    </div>
+                  </fieldset>
+                  <fieldset>
+                    <legend class="pqv-legend">{{ text_additional_setting }}</legend>
+                    <div class="form-group">
+                      <label class="col-sm-4 control-label">{{ entry_close_when_added }}</label>
+                      <div class="col-sm-8">
+                        <div class="btn-group" data-toggle="buttons">
+                          {% if (close_when_added == '1') %} 
+                          <label class="btn btn-success md-btn active"><input type="radio" name="close_when_added" value="1" checked="checked">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn"><input type="radio" name="close_when_added" value="0">{{ text_disabled }}</label>
+                          {% else %} 
+                          <label class="btn btn-success md-btn"><input type="radio" name="close_when_added" value="1">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn active"><input type="radio" name="close_when_added" value="0" checked="checked">{{ text_disabled }}</label>
+                          {% endif %} 
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-4 control-label">{{ text_auto_select_first_value }}</label>
+                      <div class="col-sm-8">
+                        <div class="btn-group" data-toggle="buttons">
+                          {% if (auto_select_first_value == '1') %} 
+                          <label class="btn btn-success md-btn active"><input type="radio" name="auto_select_first_value" value="1" checked="checked">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn"><input type="radio" name="auto_select_first_value" value="0">{{ text_disabled }}</label>
+                          {% else %} 
+                          <label class="btn btn-success md-btn"><input type="radio" name="auto_select_first_value" value="1">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn active"><input type="radio" name="auto_select_first_value" value="0" checked="checked">{{ text_disabled }}</label>
+                          {% endif %} 
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-4 control-label">{{ text_auto_calculate_total }}</label>
+                      <div class="col-sm-8">
+                        <div class="btn-group" data-toggle="buttons">
+                          {% if (auto_calculate_total == '1') %} 
+                          <label class="btn btn-success md-btn active"><input type="radio" name="auto_calculate_total" value="1" checked="checked">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn"><input type="radio" name="auto_calculate_total" value="0">{{ text_disabled }}</label>
+                          {% else %} 
+                          <label class="btn btn-success md-btn"><input type="radio" name="auto_calculate_total" value="1">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn active"><input type="radio" name="auto_calculate_total" value="0" checked="checked">{{ text_disabled }}</label>
+                          {% endif %} 
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-4 control-label">{{ entry_replace_button }}</label>
+                      <div class="col-sm-8">
+                        <div class="btn-group" data-toggle="buttons">
+                          {% if (replace_button == '1') %} 
+                          <label class="btn btn-success md-btn active"><input type="radio" name="replace_button" value="1" checked="checked">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn"><input type="radio" name="replace_button" value="0">{{ text_disabled }}</label>
+                          {% else %} 
+                          <label class="btn btn-success md-btn"><input type="radio" name="replace_button" value="1">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn active"><input type="radio" name="replace_button" value="0" checked="checked">{{ text_disabled }}</label>
+                          {% endif %} 
+                        </div>
+                      </div>
+                    </div>
+                  </fieldset>
+                </div>
+                <!-- Layout Settings -->
+                <div class="tab-pane" id="tab-layout">
+                  <fieldset>
+                    <legend class="pqv-legend">{{ text_popup_layout }}</legend>
+                    <div class="form-group">
+                      <label class="col-sm-4 control-label">{{ entry_popup_heading }}</label>
+                      <div class="col-sm-8">
+                        <div class="btn-group" data-toggle="buttons">
+                          {% if (popup_heading_set == '1') %} 
+                          <label class="btn btn-success md-btn active"><input type="radio" name="popup_heading_set" value="1" checked="checked">{{ text_quick_view_text }}</label>
+                          <label class="btn btn-success md-btn"><input type="radio" name="popup_heading_set" value="2">{{ text_product_name }}</label>
+                          {% else %} 
+                          <label class="btn btn-success md-btn"><input type="radio" name="popup_heading_set" value="1">{{ text_quick_view_text }}</label>
+                          <label class="btn btn-success md-btn active"><input type="radio" name="popup_heading_set" value="2" checked="checked">{{ text_product_name }}</label>
+                          {% endif %} 
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-4 control-label">{{ text_product_image }}</label>
+                      <div class="col-sm-8">
+                        <div class="btn-group" data-toggle="buttons">
+                          {% if (show_product_image == '1') %} 
+                          <label class="btn btn-success md-btn active"><input type="radio" name="show_product_image" value="1" checked="checked">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn"><input type="radio" name="show_product_image" value="0">{{ text_disabled }}</label>
+                          {% else %} 
+                          <label class="btn btn-success md-btn"><input type="radio" name="show_product_image" value="1">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn active"><input type="radio" name="show_product_image" value="0" checked="checked">{{ text_disabled }}</label>
+                          {% endif %} 
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-4 control-label">{{ text_zoom_by_hover }}</label>
+                      <div class="col-sm-8">
+                        <div class="btn-group" data-toggle="buttons">
+                          {% if (zoom_status == '1') %} 
+                          <label class="btn btn-success md-btn active"><input type="radio" name="zoom_status" value="1" checked="checked">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn"><input type="radio" name="zoom_status" value="0">{{ text_disabled }}</label>
+                          {% else %} 
+                          <label class="btn btn-success md-btn"><input type="radio" name="zoom_status" value="1">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn active"><input type="radio" name="zoom_status" value="0" checked="checked">{{ text_disabled }}</label>
+                          {% endif %} 
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-4 control-label">{{ text_zoomed_image_size }}</label>
+                      <div class="col-sm-4">
+                        <label for="zoomed-image-width">{{ text_width }}</label>
+                        <input type="text" id="zoomed-image-width" name="zoom_width" class="form-control" value="{{ zoom_width }}" placeholder="{{ text_default }}">
+                      </div>
+                      <div class="col-sm-4">
+                        <label for="zoomed-image-height">{{ text_height }}</label>
+                        <input type="text" id="zoomed-image-height" name="zoom_height" class="form-control" value="{{ zoom_height }}" placeholder="{{ text_default }}">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-4 control-label">{{ entry_show_description }}</label>
+                      <div class="col-sm-3">
+                        <div class="btn-group" data-toggle="buttons">
+                          {% if (show_description == '1') %} 
+                          <label class="btn btn-success md-btn active"><input type="radio" name="show_description" value="1" checked="checked">{{ text_full }}</label>
+                          <label class="btn btn-success md-btn"><input type="radio" name="show_description" value="0">{{ text_limited }}</label>
+                          {% else %} 
+                          <label class="btn btn-success md-btn"><input type="radio" name="show_description" value="1">{{ text_full }}</label>
+                          <label class="btn btn-success md-btn active"><input type="radio" name="show_description" value="0" checked="checked">{{ text_limited }}</label>
+                          {% endif %} 
+                        </div>
+                      </div>
+                      <label class="col-sm-2 control-label">{{ entry_text_limit }}</label>
+                      <div class="col-sm-3">
+                        <input type="number" name="description_limit" class="form-control" min="0" max="20000" value="{{ description_limit }}">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-4 control-label">{{ entry_show_specification }}</label>
+                      <div class="col-sm-8">
+                        <div class="btn-group" data-toggle="buttons">
+                          {% if (show_specification == '1') %} 
+                          <label class="btn btn-success md-btn active"><input type="radio" name="show_specification" value="1" checked="checked">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn"><input type="radio" name="show_specification" value="0">{{ text_disabled }}</label>
+                          {% else %} 
+                          <label class="btn btn-success md-btn"><input type="radio" name="show_specification" value="1">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn active"><input type="radio" name="show_specification" value="0" checked="checked">{{ text_disabled }}</label>
+                          {% endif %} 
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-4 control-label">{{ entry_show_reviews }}</label>
+                      <div class="col-sm-8">
+                        <div class="btn-group" data-toggle="buttons">
+                          {% if (show_reviews == '1') %} 
+                          <label class="btn btn-success md-btn active"><input type="radio" name="show_reviews" value="1" checked="checked">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn"><input type="radio" name="show_reviews" value="0">{{ text_disabled }}</label>
+                          {% else %} 
+                          <label class="btn btn-success md-btn"><input type="radio" name="show_reviews" value="1">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn active"><input type="radio" name="show_reviews" value="0" checked="checked">{{ text_disabled }}</label>
+                          {% endif %} 
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-4 control-label">{{ entry_show_related }}</label>
+                      <div class="col-sm-8">
+                        <div class="btn-group" data-toggle="buttons">
+                          {% if (show_related == '1') %} 
+                          <label class="btn btn-success md-btn active"><input type="radio" name="show_related" value="1" checked="checked">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn"><input type="radio" name="show_related" value="0">{{ text_disabled }}</label>
+                          {% else %} 
+                          <label class="btn btn-success md-btn"><input type="radio" name="show_related" value="1">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn active"><input type="radio" name="show_related" value="0" checked="checked">{{ text_disabled }}</label>
+                          {% endif %} 
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-4 control-label">{{ entry_show_tags }}</label>
+                      <div class="col-sm-8">
+                        <div class="btn-group" data-toggle="buttons">
+                          {% if (show_tags == '1') %} 
+                          <label class="btn btn-success md-btn active"><input type="radio" name="show_tags" value="1" checked="checked">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn"><input type="radio" name="show_tags" value="0">{{ text_disabled }}</label>
+                          {% else %} 
+                          <label class="btn btn-success md-btn"><input type="radio" name="show_tags" value="1">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn active"><input type="radio" name="show_tags" value="0" checked="checked">{{ text_disabled }}</label>
+                          {% endif %} 
+                        </div>
+                      </div>
+                    </div>
+                  </fieldset>
+                  <fieldset>
+                    <legend class="pqv-legend">{{ text_buttons_setting }}</legend>
+                    <div class="form-group">
+                      <label class="col-sm-4 control-label">{{ entry_show_wishlist_btn }}</label>
+                      <div class="col-sm-8">
+                        <div class="btn-group" data-toggle="buttons">
+                          {% if (show_wishlist_btn == '1') %} 
+                          <label class="btn btn-success md-btn active"><input type="radio" name="show_wishlist_btn" value="1" checked="checked">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn"><input type="radio" name="show_wishlist_btn" value="0">{{ text_disabled }}</label>
+                          {% else %} 
+                          <label class="btn btn-success md-btn"><input type="radio" name="show_wishlist_btn" value="1">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn active"><input type="radio" name="show_wishlist_btn" value="0" checked="checked">{{ text_disabled }}</label>
+                          {% endif %} 
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-4 control-label">{{ entry_show_compare_btn }}</label>
+                      <div class="col-sm-8">
+                        <div class="btn-group" data-toggle="buttons">
+                          {% if (show_compare_btn == '1') %} 
+                          <label class="btn btn-success md-btn active"><input type="radio" name="show_compare_btn" value="1" checked="checked">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn"><input type="radio" name="show_compare_btn" value="0">{{ text_disabled }}</label>
+                          {% else %} 
+                          <label class="btn btn-success md-btn"><input type="radio" name="show_compare_btn" value="1">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn active"><input type="radio" name="show_compare_btn" value="0" checked="checked">{{ text_disabled }}</label>
+                          {% endif %} 
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-4 control-label">{{ entry_show_continue_btn }}</label>
+                      <div class="col-sm-8">
+                        <div class="btn-group" data-toggle="buttons">
+                          {% if (show_continue_btn == '1') %} 
+                          <label class="btn btn-success md-btn active"><input type="radio" name="show_continue_btn" value="1" checked="checked">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn"><input type="radio" name="show_continue_btn" value="0">{{ text_disabled }}</label>
+                          {% else %} 
+                          <label class="btn btn-success md-btn"><input type="radio" name="show_continue_btn" value="1">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn active"><input type="radio" name="show_continue_btn" value="0" checked="checked">{{ text_disabled }}</label>
+                          {% endif %} 
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-4 control-label">{{ entry_show_more_info_btn }}</label>
+                      <div class="col-sm-8">
+                        <div class="btn-group" data-toggle="buttons">
+                          {% if (show_more_info_btn == '1') %} 
+                          <label class="btn btn-success md-btn active"><input type="radio" name="show_more_info_btn" value="1" checked="checked">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn"><input type="radio" name="show_more_info_btn" value="0">{{ text_disabled }}</label>
+                          {% else %} 
+                          <label class="btn btn-success md-btn"><input type="radio" name="show_more_info_btn" value="1">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn active"><input type="radio" name="show_more_info_btn" value="0" checked="checked">{{ text_disabled }}</label>
+                          {% endif %} 
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-4 control-label">{{ text_quantity_show }}</label>
+                      <div class="col-sm-8">
+                        <div class="btn-group" data-toggle="buttons">
+                          {% if (show_quantity == '1') %} 
+                          <label class="btn btn-success md-btn active"><input type="radio" name="show_quantity" value="1" checked="checked">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn"><input type="radio" name="show_quantity" value="0">{{ text_disabled }}</label>
+                          {% else %} 
+                          <label class="btn btn-success md-btn"><input type="radio" name="show_quantity" value="1">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn active"><input type="radio" name="show_quantity" value="0" checked="checked">{{ text_disabled }}</label>
+                          {% endif %} 
+                        </div>
+                      </div>
+                    </div>
+                  </fieldset>
+                </div>
+                <!-- Product details -->
+                <div class="tab-pane" id="tab-setting-1">
+                  <fieldset>
+                    <legend class="pqv-legend">{{ text_product_details }}</legend>
+                    <div class="form-group">
+                      <label class="col-sm-4 control-label">{{ entry_show_name }}</label>
+                      <div class="col-sm-8">
+                        <div class="btn-group" data-toggle="buttons">
+                          {% if (show_name == '1') %} 
+                          <label class="btn btn-success md-btn active"><input type="radio" name="show_name" value="1" checked="checked">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn"><input type="radio" name="show_name" value="0">{{ text_disabled }}</label>
+                          {% else %} 
+                          <label class="btn btn-success md-btn"><input type="radio" name="show_name" value="1">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn active"><input type="radio" name="show_name" value="0" checked="checked">{{ text_disabled }}</label>
+                          {% endif %} 
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-4 control-label">{{ entry_show_rating }}</label>
+                      <div class="col-sm-8">
+                        <div class="btn-group" data-toggle="buttons">
+                          {% if (show_rating == '1') %} 
+                          <label class="btn btn-success md-btn active"><input type="radio" name="show_rating" value="1" checked="checked">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn"><input type="radio" name="show_rating" value="0">{{ text_disabled }}</label>
+                          {% else %} 
+                          <label class="btn btn-success md-btn"><input type="radio" name="show_rating" value="1">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn active"><input type="radio" name="show_rating" value="0" checked="checked">{{ text_disabled }}</label>
+                          {% endif %} 
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-4 control-label">{{ text_show_brand }}</label>
+                      <div class="col-sm-8">
+                        <div class="btn-group" data-toggle="buttons">
+                          {% if (show_brand == '1') %} 
+                          <label class="btn btn-success md-btn active"><input type="radio" name="show_brand" value="1" checked="checked">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn"><input type="radio" name="show_brand" value="0">{{ text_disabled }}</label>
+                          {% else %} 
+                          <label class="btn btn-success md-btn"><input type="radio" name="show_brand" value="1">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn active"><input type="radio" name="show_brand" value="0" checked="checked">{{ text_disabled }}</label>
+                          {% endif %} 
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-4 control-label">{{ text_show_model }}</label>
+                      <div class="col-sm-8">
+                        <div class="btn-group" data-toggle="buttons">
+                          {% if (show_model == '1') %} 
+                          <label class="btn btn-success md-btn active"><input type="radio" name="show_model" value="1" checked="checked">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn"><input type="radio" name="show_model" value="0">{{ text_disabled }}</label>
+                          {% else %} 
+                          <label class="btn btn-success md-btn"><input type="radio" name="show_model" value="1">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn active"><input type="radio" name="show_model" value="0" checked="checked">{{ text_disabled }}</label>
+                          {% endif %} 
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-4 control-label">
+                        <span data-toggle="tooltip" title="{{ text_displayed_if_defined }}">{{ entry_show_identifiers }}</span></label>
+                      <div class="col-sm-8">
+                        <div class="btn-group" data-toggle="buttons">
+                          {% if (show_identifiers == '1') %} 
+                          <label class="btn btn-success md-btn active"><input type="radio" name="show_identifiers" value="1" checked="checked">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn"><input type="radio" name="show_identifiers" value="0">{{ text_disabled }}</label>
+                          {% else %} 
+                          <label class="btn btn-success md-btn"><input type="radio" name="show_identifiers" value="1">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn active"><input type="radio" name="show_identifiers" value="0" checked="checked">{{ text_disabled }}</label>
+                          {% endif %} 
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-4 control-label">{{ text_show_reward }}</label>
+                      <div class="col-sm-8">
+                        <div class="btn-group" data-toggle="buttons">
+                          {% if (show_reward == '1') %} 
+                          <label class="btn btn-success md-btn active"><input type="radio" name="show_reward" value="1" checked="checked">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn"><input type="radio" name="show_reward" value="0">{{ text_disabled }}</label>
+                          {% else %} 
+                          <label class="btn btn-success md-btn"><input type="radio" name="show_reward" value="1">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn active"><input type="radio" name="show_reward" value="0" checked="checked">{{ text_disabled }}</label>
+                          {% endif %} 
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-4 control-label">{{ text_show_stock }}</label>
+                      <div class="col-sm-8">
+                        <div class="btn-group" data-toggle="buttons">
+                          {% if (show_stock == '1') %} 
+                          <label class="btn btn-success md-btn active"><input type="radio" name="show_stock" value="1" checked="checked">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn"><input type="radio" name="show_stock" value="0">{{ text_disabled }}</label>
+                          {% else %} 
+                          <label class="btn btn-success md-btn"><input type="radio" name="show_stock" value="1">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn active"><input type="radio" name="show_stock" value="0" checked="checked">{{ text_disabled }}</label>
+                          {% endif %} 
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-4 control-label">{{ text_show_price }}</label>
+                      <div class="col-sm-8">
+                        <div class="btn-group" data-toggle="buttons">
+                          {% if (show_price == '1') %} 
+                          <label class="btn btn-success md-btn active"><input type="radio" name="show_price" value="1" checked="checked">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn"><input type="radio" name="show_price" value="0">{{ text_disabled }}</label>
+                          {% else %} 
+                          <label class="btn btn-success md-btn"><input type="radio" name="show_price" value="1">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn active"><input type="radio" name="show_price" value="0" checked="checked">{{ text_disabled }}</label>
+                          {% endif %} 
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-4 control-label">{{ text_show_tax }}</label>
+                      <div class="col-sm-8">
+                        <div class="btn-group" data-toggle="buttons">
+                          {% if (show_tax == '1') %} 
+                          <label class="btn btn-success md-btn active"><input type="radio" name="show_tax" value="1" checked="checked">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn"><input type="radio" name="show_tax" value="0">{{ text_disabled }}</label>
+                          {% else %} 
+                          <label class="btn btn-success md-btn"><input type="radio" name="show_tax" value="1">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn active"><input type="radio" name="show_tax" value="0" checked="checked">{{ text_disabled }}</label>
+                          {% endif %} 
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-4 control-label">{{ text_show_points }}</label>
+                      <div class="col-sm-8">
+                        <div class="btn-group" data-toggle="buttons">
+                          {% if (show_points == '1') %} 
+                          <label class="btn btn-success md-btn active"><input type="radio" name="show_points" value="1" checked="checked">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn"><input type="radio" name="show_points" value="0">{{ text_disabled }}</label>
+                          {% else %} 
+                          <label class="btn btn-success md-btn"><input type="radio" name="show_points" value="1">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn active"><input type="radio" name="show_points" value="0" checked="checked">{{ text_disabled }}</label>
+                          {% endif %} 
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-4 control-label">{{ text_show_discounts }}</label>
+                      <div class="col-sm-8">
+                        <div class="btn-group" data-toggle="buttons">
+                          {% if (show_discounts == '1') %} 
+                          <label class="btn btn-success md-btn active"><input type="radio" name="show_discounts" value="1" checked="checked">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn"><input type="radio" name="show_discounts" value="0">{{ text_disabled }}</label>
+                          {% else %} 
+                          <label class="btn btn-success md-btn"><input type="radio" name="show_discounts" value="1">{{ text_enabled }}</label>
+                          <label class="btn btn-default md-btn active"><input type="radio" name="show_discounts" value="0" checked="checked">{{ text_disabled }}</label>
+                          {% endif %} 
+                        </div>
+                      </div>
+                    </div>
+                  </fieldset>
+                </div>
+                <!-- Language settings -->
+                <div class="tab-pane" id="tab-setting-3">
+                  <fieldset>
+                    <legend class="pqv-legend">{{ text_language_settings }}</legend>
+                    <ul class="nav nav-tabs language-tab">
+                      {% for language in languages %} 
+                      <li><a href="#language-settings-{{ language['code'] }}" data-toggle="tab"><img src="{{ language['flag_img'] }}" title="{{ language['name'] }}"> {{ language['name'] }}</a></li>
+                      {% endfor %} 
+                    </ul>
+                    <div class="tab-content">
+                      {% for language in languages %} 
+                      <div class="tab-pane" id="language-settings-{{ language['code'] }}">
+                        <div class="form-group">
+                          <label class="col-sm-3 control-label">{{ entry_tooltip_quick_view }}</label>
+                          <div class="col-sm-8">
+                            <div class="input-group">
+                              <label class="input-group-addon"><img src="{{ language['flag_img'] }}" title="{{ language['name'] }}"></label>
+                              <input type="text" name="tooltip_quick_view[{{ language['code'] }}]" value="{{ tooltip_quick_view[language['code']] is defined ? tooltip_quick_view[language['code']] : '' }}" class="form-control" placeholder="{{ text_tooltip_quick_view }}">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="col-sm-3 control-label">{{ entry_btn_continue }}</label>
+                          <div class="col-sm-8">
+                            <div class="input-group">
+                              <label class="input-group-addon"><img src="{{ language['flag_img'] }}" title="{{ language['name'] }}"></label>
+                              <input type="text" name="btn_continue[{{ language['code'] }}]" value="{{ btn_continue[language['code']] is defined ? btn_continue[language['code']] : '' }}" class="form-control" placeholder="{{ text_btn_continue }}">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="col-sm-3 control-label">{{ entry_btn_more_info }}</label>
+                          <div class="col-sm-8">
+                            <div class="input-group">
+                              <label class="input-group-addon"><img src="{{ language['flag_img'] }}" title="{{ language['name'] }}"></label>
+                              <input type="text" name="btn_more_info[{{ language['code'] }}]" value="{{ btn_more_info[language['code']] is defined ? btn_more_info[language['code']] : '' }}" class="form-control" placeholder="{{ text_btn_more_info }}">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="col-sm-3 control-label">{{ entry_btn_in_cart }}</label>
+                          <div class="col-sm-8">
+                            <div class="input-group">
+                              <label class="input-group-addon"><img src="{{ language['flag_img'] }}" title="{{ language['name'] }}"></label>
+                              <input type="text" name="btn_in_cart[{{ language['code'] }}]" value="{{ btn_in_cart[language['code']] is defined ? btn_in_cart[language['code']] : '' }}" class="form-control" placeholder="{{ text_btn_in_cart }}">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      {% endfor %} 
+                    </div>
+                  </fieldset>
+                </div>
+                <!-- Styles and Colors -->
+                <div class="tab-pane" id="tab-setting-4">
+                  <div id="styles_setting">
+                    <fieldset>
+                      <legend class="apc-legend">{{ text_common_styles }}</legend>
+                      <div class="form-group">
+                        <label class="col-sm-3 control-label">{{ entry_pqv_btn_color }}</label>
+                        <div class="col-sm-4">
+                          <label for="pqv-btn-bg-color">{{ text_bg_color }}</label>
+                          <input type="text" id="pqv-btn-bg-color" name="btn_quick_view_bg_color" class="form-control color" value="{{ btn_quick_view_bg_color }}" placeholder="{{ text_default }}">
+                        </div>
+                        <div class="col-sm-4">
+                          <label for="pqv-btn-font-color">{{ text_font_color }}</label>
+                          <input type="text" id="pqv-btn-font-color" name="btn_quick_view_font_color" class="form-control color" value="{{ btn_quick_view_font_color }}" placeholder="{{ text_default }}">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-3 control-label">{{ entry_pqv_btn_style }}</label>
+                        <div class="col-sm-4">
+                          <label for="pqv_btn_size">{{ text_button_size }}</label>
+                          <input type="number" id="pqv_btn_size" name="btn_quick_view_size" class="form-control" min="0" max="200" value="{{ btn_quick_view_size }}" placeholder="{{ text_default }}">
+                        </div>
+                        <div class="col-sm-4">
+                          <label for="pqv-btn-opacity">{{ text_opacity }}</label>
+                          <input type="number" id="pqv-btn-opacity" name="btn_quick_view_opacity" class="form-control" value="{{ btn_quick_view_opacity }}" min="0" max="100" placeholder="{{ text_default }}">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-3 control-label">{{ entry_loader_style }}</label>
+                        <div class="col-sm-4">
+                          <label for="loader-bg-color">{{ text_bg_color }}</label>
+                          <input type="text" id="loader-bg-color" name="loader_bg_color" class="form-control color" placeholder="{{ text_default }}" value="{{ loader_bg_color }}">
+                        </div>
+                        <div class="col-sm-4">
+                          <label for="loader-font-color">{{ text_font_color }}</label>
+                          <input type="text" id="loader-font-color" name="loader_font_color" class="form-control color" placeholder="{{ text_default }}" value="{{ loader_font_color }}">
+                        </div>
+                      </div>
+                    </fieldset>
+                    <fieldset>
+                      <legend class="pqv-legend">{{ entry_basic_popup_styles }}</legend>
+                      <div class="form-group">
+                        <label class="col-sm-3 control-label">{{ entry_popup_window }}</label>
+                        <div class="col-sm-4">
+                          <label for="popup-bg-color">{{ text_bg_color }}</label>
+                          <input type="text" id="popup-bg-color" name="popup_bg_color" class="form-control color" placeholder="{{ text_default }}" data-control="hue" value="{{ popup_bg_color }}">
+                        </div>
+                        <div class="col-sm-2">
+                          <label for="popup-width">{{ text_popup_width }}</label>
+                          <input type="number" id="popup-width" name="popup_width" class="form-control" min="400" max="2000" value="{{ popup_width }}" placeholder="{{ text_default }}">
+                        </div>
+                        <div class="col-sm-2">
+                          <label for="popup-border-radius">{{ text_border_radius }}</label>
+                          <input type="number" id="popup-border-radius" name="popup_border_radius" class="form-control" max="30" min="0" value="{{ popup_border_radius }}" placeholder="{{ text_default }}">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-3 control-label">{{ text_font_color }}</label>
+                        <div class="col-sm-4">
+                          <label for="plain-text-color">{{ text_plain_text }}</label>
+                          <input type="text" id="plain-text-color" name="plain_text_color" class="form-control color" data-control="hue" value="{{ plain_text_color }}" placeholder="{{ text_default }}">
+                        </div>
+                        <div class="col-sm-4">
+                          <label for="link-color">{{ text_link }}</label>
+                          <input type="text" id="link-color" name="link_color" class="form-control color" data-control="hue" value="{{ link_color }}" placeholder="{{ text_default }}">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-3 control-label">{{ text_image_border_style }}</label>
+                        <div class="col-sm-4">
+                          <label for="image-border-color">{{ text_border_color }}</label>
+                          <input type="text" id="image-border-color" name="image_border_color" class="form-control color" data-control="hue" value="{{ image_border_color }}" placeholder="{{ text_default }}">
+                        </div>
+                        <div class="col-sm-2">
+                          <label for="image-border-size">{{ text_border_size }}</label>
+                          <input type="number" id="image-border-size" name="image_border_size" class="form-control" max="30" min="0" value="{{ image_border_size }}" placeholder="{{ text_default }}">
+                        </div>
+                        <div class="col-sm-2">
+                          <label for="image-border-radius">{{ text_border_radius }}</label>
+                          <input type="number" id="image-border-radius" name="image_border_radius" class="form-control" max="30" min="0" value="{{ image_border_radius }}" placeholder="{{ text_default }}">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-3 control-label">{{ text_primary_buttons }}</label>
+                        <div class="col-sm-4">
+                          <label for="buttons-bg-color">{{ text_bg_color }}</label>
+                          <input type="text" id="buttons-bg-color" name="buttons_bg_color" class="form-control color" data-control="hue" value="{{ buttons_bg_color }}" placeholder="{{ text_default }}">
+                        </div>
+                        <div class="col-sm-4">
+                          <label for="buttons-font-color">{{ text_font_color }}</label>
+                          <input type="text" id="buttons-font-color" name="buttons_font_color" class="form-control color" data-control="hue" value="{{ buttons_font_color }}" placeholder="{{ text_default }}">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-3 control-label">{{ entry_button_default }}</label>
+                        <div class="col-sm-4">
+                          <label for="button-default-bg-color">{{ text_bg_color }}</label>
+                          <input type="text" id="button-default-bg-color" name="button_default_bg_color" class="form-control color" data-control="hue" value="{{ button_default_bg_color }}" placeholder="{{ text_default }}">
+                        </div>
+                        <div class="col-sm-4">
+                          <label for="button-default-font-color">{{ text_font_color }}</label>
+                          <input type="text" id="button-default-font-color" name="button_default_font_color" class="form-control color" data-control="hue" value="{{ button_default_font_color }}" placeholder="{{ text_default }}">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-3 control-label">{{ entry_btn_in_cart }}</label>
+                        <div class="col-sm-4">
+                          <label for="button-in-cart-bg-color">{{ text_bg_color }}</label>
+                          <input type="text" id="button-in-cart-bg-color" name="btn_in_cart_bg_color" class="form-control color" data-control="hue" value="{{ btn_in_cart_bg_color }}" placeholder="{{ text_default }}">
+                        </div>
+                        <div class="col-sm-4">
+                          <label for="button-in-cart-font-color">{{ text_font_color }}</label>
+                          <input type="text" id="button-in-cart-font-color" name="btn_in_cart_font_color" class="form-control color" data-control="hue" value="{{ btn_in_cart_font_color }}" placeholder="{{ text_default }}">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label class="col-sm-3 control-label"><span data-toggle="tooltip" title="{{ text_other_buttons }}">{{ text_border_radius }}</span></label>
+                        <div class="col-sm-4">
+                          <input type="number" name="btn_border_radius" class="form-control" max="40" min="0" value="{{ btn_border_radius }}" placeholder="{{ text_default }}">
+                        </div>
+                      </div>
+                    </fieldset>
+                  </div>
+                  <fieldset>
+                    <legend class="pqv-legend">{{ text_additional_styles }}</legend>
+                    <div class="form-group">
+                      <label class="col-sm-3 control-label">{{ text_custom_css }}</label>
+                      <div class="col-sm-8">
+                        <textarea name="custom_css" placeholder="{{ text_custom_css_placeholder }}" class="form-control" rows="10">{{ custom_css is defined ? custom_css : '' }}</textarea>
+                      </div>
+                    </div>
+                  </fieldset>
+                </div>
+                <!-- Support Tab -->
+                <div class="tab-pane" id="tab-support">
+                  <fieldset>
+                    <legend class="apc-legend">{{ tab_support }}</legend>
+                    <div class="form-group">
+                      <label class="col-sm-3 control-label">{{ text_about }}</label>
+                      <div class="col-sm-9">
+                        <h4>{{ heading_title }}</h4>
+                        <p>{{ text_module_version }}: {{ module_version }}</p>
+                        <p>{{ text_author }}: {{ copyright }}</p>
+                        <p>{{ text_homepage }}: <a href="{{ homepage }}" target="_blank"><strong>{{ homepage }}</strong></a></p>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-3 control-label">{{ text_need_help }}</label>
+                      <div class="col-sm-9">
+                        <p>{{ text_contact_us }} <a href="{{ support_href }}" target="_blank"><strong>{{ support_email }}</strong></a></p>
+                        <p>{{ text_provide_credentials }}</p>
+                      </div>
+                    </div>
+                  </fieldset>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $("#apply").on("click", function() {
+    $.ajax({
+      type: "post",
+      data: $("form").serialize(),
+      url: "{{ apply_url }}",
+      dataType: "json",
+      beforeSend: function() {
+        $("form").fadeTo('slow', 0.5);
+      },
+      complete: function() {
+        $("form").fadeTo('slow', 1);
+      },
+      success: function(json) {
+        $('.alert-success, .alert-danger, .text-danger').remove();
+        if (json['error']) {
+          $('#content > .container-fluid').prepend('<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+        }
+        if (json['success']) {
+          setTimeout(function() {
+            $('#content > .container-fluid').prepend('<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+          }, 1000);
+        }
+      },
+      error: function() {
+        location.reload();
+      }
+    })
+  });
+
+  function miniColorsInit() {
+    $('.color').each(function() {
+      $(this).minicolors({
+        format: $(this).attr('data-format') || 'hex',
+        opacity: $(this).attr('data-opacity') || false,
+        theme: 'bootstrap',
+        swatches: [
+          '#ea2222', '#ff9800', '#ffeb3b', '#36bf31', '#19d2e3', '#2196f3', '#bf27d6',
+          '#000000', '#444444', '#666666', '#999999', '#bbbbbb', '#eeeeee', '#ffffff',
+        ],
+      });
+    });
+  }
+
+  $(document).ready(function() {
+    $(".language-tab").find("a:first").tab("show");
+    miniColorsInit();
+
+    $("#btn-select-all").on("click", function() {
+      $(this).parent().find("input[type='checkbox']").prop("checked", true);
+    });
+
+    $("#btn-unselect-all").on("click", function() {
+      $(this).parent().find("input[type='checkbox']").prop("checked", false);
+    });
+  });
+</script>
+{{ footer }} 

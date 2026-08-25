@@ -1,0 +1,151 @@
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        /* billing_aramex_cities and  shipping_aramex_cities */
+        var type = '{{ type }}';
+        var button = '{{ button }}';
+        var aramex_allow = '{{ aramex_allow }}';
+
+        /* block script running*/
+        if(aramex_allow == 0){
+            return false;
+        }
+
+        var shippingAramexCitiesObj;
+        var shipping_aramex_cities_temp;
+        var billing_aramex_cities = '';
+        var shipping_aramex_cities = billing_aramex_cities;
+
+
+        jQuery( type ).find("input[name^='city']").after('<div id="aramex_loader" style="height:31px; width:31px; display:none;"></div>');
+        shipping_aramex_cities_temp = shipping_aramex_cities;
+
+        shippingAramexCitiesObj = AutoSearchControls(type, shipping_aramex_cities);
+        jQuery( type  ).find("select[name^='country_id']").change(function () {
+            getAllCitiesJson( type , shippingAramexCitiesObj);
+        });
+        getAllCitiesJson(type, shippingAramexCitiesObj);
+
+        function AutoSearchControls(type, search_city) {
+
+            return jQuery( type ).find("input[name^='city']")
+                .autocomplete({
+                    minLength: 3,
+                    scroll: true,
+                    source: function (req, responseFn) {
+                        var re = $.ui.autocomplete.escapeRegex(req.term);
+                        var matcher = new RegExp("^" + re, "i");
+                        var a = jQuery.grep(search_city, function (item, index) {
+                            return matcher.test(item);
+                        });
+                        responseFn(a);
+                    },
+                    search: function (event, ui) {
+                        jQuery('.checkout-index-index .ui-autocomplete').css('display', 'none');
+                        jQuery(type + ' #aramex_loader').css('display', 'block');
+                    },
+                    response: function (event, ui) {
+                        var temp_arr = [];
+                        jQuery(ui.content).each(function (i, v) {
+                            temp_arr.push(v.value);
+                        });
+                        jQuery(type + ' #aramex_loader').css('display', 'none');
+                        return temp_arr;
+                    }
+                });
+        }
+
+        function getAllCitiesJson(type, aramexCitiesObj) {
+            var country_code = jQuery( type ).find("select[name^='country_id']").val();
+            var url_check = "{{ url_autosities }}&country_code=" + country_code;
+            shipping_aramex_cities_temp = '';
+            aramexCitiesObj.autocomplete("option", "source", url_check);
+        }
+
+
+        /* make validation */
+        bindIvents(type, button);
+        function bindIvents(type, button) {
+            jQuery( type ).find("input[name^='city']").blur(function () {
+                addressApiValidation(type, button);
+            });
+            jQuery( type ).find("select[name^='zone_id']").blur(function () {
+                addressApiValidation(type, button);
+            });
+            jQuery( type  ).find("input[name^='postcode']").blur(function () {
+                addressApiValidation(type, button);
+            });
+        }
+
+        addRequired(type);
+        function addRequired(type) {
+            jQuery( type ).find("input[name^='city']").prev().addClass('required-aramex');
+            jQuery( type ).find("input[name^='postcode']").prev().addClass('required-aramex');
+
+            if (jQuery( type ).find("input[name^='city']").parent(). prev().hasClass("control-label")) {
+                jQuery( type ).find("input[name^='city']").parent(). prev().addClass('required-aramex');
+            }
+            if (jQuery( type ).find("input[name^='postcode']").parent(). prev().hasClass("control-label")) {
+                jQuery( type ).find("input[name^='postcode']").parent(). prev().addClass('required-aramex');
+            }
+
+        }
+        jQuery( type ).find("select[name^='country_id']").change(function () {
+            addRequired(type);
+        });
+        function addressApiValidation(type, button) {
+            var chk_city = jQuery( type  ).find("input[name^='city']").val();
+            var chk_region_id = jQuery( type ).find("select[name^='zone_id']").val();
+            var chk_postcode = jQuery( type ).find("input[name^='postcode']").val();
+            var country_code = jQuery( type  ).find("select[name^='country_id']").val();
+            if (chk_region_id == '' || chk_city == '' || chk_postcode == '' ) {
+                return false;
+            } else {
+                jQuery( button ).prop("disabled", true);
+                jQuery( button ).button('loading');
+                jQuery.ajax({
+                    url: "{{ url_applyvalidation }}",
+                    data: {city: chk_city, post_code: chk_postcode, country_code: country_code},
+                    type: 'Post',
+                    success: function (result) {
+                        var response = jQuery.parseJSON(result);
+                        if (!(response.suggestedAddresses) && response.message != '' && response.message !== undefined) {
+                            if (response.message.indexOf("City") != -1) {
+                                jQuery( type ).find("input[name^='city']").val("");
+                            }
+                            if (response.message.indexOf("zip") != -1) {
+                                jQuery( type ).find("input[name^='postcode']").val("");
+                            }
+                        } else if (response.suggestedAddresses) {
+                            jQuery( type ).find("input[name^='city']").val(response.suggestedAddresses.City);
+                        }
+                        if(response.message !== undefined){
+                            alert(response.message);
+                        }
+                        jQuery( button ).prop("disabled", false);
+                        jQuery( button ).button('reset');
+                    }
+                })
+            }
+        }
+
+    });
+</script>
+<style>
+    #aramex_loader {
+        background-image: url({{ aramex_loader }});
+    }
+    .ui-autocomplete {
+        max-height: 200px;
+        overflow-y: auto;
+        /* prevent horizontal scrollbar */
+        overflow-x: hidden;
+        /* add padding to account for vertical scrollbar */
+    }
+
+    .required-aramex:before {
+        content: '* '!important;
+        color: #F00!important;
+        font-weight: bold!important;
+    }
+</style>

@@ -1,0 +1,98 @@
+<div id="xlogin" class="login-panel-bg">
+<div id="loginPage" class="login-section">
+<div id="login-tabs" class="tabbable">
+<ul class="nav nav-tabs">
+<li class="login-step active">
+	<a data-target="#panel-countrycode" data-toggle="tab">{{ heading_countrycode }}</a>
+</li>
+</ul>
+</div>
+<div class="tab-content">
+<div class="tab-pane active" id="panel-countrycode"> 
+            <div class="row">
+              <div class="col-md-12">
+              <form role="form" id="form_countrycode" action="#" autocomplete="off" method="post" novalidate enctype="multipart/form-data">
+               <input type="hidden" name="country_code" id="input_country_code" />              
+               <div id="xlogin-panel">
+               	  {{ text_countrycode_subheading }}
+               	  {% if display_old %}
+               	  <div class="group">                    
+                    <input type="text" name="old_telephone" value="{{ telephone }}" disabled readonly class="inputMaterial disabled readonly">
+                    <label for="telephone">{{ text_countrycode_oldtelephone_label }}</label>
+                  </div> 
+                  {% endif %}
+                  <div class="group">                    
+                    <input type="{{ type }}" name="telephone" id="input-telephone" {{ maxlength ?'maxlength="' ~ maxlength ~ '"':'' }} class="inputMaterial{{ numeric ?' numeric':'' }}{{ is_mask ?' mask':'' }}" required>
+                    <label for="telephone">{{ telephone_title }}</label>
+                    <span class="required"></span>
+                  </div>                           
+                    <div class="buttons">
+         				<input type="submit" value="{{ button_country_submit }}" id="button-country-code" data-loading-text="Loading..." class="btn btn-success width100" />
+       				</div>
+       				</div>     				       
+       				</form>
+              </div>
+            </div>  
+               
+			<div class="clearfix"></div>
+</div>			
+</div>	             
+</div>
+</div>
+{% if is_mask %}
+<script type="text/javascript" src="catalog/view/javascript/xtensions/stylesheet/bs/js/jquery.maskedinput.min.js"></script>
+<script type="text/javascript">
+jQuery(function($){
+	$("#form_countrycode #input-telephone").mask("{{ mask }}");	      
+});
+</script>
+{% endif %}
+<script type="text/javascript" src="catalog/view/javascript/xtensions/stylesheet/bs/js/xcustom.js"></script>
+<script type="text/javascript">
+$('[data-toggle="tooltip"]').tooltip();
+$(function () {
+	  $('[data-toggle="tooltip"]').tooltip();
+})
+</script>
+<script type="text/javascript">
+var hasCountryCode = true;
+var inputTelephone = document.querySelector("#input-telephone");
+var xiti = window.intlTelInput(inputTelephone, {
+    	autoHideDialCode: false,
+    	nationalMode: false,
+    	autoFormat: false,
+    	formatOnDisplay: false,
+    	autoPlaceholder: false,
+    	separateDialCode: true,
+    	{% if isMobile and only_top_countries %}
+			dropdownContainer:document.querySelector("#regular-field-telephone"),
+	    {% endif %}
+    	{% if all_countries %}
+    		onlyCountries: [{{ all_countries }}],
+    	{% endif %}
+    	{% if top_countries %}
+    		preferredCountries: [{{ top_countries }}],
+    	{% endif %}
+	  	utilsScript: "catalog/view/javascript/xtensions/countrycode/js/utils.js" // just for formatting/placeholders etc
+});
+</script>
+{% if only_top_countries %}
+<style type="text/css">
+.intl-tel-input .country-list {
+  min-width: 400px;
+}
+.intl-tel-input .country-list .divider {
+    display: none;
+}
+.intl-tel-input .country-list .country.standard {
+    display: none;
+}
+.iti-mobile .intl-tel-input.iti-container {
+    display: contents;
+}
+.iti-mobile .intl-tel-input .country-list {
+    max-height: initial;
+    width: 100%;
+}
+</style>
+{% endif %}

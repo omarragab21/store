@@ -1,0 +1,151 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="settings-form" class="btn btn-primary" data-toggle="tooltip" title="{{ button_save }}"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel_link }}" data-toggle="tooltip" title="{{ cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+      </div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ edit_module_settings }}</h3>
+      </div>
+      <div class="panel-body">
+        <center>
+          {% if success %}
+          <div class="alert alert-success"><i class="fa fa-check-circle"></i> {{ success }}
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+          </div>
+          {% endif %}
+          {% if errors %}
+           {% for error in errors %}
+            <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error }}
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+           {% endfor %}
+          {% endif %}
+        </center>
+        <div class="box">
+          <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab-general-settings" data-toggle="tab"><i class="fa fa-database"></i> &nbsp; {{ general_settings }}</a></li>
+            <li><a href="#tab-support" data-toggle="tab"><i class="fa fa-info-circle"></i> &nbsp; {{ support }}</a></li>
+          </ul>
+
+          <div class="tab-content">
+            <div class="tab-pane active" id="tab-general-settings">
+              <form action="{{ action }}" method="post" class="form-horizontal" id="settings-form">
+                <div class="form-group">
+                  <div class="col-sm-3">
+                    <ul class="nav nav-pills nav-stacked col-sm-offset-3 col-sm-9 text-right">
+                      {% for page_name, setting_names in module_settings %}
+                        <li class="{{ loop.first ? 'active' : '' }}">
+                          <a href="#tab-{{ page_name }}" data-toggle="tab">{{ text[page_name] }}</a>
+                        </li>
+                      {% endfor %}
+                    </ul>
+                  </div>
+                  <div class="col-sm-9">
+                    <div class="tab-content">
+
+                      {% for page_name, setting_names in module_settings %}
+                      <div id="tab-{{ page_name }}" class="tab-pane {{ loop.first ? 'active' : '' }}">
+
+                        <div class="col-sm-12 bordered-tab">
+
+                          {% for setting_name in setting_names %}
+                            {% set setting_value = current_settings[page_name][setting_name] %}
+
+                            {% if setting_name == 'limit_by' %}
+                              {% set setting_key = 'settings[' ~ page_name ~ '][' ~ setting_name ~ ']' %}
+                              <div class="form-group">
+                                <label>{{ restrict_products_display_by }}:</label><br>
+                                <div class="radio clearfix">
+                                  <label class="col-sm-3">
+                                    <input type="radio" name="{{ setting_key }}" value=""
+                                           {{ setting_value == "" ? 'checked' : '' }} >
+                                    {{ do_not_restrict }}
+                                  </label>
+                                </div>
+                                <div class="radio clearfix">
+                                  <label class="col-sm-3">
+                                    <input type="radio" name="{{ setting_key }}" value="quantity" class="pull-left"
+                                           {{ setting_value == "quantity" ? 'checked' : '' }} >
+                                    {{ by_quantity }}
+                                  </label>
+                                  <div class="col-sm-5">
+                                    <div class="input-group">
+                                      <input type="number" name="settings[{{ page_name }}][max_quantity]" class="form-control text-center"
+                                             value="{{ current_settings[page_name]['max_quantity'] }}" >
+                                      <span class="input-group-addon">{{ max_products_quantity }}</span>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="radio clearfix">
+                                  <label class="col-sm-3">
+                                    <input type="radio" name="{{ setting_key }}" value="last_months" class="pull-left"
+                                           {{ setting_value == "last_months" ? 'checked' : '' }} >
+                                    {{ by_last_x_months }}
+                                  </label>
+                                  <div class="col-sm-5">
+                                    <div class="input-group">
+                                      <input type="number" name="settings[{{ page_name }}][last_x_months]"
+                                             value="{{ current_settings[page_name]['last_x_months'] }}"
+                                             class="form-control text-center">
+                                      <span class="input-group-addon">{{ months }}</span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            {% endif %}
+                          {% endfor %}
+                        </div>
+                        
+                      </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+
+                <hr>
+                <div class="form-group">
+                  <label class="col-sm-5 control-label">{{ enable_compatibility_with_money_maker }}</label>
+                  <div class="col-sm-3">
+                    <input type="checkbox" name="settings[enable_compatibility_with_money_maker]" value='1'
+                           {{ current_settings.enable_compatibility_with_money_maker ? 'checked' : '' }} />
+                  </div>
+                </div>
+                
+                <hr>
+                <div class="form-group text-right">
+                  <div class="col-sm-12">
+                    <button type="submit" class="btn btn-primary">{{ save_settings }}</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="tab-pane" id="tab-support">
+              <iframe src="{{ link_to_support }}" frameborder="0" style="height: 100vh;" height="100%" width="100%"></iframe>
+            </div>
+          </div>
+        </div>{# .box #}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .bordered-tab {
+    border: 1px solid #ddd;
+    padding-left: 25px;
+  }
+</style>
+{{ footer }}

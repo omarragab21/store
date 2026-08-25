@@ -1,0 +1,37 @@
+[27-Jul-2021 05:02:21 UTC] PHP Fatal error:  Uncaught Exception: Error: Could not load template adaptor twig! in /home/mohamedefadh/public_html/nhal/system/library/template.php:28
+Stack trace:
+#0 /home/mohamedefadh/public_html/nhal/system/storage/modification/system/engine/loader.php(119): Template->__construct('twig')
+#1 /home/mohamedefadh/public_html/nhal/admin/controller/extension/dashboard/activity.php(118): Loader->view('extension/dashb...', Array)
+#2 /home/mohamedefadh/public_html/nhal/system/storage/modification/system/engine/action.php(79): ControllerExtensionDashboardActivity->dashboard(Array)
+#3 /home/mohamedefadh/public_html/nhal/system/storage/modification/system/engine/loader.php(48): Action->execute(Object(Registry), Array)
+#4 /home/mohamedefadh/public_html/nhal/admin/controller/common/dashboard.php(40): Loader->controller('extension/dashb...')
+#5 /home/mohamedefadh/public_html/nhal/system/storage/modification/system/engine/action.php(79): ControllerCommonDashboard->index()
+#6 /home/mohamedefadh/public_html/nhal/admin/controller/startup/ro in /home/mohamedefadh/public_html/nhal/system/library/template.php on line 28
+[28-Jul-2021 17:17:40 UTC] PHP Fatal error:  Uncaught Exception: Error: Table 'mohamedefadh_nhal.oc_cart' doesn't exist<br />Error No: 1146<br />DELETE FROM oc_cart WHERE (api_id > '0' OR customer_id = '0') AND date_added < DATE_SUB(NOW(), INTERVAL 1 HOUR) in /home/mohamedefadh/public_html/nhal/system/library/db/mysqli.php:40
+Stack trace:
+#0 /home/mohamedefadh/public_html/nhal/system/library/db.php(45): DB\MySQLi->query('DELETE FROM oc_...')
+#1 /home/mohamedefadh/public_html/nhal/system/storage/modification/system/library/cart/cart.php(18): DB->query('DELETE FROM oc_...')
+#2 /home/mohamedefadh/public_html/nhal/admin/controller/startup/startup.php(56): Cart\Cart->__construct(Object(Registry))
+#3 /home/mohamedefadh/public_html/nhal/vqmod/vqcache/vq2-system_storage_modification_system_engine_action.php(79): ControllerStartupStartup->index()
+#4 /home/mohamedefadh/public_html/nhal/system/storage/modification/system/engine/router.php(72): Action->execute(Object(Registry))
+#5 /home/mohamedefadh/public_html/nhal/system/storage/modification/system/engine/router. in /home/mohamedefadh/public_html/nhal/system/library/db/mysqli.php on line 40
+[30-Oct-2021 19:38:27 UTC] PHP Fatal error:  Uncaught Error: Call to a member function getUser() on null in /home/mohamedefadh/public_html/bargs/system/storage/modification/admin/controller/common/column_left.php:123
+Stack trace:
+#0 /home/mohamedefadh/public_html/bargs/vqmod/vqcache/vq2-system_storage_modification_system_engine_action.php(79): ControllerCommonColumnLeft->index(Array)
+#1 /home/mohamedefadh/public_html/bargs/vqmod/vqcache/vq2-system_storage_modification_system_engine_loader.php(48): Action->execute(Object(Registry), Array)
+#2 /home/mohamedefadh/public_html/bargs/admin/controller/customerpartner/topsearch.php(180): Loader->controller('common/column_l...')
+#3 /home/mohamedefadh/public_html/bargs/admin/controller/customerpartner/topsearch.php(83): ControllerCustomerpartnerTopsearch->_getAllCommonController()
+#4 /home/mohamedefadh/public_html/bargs/vqmod/vqcache/vq2-system_storage_modification_system_engine_action.php(79): ControllerCustomerpartnerTopsearch->index()
+#5 /home/mohamedefadh/public_html/bargs/admin/controller/startup/router.php(2 in /home/mohamedefadh/public_html/bargs/system/storage/modification/admin/controller/common/column_left.php on line 123
+[09-Nov-2021 14:24:33 UTC] PHP Fatal error:  Uncaught Error: Call to a member function getUser() on null in /home/brgssa/storage/modification/admin/controller/common/column_left.php:123
+Stack trace:
+#0 /home/brgssa/storage/modification/system/engine/action.php(79): ControllerCommonColumnLeft->index(Array)
+#1 /home/brgssa/storage/modification/system/engine/loader.php(48): Action->execute(Object(Registry), Array)
+#2 /home/brgssa/public_html/admin/controller/customerpartner/topsearch.php(180): Loader->controller('common/column_l...')
+#3 /home/brgssa/public_html/admin/controller/customerpartner/topsearch.php(83): ControllerCustomerpartnerTopsearch->_getAllCommonController()
+#4 /home/brgssa/storage/modification/system/engine/action.php(79): ControllerCustomerpartnerTopsearch->index()
+#5 /home/brgssa/public_html/admin/controller/startup/router.php(26): Action->execute(Object(Registry), Array)
+#6 /home/brgssa/storage/modification/system/engine/action.php(79): ControllerStartupRouter->index()
+#7 /home/brgssa/storage/modification/system/engine/router.php(72): Ac in /home/brgssa/storage/modification/admin/controller/common/column_left.php on line 123
+[12-Nov-2021 22:04:50 UTC] PHP Warning:  require_once(/home/brgssa/public_html/system/startup.php): failed to open stream: No such file or directory in /home/ma/public_html/ef3/admin/index.php on line 21
+[12-Nov-2021 22:04:50 UTC] PHP Fatal error:  require_once(): Failed opening required '/home/brgssa/public_html/system/startup.php' (include_path='.:/opt/cpanel/ea-php71/root/usr/share/pear') in /home/ma/public_html/ef3/admin/index.php on line 21

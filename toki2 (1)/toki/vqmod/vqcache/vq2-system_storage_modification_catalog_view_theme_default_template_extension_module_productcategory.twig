@@ -1,0 +1,136 @@
+<div class="container">
+{% for category in categories %}
+<div class="row">
+<div class="haed-item category_products category_products{{ module }}">
+	<h2>{{ category.name }}</h2>
+  <a class="head-item-btn" href="{{ category['href'] }}"><span>{{ heading_best_all }}</span></a>
+</div>
+
+
+        <div id="category_products{{ module }}" class=" swiper-viewport" dir="{{ direction }}">
+                    <div id="carousel-category_products{{ module }}" class="swiper-container">
+                        <div class="swiper-wrapper main-products-caro">
+
+
+	  {% for product in category.products %}
+    <div class="swiper-slide"> 
+  <div class="product-layout ">
+    <div class="product-thumb transition">
+
+        {% if (product and product.product_id) %}
+        <div class="product-quick-view-data" data-pid="{{ product.product_id }}"></div>
+        {% endif %}
+
+                                        <div class="image">
+{% if (product['special']) %}<div class="ribbon"><span>  {{ product['percent'] }}</span></div>{% endif %}
+                                            <a href="{{ product.href }}">
+                                                <img src="{{ product.thumb }}" alt="{{ product.name }}"  title="{{ product.name }}" class="img-responsive"/>
+                                            </a>
+
+                                            <button type="button" class="wish" data-toggle="tooltip"  title="{{ button_wishlist }}" onclick="wishlist.add('{{ product.product_id }}');"><i class="fa fa-heart-o"></i></button>
+
+                                            {% if product.express > 0 %}
+                                                {% if direction == 'rtl' %}
+                                                <img class="express" src="catalog/view/theme/default/stylesheet/express-ar.png">
+                                                 {% else %} 
+                                                 <img class="express" src="catalog/view/theme/default/stylesheet/express-en.png">
+                                                 {% endif %}
+                                            {% endif %}
+                                        </div>
+                                        <div class="product-thumb-content">
+                                            <div class="caption">
+<p class="p-cat"> <a href="{{ product['category_link'] }}">{{ product['category_adi'] }}</a></p> 
+                                                <h4><a href="{{ product.href }}">{{ product.name }}</a></h4>
+
+
+                                                {# <p>{{ product.description }}</p> #}
+                                                
+                                                <div class="caption-cont">
+
+                                                    {% if product.price %}
+                                                        <p class="price"> 
+                                                            {% if not product.special %}
+                                                                {{ product.price }}
+                                                            {% else %} 
+                                                            <span class="price-new">{{ product.special }}</span>
+                                                                <span class="price-old">{{ product.price }}</span> {% endif %}
+                                                            {% if product.tax %} <span
+                                                                    class="price-tax">  </span> {% endif %}
+                                                        </p>
+                                                    {% endif %}
+                                                    
+                                                </div>
+                                                <div class="bottom_pro">
+                                                <div class="button-group">
+                                                    <button type="button" class="add_cart" onclick="cart.add('{{ product.product_id }}');" >
+                                                        <span>{{ button_cart }}</span>
+                                                    </button>
+
+
+                                                </div>
+                                                 <div class="rating">
+                                                    {% if product.rating > 0 %}
+                                                       {{ product.rating }} <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"></i><i class="fa fa-star-o fa-stack-2x"></i></span> 
+                                                       <span class="reviews_num">({{ product.reviews_num }})</span>
+                                                    {% else %} 
+                                                                <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"></i></span> 
+                                                    {% endif %}
+                     
+                                                </div>
+                                                    </div>
+
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+  </div>
+</div>
+  {% endfor %}
+</div></div>
+
+ <!-- <div class="swiper-pagination carousel-same-products"></div>
+            <div class="swiper-pager">
+                <div class="swiper-button-next "></div>
+                <div class="swiper-button-prev "></div>
+          </div> -->
+
+
+</div>
+</div>
+{% endfor %}
+</div>
+
+
+<script type="text/javascript"><!--
+        $('#carousel-category_products{{ module }}').swiper({
+        mode: 'horizontal',
+                slidesPerView: 5,
+                // pagination: '.special0',
+                paginationClickable: false,
+                nextButton: '#category_products{{ module }} .swiper-button-next',
+                prevButton: '#category_products{{ module }} .swiper-button-prev',
+                spaceBetween: 0,
+                autoplay: 3000,
+                speed: 700,
+
+
+                autoplayDisableOnInteraction: true,
+                loop: false,
+                breakpoints: {
+                    // when window width is <= 499px
+                    768: {
+                        slidesPerView: 3,
+                        spaceBetween: 0,
+
+                    },
+                    499: {
+                        slidesPerView: 2,
+                        spaceBetween: 0,
+
+                    },
+                }
+        });
+        --></script>
+
+

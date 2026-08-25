@@ -1,0 +1,116 @@
+{% if redirect is not defined or redirect is empty %}
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="../../catalog/view/theme/default/stylesheet/stylesheet.css"/>
+    {% for style in styles %}
+        <link rel="{{ style.rel }}" type="text/css" href="{{ style.href }}" media="{{ style.media }}"/>
+    {% endfor %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    {% for script in scripts %}
+        <script type="text/javascript" src="{{ script }}"></script>
+    {% endfor %}
+
+    <div class="payment" {% if autosubmit %} style="visibility: hidden" {% endif %}>{{ payment }}</div>
+
+    {% if autosubmit %}
+        <script type="text/javascript">
+       
+            $(document).ready(function () {
+                
+                $(".btn").click();
+                if ($('.btn').attr('href')) {
+                    window.location.href = $('.btn').attr('href');
+                }
+            });
+        </script>
+    {% else %}
+        <script type="text/javascript">
+            $('.checkout-content').slideDown(0);
+        </script>
+    {% endif %}
+{% else %}
+    <script type="text/javascript"><!--
+    location = '{{ redirect }}';
+    //--></script>
+{% endif %}
+<script type="text/javascript">
+    
+         // $(document).ready(function () {
+         //               setTimeout(function () {
+         //           $('.payment .btn').wrapInner('<span>Confirm</span>');
+         //        }, 100);
+         //         });
+
+          $(document).ready(function () {
+                       setTimeout(function () {
+                    $(".payment .btn").val("Confirm");
+                }, 100);
+                 });
+</script>
+
+<style type="text/css">
+    .payment{
+        position: absolute;
+        margin: 0;
+        width: 80%;
+        text-align: left;
+        transition: all 0.4s;
+        top: 50%;
+        left: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }
+    .payment span{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }
+    .payment .btn{
+        position: relative;
+        font-weight: bold;
+        font-size: 36px;
+        padding: 14px 120px;
+        color: #fff !important;
+        height: auto !IMPORTANT;
+    }
+    .payment p{
+        font-size: 30px;
+        line-height: 1.5em;
+        text-align: center;
+        margin-bottom: 45px;
+    }
+    label{
+        font-size: 30px !important;
+        margin-bottom: 10px;
+    }
+    select{
+        font-size: 30px !important;
+        height: 100px  !important;
+        direction: ltr;
+    }
+    .row > div{
+        margin-bottom: 30px;
+    }
+    input{
+        font-size: 30px !important;
+        height: 100px  !important;
+        direction: ltr;
+    }
+    .pull-right{
+        float: none !important;
+        display: table;
+        margin: 0 auto;
+    }
+    .col-xs-6:last-child{
+        float: none;
+        margin: 0 auto 50px;
+    }
+</style>
+
+
+
+
+

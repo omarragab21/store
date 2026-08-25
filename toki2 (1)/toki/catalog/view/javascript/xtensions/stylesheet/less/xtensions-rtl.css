@@ -1,0 +1,329 @@
+.bs-wizard > .bs-wizard-step:first-child > .progress {
+  left: 0;
+  right: 50%;
+}
+.bs-wizard > .bs-wizard-step:nth-child(2) > .progress {
+  left: 0;
+  right: 50%;
+}
+.lborder {
+  border-left: 0;
+  border-right: 1px solid #ddd;
+}
+.text-right {
+  text-align: left !important;
+}
+.tabs-left>li {
+  border-left: 0px solid #ddd;
+  border-right: 1px solid #ddd;
+}
+.tabs-left>li.active>a,
+.tabs-left>li.active>a:hover,
+.tabs-left>li.active>a:focus {
+  border-right-color: #128c3a;
+  border-left: 0 !important;
+  border-right: 4px solid;
+}
+.dropdown-menu {
+  right: auto;
+  left: 0;
+}
+.group label {
+  left: inherit;
+  right: 5px;
+}
+.group.has-error .inputMaterial+.xerror,
+.intl-tel-input.has-error .inputMaterial+.xerror {
+  text-align: right !important;
+}
+.group.has-error .inputMaterial+.xerror::before,
+.intl-tel-input.has-error .inputMaterial+.xerror::before {
+  margin-left: 5px;
+  margin-right: 0;
+}
+#existingAddress .panel.panel-default .panel-heading .radio label,
+#existingAddress .panel.panel-default .panel-footer .radio label {
+  text-align: right !important;
+}
+#addressPage .col-md-9 .panel.panel-default .panel-body span {
+  float: right !important;
+  text-align: right !important;
+}
+#addressPage .col-md-9 .panel.panel-default .panel-body span+span {
+  text-align: left !important;
+}
+.group-twenty-five,
+.group-thirty,
+.group-twenty,
+.group-fourth,
+.group-half {
+  float: right !important;
+}
+.group-twenty-five.group-left,
+.group-twenty-five.group-middle,
+.group-thirty.group-left,
+.group-thirty.group-middle,
+.group-twenty.group-left,
+.group-twenty.group-middle,
+.group-fourth.group-left,
+.group-fourth.group-middle,
+.group-half.group-left,
+.group-half.group-middle {
+  padding-right: 0;
+  padding-left: 15px;
+}
+.group select.inputMaterial+label+labelselect::before,
+.group select.inputMaterial+span+label+labelselect::before {
+  right: inherit;
+  left: 32px;
+}
+.group select.inputMaterial+label+labelselect::after,
+.group select.inputMaterial+span+label+labelselect::after {
+  right: inherit;
+  left: 17px;
+}
+.pull-right {
+  float: left !important;
+}
+.pull-left {
+  float: right !important;
+}
+.xcart .media-heading,
+.xcart a.optionLink {
+  float: right !important;
+}
+.width50 {
+  float: right;
+}
+.panel-green1 input.inputMaterial {
+  border-style: solid;
+  border-width: 1px;
+  border-bottom-right-radius: 4px;
+  border-top-right-radius: 4px;
+  border-left: 0;
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+}
+a.heading-panel {
+  margin-left: 0;
+  margin-right: 25px;
+}
+a.heading-panel:before {
+  left: 0px;
+  right: 10px;
+  margin-right: 0px;
+  margin-left: 10px;
+}
+a.heading-panel[aria-expanded="true"]::after {
+  left: 0;
+  right: 17px;
+}
+.payment_images {
+  right: inherit;
+  left: 5px;
+}
+.text-left {
+  text-align: right !important;
+}
+.modal.fixed .modal-dialog h4 {
+  text-align: right;
+}
+.modal.fixed .modal-dialog {
+  text-align: right;
+}
+.payment_images.is_list {
+  right: inherit;
+  left: 10px;
+}
+.tabs-left >li {
+  margin-right: 0;
+  margin-left: -1px;
+}
+.tabs-left >li >a {
+  padding: 23px 12px 23px 70px;
+}
+.pside-bar {
+  border-right: 0;
+  border-left-style: solid;
+  border-left-width: 1px;
+  border-left-color: #ddd;
+}
+.editcart.plus,
+.editcart.xremove,
+.editcart.xwishlist {
+  border-right: 0;
+  border-left: 1px solid #ddd;
+}
+.editcart:last-child {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-left: 1px solid #ddd;
+}
+.input-group-addon:first-child {
+  border-right: 1px solid #ddd;
+}
+.panel-address .panel-address-body .address-list label.address-label input {
+  margin-right: 0;
+  margin-left: 15px;
+  float: right;
+}
+.panel-address .panel-address-body .address-list label.address-label span.add_delete {
+  padding-left: 0;
+  padding-right: 33px;
+}
+#xcart .alert-success.alert-small button.close {
+  right: inherit;
+  left: 5px;
+}
+.panel-address .panel-address-body .address-list label.address-label.selected {
+  border-left: 0;
+  border-right: 4px solid #6e7a93;
+}
+.large-pull-right {
+  float: left !important;
+}
+.large-pull-right.paddingright0 {
+  padding-left: 0;
+  padding-right: 15px;
+}
+.agreeText label.checkbox {
+  padding-right: 10px;
+}
+.agreeText label.checkbox input[type=checkbox].input-checkbox {
+  right: -15px;
+  margin-right: 0;
+}
+.checkbox.is_checkbox input[type=checkbox].input-checkbox {
+  position: absolute;
+}
+.info-back-checkout.checkbox.is_checkbox label {
+  padding-right: 20px;
+  position: relative;
+}
+.info-back-checkout.checkbox.is_checkbox label input[type=checkbox].input-checkbox {
+  right: -5px;
+  margin-right: 0;
+  top: -2px;
+}
+.panel-address .panel-address-body .address-list label.address-label span.address-string {
+  float: right !important;
+}
+.group label>span.required .is_floating_tooltip {
+  margin-left: 0px;
+  margin-right: 15px;
+}
+.group label>span .is_floating_tooltip {
+  margin-left: 0px;
+  margin-right: 5px;
+  padding-right: 0px;
+  padding-left: 15px;
+}
+.form-group .checkbox {
+  padding-right: 5px;
+}
+.form-group .checkbox input[type=checkbox].input-checkbox {
+  margin-left: 0px;
+  margin-right: 0px;
+  top: -3px;
+  right: 0;
+}
+.form-group.custom-field label.control-label {
+  left: initial;
+}
+.form-group label>span.required .is_floating_tooltip {
+  margin-left: inherit;
+  margin-right: 15px;
+}
+.form-group label>span .is_floating_tooltip {
+  margin-left: initial;
+  margin-right: 5px;
+  padding-right: initial;
+  padding-left: 15px;
+}
+@media (max-width: 991px) {
+  .large-pull-right.paddingright0 {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+@media (max-width: 450px) {
+  .panel-address .panel-address-body .address-list label.address-label input {
+    margin-left: 10px;
+  }
+  .panel-address .panel-address-body .address-list label.address-label span.add_delete {
+    padding-right: 28px;
+  }
+}
+@media (max-width: 335px) {
+  .panel-address .panel-address-body .address-list label.address-label input {
+    margin-left: 5px;
+  }
+  .panel-address .panel-address-body .address-list label.address-label span.add_delete {
+    padding-right: 23px;
+  }
+}
+.group .intl-tel-input+label {
+  left: inherit;
+  right: 50px;
+  padding: 0px 5px 0 10px;
+}
+.intl-tel-input.allow-dropdown .flag-container,
+.intl-tel-input.separate-dial-code .flag-container {
+  left: auto;
+  right: 0;
+}
+.intl-tel-input .selected-flag .iti-arrow {
+  left: 6px;
+  right: inherit;
+}
+.intl-tel-input .selected-flag {
+  padding: 0 8px 0 0;
+}
+.intl-tel-input.separate-dial-code.iti-sdc-2 input,
+.intl-tel-input.separate-dial-code.iti-sdc-2 input[type=text],
+.intl-tel-input.separate-dial-code.iti-sdc-2 input[type=tel] {
+  padding-left: 0;
+  padding-right: 59px;
+}
+.intl-tel-input.separate-dial-code.allow-dropdown.iti-sdc-2 input,
+.intl-tel-input.separate-dial-code.allow-dropdown.iti-sdc-2 input[type=text],
+.intl-tel-input.separate-dial-code.allow-dropdown.iti-sdc-2 input[type=tel] {
+  padding-left: 0;
+  padding-right: 59px;
+}
+.intl-tel-input.separate-dial-code.iti-sdc-3 input,
+.intl-tel-input.separate-dial-code.iti-sdc-3 input[type=text],
+.intl-tel-input.separate-dial-code.iti-sdc-3 input[type=tel] {
+  padding-left: 0;
+  padding-right: 59px;
+}
+.intl-tel-input.separate-dial-code.allow-dropdown.iti-sdc-3 input,
+.intl-tel-input.separate-dial-code.allow-dropdown.iti-sdc-3 input[type=text],
+.intl-tel-input.separate-dial-code.allow-dropdown.iti-sdc-3 input[type=tel] {
+  padding-left: 0;
+  padding-right: 59px;
+}
+.intl-tel-input.separate-dial-code.iti-sdc-4 input,
+.intl-tel-input.separate-dial-code.iti-sdc-4 input[type=text],
+.intl-tel-input.separate-dial-code.iti-sdc-4 input[type=tel] {
+  padding-left: 0;
+  padding-right: 59px;
+}
+.intl-tel-input.separate-dial-code.allow-dropdown.iti-sdc-4 input,
+.intl-tel-input.separate-dial-code.allow-dropdown.iti-sdc-4 input[type=text],
+.intl-tel-input.separate-dial-code.allow-dropdown.iti-sdc-4 input[type=tel] {
+  padding-left: 0;
+  padding-right: 59px;
+}
+.intl-tel-input.separate-dial-code.iti-sdc-5 input,
+.intl-tel-input.separate-dial-code.iti-sdc-5 input[type=text],
+.intl-tel-input.separate-dial-code.iti-sdc-5 input[type=tel] {
+  padding-left: 0;
+  padding-right: 59px;
+}
+.intl-tel-input.separate-dial-code.allow-dropdown.iti-sdc-5 input,
+.intl-tel-input.separate-dial-code.allow-dropdown.iti-sdc-5 input[type=text],
+.intl-tel-input.separate-dial-code.allow-dropdown.iti-sdc-5 input[type=tel] {
+  padding-left: 0;
+  padding-right: 59px;
+}

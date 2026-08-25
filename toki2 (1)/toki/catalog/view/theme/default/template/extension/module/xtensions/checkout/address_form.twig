@@ -1,0 +1,104 @@
+{% if  address_modal %}
+<div id="addressModal{{ is_edit?'_edit': '' }}" class="modal fixed xmargin"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">    
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">{{ is_edit?text_edit_address_heading:text_new_address_heading }}</h4>
+      </div>
+      <div class="modal-body">
+{% endif %}      
+    	<div id="{{ is_edit?'editLoader':'addLoader' }}" class="loader"></div>    
+          <form id="{{ is_edit?'form_edit_address':'form_add_address' }}" role="form" action="#" autocomplete="off" method="post" novalidate enctype="multipart/form-data">
+          	{% if not address_modal%}
+          	<h3 class="address_title">{{ is_edit?text_edit_address_heading:text_new_address_heading }}</h3>
+          	{% endif %}          
+            <fieldset id="address_fields{{ is_edit?'_edit':'' }}">
+            {% if is_edit%}
+            <input type="hidden" name="edit_address_id" value="{{ address.address_id }}" />
+            {% endif %}
+            {% for html in fields.checkout %}
+          		{{ html }}
+          	 {% endfor %}
+                 
+    	  {% if addresses  and  not is_edit  or  is_edit  and  not default%}
+    	  <div class="form-group">
+    	  <div class="checkbox_options">
+    	  <label for="default_checkbox{{ is_edit?'_edit': ''}}" class="pointer checkbox is_checkbox">
+    	  <input type="checkbox" class="input-checkbox" id="default_checkbox{{ is_edit?'_edit': ''}}" name="default" value="1" ><span>{{ entry_default }}</span></label>          
+          </div>
+          </div>
+           {% else %}
+            <input type="hidden" name="default" value="1" />
+      	   {% endif %}          
+        	<div class="{{ addresses?'group-half group-left group':'' }}">
+        	<div class="buttons">
+         			<input type="submit" value="{{ is_edit?text_save:addresses?text_save:button_continue }}" id="{{ is_edit?'editAdress':'addAdress' }}" data-loading-text="Loading..." class="btn btn-success width100" />
+				</div>     	
+			</div> 			
+			{% if addresses %}
+        	<div class="group-half group-right group">
+        	<div class="progress progress-continue-disabled">
+        		{% if address_modal%}
+                    <div data-dismiss="modal" class="progress-bar" role="progressbar" id="cancelAddress" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                     <span>{{ text_cancel }}</span>
+                    </div>
+                    {% else %}
+                    <div onclick="toggleElement('#existingAddressPanel, {{ is_edit?'#editAddressFields':'#addressfields' }}');$('.col-md-3.lborder').removeClass('xblur');" class="progress-bar" role="progressbar" id="cancelAddress" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                     <span>{{ text_cancel }}</span>
+                    </div>                      
+                    {% endif %}                     
+                  </div>
+			</div> 			
+			 {% endif %}
+            </fieldset>
+          </form>
+{% if address_modal%}          
+      </div>     
+    </div>
+  </div>
+</div>
+{% endif %}
+{% if is_edit %}  
+ {% if mask %}  
+<script type="text/javascript" src="catalog/view/javascript/xtensions/stylesheet/bs/js/jquery.maskedinput.min.js"></script>
+<script type="text/javascript">
+ jQuery(function($){
+ {% for key, value in mask %}	      
+ $("#address_fields_edit #{{ key }}").mask("{{ value }}");	      
+ {% endfor %}
+ });
+ </script>
+{% endif %}
+<script type="text/javascript" src="catalog/view/javascript/xtensions/stylesheet/bs/js/xcustom.js"></script> 
+ <script type="text/javascript">
+ $(function () {
+     $('[data-toggle="tooltip"]').tooltip();
+ });
+$('.date').datetimepicker({
+	language: '{{ datepicker }}',
+	pickTime: false
+});
+$('.time').datetimepicker({
+	language: '{{ datepicker }}',
+	pickDate: false
+});
+$('.datetime').datetimepicker({
+	language: '{{ datepicker }}',
+	pickDate: true,
+	pickTime: true
+});
+$('#address_fields_edit {{display_country?'select': 'input'}}[name=\'country_id\']').bind('change', function() {
+	loadZone({{ "'address_fields_edit',this.value,'"~zone_id~"','"~text_select~"','"~text_none ~"'" }});	
+});
+$('#address_fields_edit {{display_country?'select': 'input'}}[name=\'country_id\']').trigger('change');
+	
+</script>
+{% else %}
+<script type="text/javascript">
+$('#address_fields {{display_country?'select': 'input'}}[name=\'country_id\']').bind('change', function() {
+	loadZone({{ "'address_fields',this.value,'"~zone_id~"','"~text_select~"','"~text_none ~"'" }});	
+});
+$('#address_fields {{display_country?'select': 'input'}}[name=\'country_id\']').trigger('change');
+ </script>
+ {% endif %}	 

@@ -1,0 +1,178 @@
+{{ header }}
+<div id="container" class="container j-container">
+  <ul class="breadcrumb">
+    {% for breadcrumb in breadcrumbs %}
+      <li itemscope itemtype="http://data-vocabulary.org/Breadcrumb"><a href="{{ breadcrumb.href }}" itemprop="url"><span itemprop="title">{{ breadcrumb.text }}</span></a></li>
+    {% endfor %}
+  </ul>
+  {% if error_warning %}
+    <div class="alert alert-danger warning"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}</div>
+  {% endif %}
+  <div class="row">{{ column_left }}{{ column_right }}
+    {% if column_left and column_right %}
+      {% set class = 'col-sm-6' %}
+    {% elseif column_left or column_right %}
+      {% set class = 'col-sm-9' %}
+    {% else %}
+      {% set class = 'col-sm-12' %}
+    {% endif %}
+    <div id="content" class="{{ class }}">
+      <h1 class="heading-title">{{ heading_title }}</h1>
+      {{ content_top }}
+      <div class="content">
+      <form action="{{ action }}" method="post" id="edit_form" enctype="multipart/form-data" class="form-horizontal">
+      	  <input type="hidden" name="country_code" id="input_country_code" />        
+          <fieldset id="account">
+          <h2 class="secondary-title">{{ text_your_details }}</h2>
+          {% for html in fields['account'] %}
+          {{ html }}
+          {% endfor %}
+        </fieldset>
+        <div class="buttons clearfix">
+          <div class="pull-left"><a href="{{ back }}" class="btn btn-default">{{ button_back }}</a></div>
+          <div class="pull-right">
+            <input type="submit" id="btn-edit-account" value="{{ button_continue }}" class="btn btn-primary" />
+          </div>
+        </div>
+      </form>
+      </div>
+      {{ content_bottom }}</div>
+  </div>
+</div>
+{% if mask %}
+<script type="text/javascript" src="catalog/view/javascript/xtensions/stylesheet/bs/js/jquery.maskedinput.min.js"></script>
+<script type="text/javascript">
+ jQuery(function($){
+ {% for key, value in mask %}	      
+ $("#{{ key }}").mask("{{ value }}");	      
+ {% endfor %}
+ });
+ </script>
+{% endif %}
+<script type="text/javascript" src="catalog/view/javascript/xtensions/stylesheet/bs/js/xcustom.js"></script>
+<script type="text/javascript"><!--
+$('button[id^=\'button-custom-field\']').on('click', function() {
+	var node = this;
+	
+	$('#form-upload').remove();
+	
+	$('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input type="file" name="file" /></form>');
+
+	$('#form-upload input[name=\'file\']').trigger('click');
+
+	if (typeof timer != 'undefined') {
+    	clearInterval(timer);
+	}
+
+	timer = setInterval(function() {
+		if ($('#form-upload input[name=\'file\']').val() != '') {
+			clearInterval(timer);
+			
+			$.ajax({
+				url: 'index.php?route=tool/upload',
+				type: 'post',		
+				dataType: 'json',
+				data: new FormData($('#form-upload')[0]),
+				cache: false,
+				contentType: false,
+				processData: false,		
+				beforeSend: function() {
+					$(node).button('loading');
+				},
+				complete: function() {
+					$(node).button('reset');			
+				},		
+				success: function(json) {
+					$(node).parent().find('.text-danger').remove();
+					
+					if (json['error']) {
+						$(node).parent().find('input').after('<div class="text-danger">' + json['error'] + '</div>');
+					}
+								
+					if (json['success']) {
+						alert(json['success']);
+						
+						$(node).parent().find('input').val(json['code']);
+					}
+				},			
+				error: function(xhr, ajaxOptions, thrownError) {
+					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+				}
+			});
+		}
+	}, 500);
+});
+//--></script> 
+<script type="text/javascript">
+$('.date').datetimepicker({
+	language: '{{ datepicker }}',
+	pickTime: false
+});
+$('.datetime').datetimepicker({
+	language: '{{ datepicker }}',
+	pickDate: true,
+	pickTime: true
+});
+$('.time').datetimepicker({
+	language: '{{ datepicker }}',
+	pickDate: false
+});
+</script>
+{% if show_country_code %}
+<script type="text/javascript">
+var inputTelephhone = document.querySelector("#input-telephone");
+xiti = window.intlTelInput(inputTelephhone, {
+    	autoHideDialCode: false,
+    	nationalMode: false,
+    	autoFormat: false,
+    	formatOnDisplay: false,
+    	autoPlaceholder: false,
+    	separateDialCode:true,
+    	hiddenInput:'full_telephone',
+    	{% if isMobile and only_top_countries %}
+    		dropdownContainer:document.querySelector("#regular-field-telephone"),
+    	{% endif %}
+    	{% if all_countries %}
+    		onlyCountries: [{{ all_countries }}],
+    	{% endif %}	
+    	{% if top_countries %}
+    		preferredCountries: [{{ top_countries }}],
+    	{% endif %}
+	  utilsScript: "catalog/view/javascript/xtensions/countrycode/js/utils.js" // just for formatting/placeholders etc
+});
+$('#edit_form').submit( function(ev) {
+    ev.preventDefault();
+    $("#input_country_code").val(xiti.getSelectedCountryData().dialCode);
+    $(this).unbind('submit').submit()
+});
+</script>
+{% if only_top_countries %}
+<style type="text/css">
+.intl-tel-input .country-list {
+  min-width: 400px;
+}
+.intl-tel-input .country-list .divider {
+    display: none;
+}
+.intl-tel-input .country-list .country.standard {
+    display: none;
+}
+.iti-mobile .intl-tel-input.iti-container {
+    display: contents;
+}
+.iti-mobile .intl-tel-input .country-list {
+    max-height: initial;
+    width: 100%;
+}
+</style>
+{% endif %}
+{% endif %}
+<style type="text/css">
+label.control-label span:after {
+	font-family: FontAwesome;
+	color: #1E91CF;
+	content: "\f059";
+	margin-left: 4px;
+}
+</style>
+{{ footer }}

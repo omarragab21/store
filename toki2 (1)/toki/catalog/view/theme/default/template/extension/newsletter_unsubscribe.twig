@@ -1,0 +1,77 @@
+{{ header }} 
+<div class="container">
+  <div class="unsubscribe-success"></div>
+  <div class="row">
+  <div class="col-sm-12">
+    {% if (unsubscribe_logostatus == 1) %}
+      <img src="{{ logo }}" title="" class="img-thumbnail">
+    {% endif %} 
+    {% if (unsubscribe_titlestatus == 1) %}
+    <h2>{{ newsletter_unsubscribetitle_text }}</h2>
+    {% endif %}
+           <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+          <div id="addsubs">
+            {% if (unsubscribe_descstatus == 1) %}
+                <h4>{{ newsletter_unsubscribedesc_text }}</h4>
+            {% endif %} 
+
+            <div class="form-group">
+            <label class="col-sm-2 control-label">{{ text_reason }}</label>
+            <div class="col-sm-10">
+              {% for unsubscribe_reason in unsubscribe_reasons %} 
+              <div class="radio">
+                <label>
+                  <input type="radio" name="reason" value="{{ unsubscribe_reason['title'] }}" />
+                  {{ unsubscribe_reason['title'] }}</label>
+              </div>
+               {% endfor %} 
+            </div>
+          </div>
+
+            <div class="buttons clearfix">
+                <input type="button" value="{{ unsubscribe_confirmbtn_text }}" class="btn btn-primary" id="newsletter-unsubscribe" />
+            </div>
+
+            </div>
+     </form>
+    </div>
+  </div>
+</div>
+
+<script>
+$('#newsletter-unsubscribe').click(function(){
+
+  var successtext= '{{ unsubscribe_successmsg_text }}';
+  var errrormsgtext= '{{ unsubscribe_invalidmessage_text }}';
+  var code= '{{ code }}';
+    $.ajax({
+        url:'index.php?route=extension/newsletter_unsubscribe/addunsubscribe&code='+code,
+        type: 'post',
+        data:$('#addsubs input[type=\'radio\']:checked'),
+        dataType: 'json',
+        beforeSend: function() {
+          $('#newsletter-unsubscribe').button('loading');
+        },
+    complete: function() {
+   $('#newsletter-unsubscribe').button('reset');
+    },
+        success: function(json) {
+        if(json['error']){ 
+        $('.unsubscribe-success').html('<div class="alert alert-danger">' + errrormsgtext + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');       
+        
+        }
+
+
+      if (json['success']) {    
+          location.reload();
+
+        //$('.unsubscribe-success').html('<div class="alert alert-success">' + successtext + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+       // $('.alert-success').fadeOut(4000);
+      }
+  
+        }
+    });
+ });
+</script>
+
+{{ footer }} 

@@ -1,0 +1,39 @@
+<footer class="footer">
+<div class="container footerlogos">
+<!-- Footer -->
+<div class="row">
+<div class="col-md-8">
+<ul class="list-unstyled list-inline hidden-xs hidden-sm hidden-md">
+{% for image in payment_images %} 
+{% if image.url  %}<li><img src="{{ image.url }}" class="img-responsive"></li>{% endif %}                        
+{% endfor %} 
+</ul>
+</div>
+<div class="col-md-4 text-right{{ contact?' footercontact':' footernocontact' }}">
+{% if contact %} 
+<a class="text-muted" href="{{ contact }}">{{ text_contact }}</a>
+{% endif %} 
+{% if email or telephone  %} 
+{% if contact %}
+<br/>
+{% endif %} 
+{% if telephone %}<i class="fa fa-phone text-muted bold"></i><span class="text-muted bold">{{ telephone }}{% if email  %} / {% endif %}</span>{% endif %}{% if    email  %}<a href="mailto:{{ email }}" class="">{{ email }}</a>{% endif %} 
+{% endif %} 
+</div>
+</div>
+</div>
+{% if informations %}     
+<div class="col-md-12 policy">
+<p class="text-center text-muted">     
+|&nbsp;{% for information in informations %} 
+<a class="text-muted{{ link_modal?' agree':'' }}" href="{{ link_modal?information.modal_href:information.href }}" target="_newtab">{{ information.title }}</a>&nbsp;| 
+{% endfor %} 
+</p>
+</div>
+{% endif %} 
+</footer>
+
+            {{ _ocm_script }}
+        
+</body>
+</html>

@@ -1,0 +1,17 @@
+{{ header }} 
+<div class="container">
+  <div class="row">
+  <div class="col-sm-12 text-center">
+  {% if (newsletter_verifysuccessmsg_text is not empty) %}    
+    <h2>{{ newsletter_verifysuccessmsg_text }}</h2>
+    {% endif %} 
+    
+    {% if (unsubscribe_successmsg_text is not empty) %} 
+        <h2>{{ unsubscribe_successmsg_text }}</h2>
+    {% endif %} 
+
+    </div>
+  </div>
+</div>
+
+{{ footer }}

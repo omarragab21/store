@@ -1,0 +1,117 @@
+{% if (layout == 1) %} 
+<style type="text/css">
+    .horizontal-sreview .review-author {
+        font-size: 14px;
+    }
+    .horizontal-sreview .review-date-added {
+        color: #999;
+        margin-left: 10px;
+    }
+    .horizontal-sreview-all {
+        float: right;
+        margin: 0 25px 0 0;
+        width: 100%;
+        text-align: right;
+    }
+    .horizontal-sreview {
+        border: 1px solid #ddd;
+        margin-bottom: 20px;
+        overflow: auto;
+    }
+    .horizontal-sreview .caption {
+        padding: 15px 20px;
+        min-height: 100px;
+    }
+</style>
+{% if (heading_title) %} 
+<h3>{{ heading_title }}</h3>
+{% endif %} 
+<div class="row box-no-advanced">
+    {% for review in reviews %} 
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="horizontal-sreview transition">
+            <div class="caption review-caption">
+                <span class="review-author">{{ review['author'] }}</span>
+                <span class="review-job">{{ review['job'] }}</span>
+                <span class="review-date-added">{{ review['date_added'] }}</span>
+                <div class="rating">
+                    {% set i = 1 %}{% for i in i..5 %} 
+                    {% if (review['rating'] < i) %} 
+                <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"
+                                             style='color: #FC0;'></i></span>
+                    {% else %} 
+                <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"
+                                             style='color: #FC0;'></i><i
+                            class="fa fa-star-o fa-stack-2x"
+                            style='color: #E69500;'></i></span>
+                    {% endif %} 
+                    {% endfor %} 
+                </div>
+                <p>{{ review['text'] }}</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %} 
+    {% if (button_all) %} 
+    <div class="horizontal-sreview-all"><a href="{{ keyword }}">{{ button_all_text }}</a></div>
+    {% endif %} 
+</div>
+{% else %} 
+<style type="text/css">
+    .vertical-sreview .review-author {
+        font-size: 14px;
+    }
+    .vertical-sreview .review-date-added {
+        color: #999;
+        margin-left: 10px;
+    }
+    .vertical-sreview-all {
+        float: right;
+        margin: 0px 25px 0px 0px;
+        width: 100%;
+        text-align: right;
+    }
+    .vertical-sreview {
+        border: 1px solid #ddd;
+        margin-bottom: 20px;
+        overflow: auto;
+    }
+    .vertical-sreview .caption {
+        padding: 15px 20px;
+        min-height: 100px;
+    }
+</style>
+{% if (heading_title) %} 
+<h3>{{ heading_title }}</h3>
+{% endif %} 
+<div class="row">
+    {% for review in reviews %} 
+    <div class="product-layout col-lg-4 col-md-4 col-sm-6 col-xs-12">
+        <div class="vertical-sreview transition">
+            <div class="caption review-caption">
+                <span class="review-author">{{ review['author'] }}</span>
+                <span class="review-job">{{ review['job'] }}</span>
+                <span class="review-date-added">{{ review['date_added'] }}</span>
+                <div class="rating">
+                    {% set i = 1 %}{% for i in i..5 %} 
+                    {% if (review['rating'] < i) %} 
+                <span class="fa fa-stack"><i class="fa fa-star-o fa-stack-2x"
+                                             style='color: #FC0'></i></span>
+                    {% else %} 
+                <span class="fa fa-stack"><i class="fa fa-star fa-stack-2x"
+                                             style='color: #FC0;'></i><i
+                            class="fa fa-star-o fa-stack-2x"
+                            style='color: #E69500;'></i></span>
+                    {% endif %} 
+                    {% endfor %} 
+                </div>
+                <p>{{ review['text'] }}</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %} 
+    {% if (button_all) %} 
+    <div class="vertical-sreview-all"><a href="{{ keyword }}">{{ button_all_text }}</a></div>
+    {% endif %} 
+</div>
+{% endif %}

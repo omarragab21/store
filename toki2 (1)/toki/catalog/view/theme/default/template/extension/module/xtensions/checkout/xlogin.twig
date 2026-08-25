@@ -1,0 +1,370 @@
+<input type="hidden" name="account" id="account" value="{{ account }}" />
+{% if clean_login  %} 
+<div id="xlogin" class="login-panel-bg">
+<div id="loginPage" class="login-section">
+<div id="login-tabs" class="tabbable">
+<ul id="accountTabs" class="nav nav-tabs">
+{% if not only_guest_checkout %}
+<li class="login-step{{ account == 'login'?' active':'' }}" data-sort="{{ account_sort.login }}">
+	<a data-target="#panel-login" data-toggle="tab" account="login">{{ text_login }}</a>
+</li>
+<li class="register-step{{ account == 'register'?' active':'' }}" data-sort="{{ account_sort.register }}">
+	<a data-target="#panel-register" data-toggle="tab" account="register">{{ text_register }}</a>
+</li>
+{% endif %}
+{% if checkout_guest  %} 
+<li class="guest-step{{ account == 'guest'?' active':'' }}" data-sort="{{ account_sort.guest }}">
+	<a data-target="#panel-register" data-toggle="tab" account="guest">{{ text_guest }}</a>
+</li>
+{% endif %}
+</ul>
+</div>
+{{ xsocial|trim }} 
+<div class="tab-content">
+{% if not only_guest_checkout %}
+<div class="tab-pane {{ account == 'login'?'active':'' }}" id="panel-login"> 
+            <div class="row">
+              <div class="col-md-12">
+              <form role="form" id="form_login" action="#" autocomplete="off" method="post" novalidate enctype="multipart/form-data">              
+               <div id="xlogin-panel">
+               {% if   not xsocial|trim  %} 
+               <div class="section-heading">{{ text_login_heading }}</div>
+               {% endif %} 
+               <div class="group is_first">                    
+                    <input type="text" name="email" class="inputMaterial">
+                    <label for="email">{{ entry_email }}</label>
+                  </div>                 
+                    <div class="group">
+                      {% if   constant('false')  %} 
+					  {# this was supposed to be a fix to disable autofill in chrome and other browsers that ignore automplete #} 
+					  <input name="password" style="display: none;" type="password" />
+					  {% endif %}                      
+                      <input type="password" name="password" class="inputMaterial">
+                      <label>{{ entry_password }}</label>                      
+                    </div>
+                    <input type="hidden" name="account" id="account_login" class="account_form" value="{{ account }}" />                              
+                    <div class="buttons">
+         				<input type="submit" value="{{ button_continue }}" account="login" id="button-login" data-loading-text="Loading..." class="btn btn-success width100" />
+       				</div>
+       				</div>     				       
+       				</form>      				
+       				{{ smslogin|trim }}             
+              </div>
+            </div>  
+             <div class="footer-separator"><span class="pull-left"> <a href="{{ forgotten }}">{{ text_forgotten }}</a> </span>
+				<span class="pull-right"> <a class="pointer" onclick="$('#accountTabs.nav-tabs li.register-step a').click();">{{ text_account_new }}</a>
+			</span>
+			<div class="clearfix"></div>
+			</div>  
+			<div class="clearfix"></div>
+</div>
+{% endif %}
+<div class="tab-pane {{ account != 'login'?'active':'' }}" id="panel-register">             
+<div id="xregister-panel">
+            <div class="row" id="tab-register">
+              <div class="col-md-12" >  
+              <form role="form" id="form_register" autocomplete="off"  action="#" novalidate method="post" enctype="multipart/form-data">
+              <input type="hidden" name="country_code" id="input_country_code" />
+              <div class="section-heading hide_register">{{ text_guest_checkout }}</div>
+              {% if   not xsocial|trim  %} 
+              <div class="section-heading hide_guest">{{ text_account_new }}</div>
+              {% endif %} 
+              <input type="hidden" name="account" id="account_register" class="account_form" value="{{ account }}" />
+              {% for html in fields.checkout %} 
+          		{{ html }} 
+          	  {% endfor %}   
+          	  {% if   display_newsletter  %} 
+                  <div class="form-group hide_guest">
+                      <div class="checkbox is_checkbox">
+					  	<label for="newsletter"><input type="checkbox" class="input-checkbox" name="newsletter" value="1" id="newsletter" {{ newsletter?'checked="checked"':'' }}>{{ entry_newsletter }}</label>
+					  </div>
+                  </div>
+               {% endif %}  
+               {% if   text_agree  %} 
+                  <div id="xagreep" class="form-group hide_guest">
+                      <div class="checkbox is_checkbox">
+					  	<label id="xagree" for="agree"><input type="checkbox" class="input-checkbox" name="agree" value="1" id="agree">{{ text_agree }}</label>
+					  </div>
+                  </div>
+                {% endif %} 
+                {% if   captcha  %} 
+               	<div class="group {{ register_captcha?'':'hide_register' }} {{ checkout_guest and guest_captcha?'':'hide_guest' }}">
+			  		{{ captcha }} 
+			  	</div>
+			  	{% endif %} 
+                <div class="buttons">
+         		   <input type="submit" value="{{ button_continue }}" id="button-register" account="register" data-loading-text="Loading..." class="btn btn-success width100" />
+       			</div>
+              </form>
+              </div>
+            </div> 
+            {% if not only_guest_checkout %}
+             <div class="separator"></div>
+             <div class="text-center">  
+             <label class="text-separator">{{ text_account_already_checkout }}</label>
+             <a onclick="$('#accountTabs.nav-tabs li.login-step a').click();" class="btn btn btn-success width100" >{{ text_login }}</a>                                   
+             </div>
+             {% endif %}
+             </div>
+             </div>
+</div>              
+			             
+</div>
+</div>
+{% else %} 
+<div id="loginPage" class="container animated zoomIn">
+  <div class="row equal">
+    <div class="col-md-9">
+    <ul class="row hidden nav nav-pills nav-wizard hidden-xs">
+        	<li class="active"><a>{{ text_checkout_step_1 }}</a><div class="nav-arrow"></div></li>
+        	<li class="locked"><div class="nav-wedge"></div><a>{{ text_checkout_step_2 }}<i class="fa fa-lock"></i></a><div class="nav-arrow"></div></li>
+        	<li class="locked"><div class="nav-wedge"></div><a>{{ text_checkout_step_3 }}<i class="fa fa-lock"></i></a></li>
+    	</ul>
+    <div class="row">
+      <div class="col-md-3 nopadding">
+      <div class="pside-bar">        
+        <nav id="login-tabs" class="nav-sidebar">
+          <ul id="accountTabs" class="nav nav-tabs tabs-left">
+          {% if not only_guest_checkout %}
+            <li {% if   account == 'login'  %} {{ 'class="active"' }}{% endif %} data-sort="{{ account_sort.login }}">
+              <a data-target="#tab-login" data-toggle="tab" account="login">
+                <span>{{ text_login }}</span>
+              </a>
+            </li>
+            <li {% if   account == 'register'  %} {{ 'class="active"' }}{% endif %} data-sort="{{ account_sort.register }}">
+              <a data-target="#tab-register" data-toggle="tab" account="register">
+                <span>{{ text_register }}</span>
+              </a>
+            </li>
+            {% endif %}
+            {% if   checkout_guest  %}             
+            <li {% if   account == 'guest'  %} {{ 'class="active"' }}{% endif %} data-sort="{{ account_sort.guest }}">
+              <a data-target="#tab-register" data-toggle="tab" account="guest">
+                <span>{{ text_guest }}</span>
+              </a>
+            </li>
+           {% endif %} 
+          </ul>
+        </nav>
+      </div>
+      </div>
+      <!--col-md-3 ends-->
+      <div class="col-md-9">
+      {{ xsocial }} 
+        <div class="tab-content">
+        {% if not only_guest_checkout %}
+          <div class="tab-pane {% if   account == 'login'  %} {{ 'active' }}{% endif %}  text-style" id="tab-login">
+             
+            <div class="row">
+              {% if   not xsocial|trim  %} 
+              <div class="section-heading">{{ text_login_heading }}</div>
+              {% endif %} 
+              <div class="col-md-12">
+              <form role="form" id="form_login" action="#" autocomplete="off" method="post" novalidate enctype="multipart/form-data">              
+               <div id="xlogin-panel">
+               <div class="group is_first">                    
+                    <input type="text" name="email" class="inputMaterial">
+                    <label for="email">{{ entry_email }}</label>
+                  </div>                 
+                    <div class="group">
+                      {% if   constant('false')  %} 
+					  {# this was supposed to be a fix to disable autofill in chrome and other browsers that ignore automplete #} 
+					  <input name="password" style="display: none;" type="password" />
+					  {% endif %} 
+                      <input type="password" name="password" class="inputMaterial">
+                      <label>{{ entry_password }}</label>
+                      <a href="{{ forgotten }}">{{ text_forgotten }}</a>
+                    </div>
+                    <input type="hidden" name="account" id="account_login" class="account_form" value="{{ account }}" />                              
+                    <div class="buttons">
+         				<input type="submit" value="{{ button_continue }}" account="login" id="button-login" data-loading-text="Loading..." class="btn btn-success width100" />
+       				</div>
+       				</div>     				       
+       				</form>
+       				{{ smslogin|trim }}                  
+              </div>
+            </div>
+          </div>
+          {% endif %}
+          <div class="tab-pane {{ account in ['register','guest']?'active':'' }} text-style" id="tab-register">
+            <div class="row">
+              <div class="col-md-12" >  
+              <form role="form" id="form_register" autocomplete="off"  action="#" novalidate method="post" enctype="multipart/form-data">
+              <input type="hidden" name="country_code" id="input_country_code" />
+              <div class="section-heading hide_register">{{ text_guest_checkout }}</div>
+              {% if   not xsocial|trim  %} 
+              <div class="section-heading hide_guest">{{ text_account_new }}</div>
+              {% endif %} 
+              <input type="hidden" name="account" id="account_register" class="account_form" value="{{ account }}" />
+              {% for html in fields.checkout %} 
+          		{{ html }} 
+          	  {% endfor %}   
+          	  {% if   display_newsletter  %} 
+                  <div class="form-group hide_guest">
+                      <div class="checkbox is_checkbox">
+					  	<label for="newsletter"><input type="checkbox" class="input-checkbox" name="newsletter" value="1" id="newsletter" checked="checked">{{ entry_newsletter }}</label>
+					  </div>
+                  </div>
+               {% endif %}   
+               {% if   text_agree  %} 
+                  <div id="xagreep" class="form-group hide_guest">
+                      <div class="checkbox is_checkbox">
+					  	<label id="xagree" for="agree"><input type="checkbox" class="input-checkbox" name="agree" value="1" id="agree">{{ text_agree }}</label>
+					  </div>
+                  </div>
+			  {% endif %} 
+			  {% if   captcha  %} 
+			  <div class="group {{ register_captcha?'':'hide_register' }} {{ checkout_guest and guest_captcha?'':'hide_guest' }}">
+			  {{ captcha }} 
+			  </div>                
+			  {% endif %} 
+              <div class="buttons">
+         		<input type="submit" value="{{ button_continue }}" id="button-register" account="register" data-loading-text="Loading..." class="btn btn-success width100" />
+       		  </div>
+              </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+  <div class="col-md-3 lborder">
+  <div id="xcart" class="animated1 zoomIn1">{{ xcart }}</div>
+  <div id="options" class="animated fadeIn">{{ xoptions }}<div class="clearfix"></div></div>
+  <div id="totals" class="animated fadeIn">{{ xtotals }}</div>
+  </div>
+  </div>
+</div>
+{% endif %} 
+{% if mask  %} 
+<script type="text/javascript" src="catalog/view/javascript/xtensions/stylesheet/bs/js/jquery.maskedinput.min.js"></script>
+<script type="text/javascript">
+jQuery(function($){
+{% for key,value in mask %}	      
+$("#form_register #{{ key }}").mask("{{ value }}");	      
+{% endfor %}
+});
+</script>
+{% endif %} 
+<script type="text/javascript" src="catalog/view/javascript/xtensions/stylesheet/bs/js/xcustom.js"></script>  
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#accountTabs").append($("#accountTabs li").get().sort(function(a, b) {
+    return parseInt($(a).attr("data-sort").match(/\d+/), 10)
+         - parseInt($(b).attr("data-sort").match(/\d+/), 10);
+	}));
+});
+$('#tab-register input[name=\'customer_group_id\']').on('change', function() {
+	$.ajax({
+		url: 'index.php?route={{ xtensions_controller_path }}checkout/customfield&customer_group_id=' + this.value,
+		dataType: 'json',
+		success: function(json) {
+			$('#tab-register .custom-field').hide();
+			$('#tab-register .custom-field label span.fieldlabel').removeClass('required');			
+			for (i = 0; i < json.length; i++) {
+				custom_field = json[i];
+				$('#tab-register  #custom-field' + custom_field.custom_field_id).show();
+				if (custom_field.required) {					
+					$('#tab-register #custom-field' + custom_field.custom_field_id + ' label > span.fieldlabel').addClass('required');
+				}
+			}
+		},
+		error: function(xhr, ajaxOptions, thrownError) {
+			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+		}
+	});
+});
+$('#tab-register input[name=\'customer_group_id\']:checked').trigger('change');
+</script>
+<script type="text/javascript">
+$('[data-toggle="tooltip"]').tooltip();
+$(document).on("click", "#login-tabs [data-toggle='tab']", function(event) {        
+     $('.account_form').val($(this).attr('account'));
+     $('#account').val($(this).attr('account'));  
+     hide_guest();       
+});
+$(function () {
+	  $('[data-toggle="tooltip"]').tooltip();
+})
+function hide_guest(){
+	if($('#account').val() == 'guest'){
+		$('.hide_guest').hide();
+		$('.hide_register').show();
+		$('.hide_guest').each(function( index ) {
+			if ($(this).parent().hasClass('group-left') || $(this).parent().hasClass('group-middle') || $(this).parent().hasClass('group-right')) {
+				$(this).parent().hide();
+			}
+		});		
+	}else{
+		$('.hide_guest').show();
+		$('.hide_register').hide();
+		$('.hide_guest').each(function( index ) {
+			if ($(this).parent().hasClass('group-left') || $(this).parent().hasClass('group-middle') || $(this).parent().hasClass('group-right')) {
+				$(this).parent().show();
+			}
+		});		
+	}
+}
+hide_guest();
+</script>
+<script type="text/javascript">
+$('.date').datetimepicker({
+	language: '{{ datepicker }}',
+	pickTime: false
+});
+$('.time').datetimepicker({
+	language: '{{ datepicker }}',
+	pickDate: false
+});
+$('.datetime').datetimepicker({
+	language: '{{ datepicker }}',
+	pickDate: true,
+	pickTime: true
+});
+</script>
+{% if show_country_code %}
+<script type="text/javascript">
+var hasCountryCode = true;
+var inputTelephhone = document.querySelector("#input-telephone");
+var xiti = window.intlTelInput(inputTelephhone, {
+    	autoHideDialCode: false,
+    	nationalMode: false,
+    	autoFormat: false,
+    	formatOnDisplay: false,
+    	autoPlaceholder: false,
+    	separateDialCode:true,
+    	hiddenInput:'full_telephone',
+    	{% if isMobile and only_top_countries %}
+    		dropdownContainer:document.querySelector("#regular-field-telephone"),
+    	{% endif %}
+    	{% if all_countries %}
+    		onlyCountries: [{{ all_countries }}],
+    	{% endif %}	
+    	{% if top_countries %}
+    		preferredCountries: [{{ top_countries }}],
+    	{% endif %}
+	  utilsScript: "catalog/view/javascript/xtensions/countrycode/js/utils.js" // just for formatting/placeholders etc
+});
+</script>
+{% if only_top_countries %}
+<style type="text/css">
+#form_register .intl-tel-input .country-list {
+  min-width: 400px;
+}
+#form_register .intl-tel-input .country-list .divider {
+    display: none;
+}
+#form_register .intl-tel-input .country-list .country.standard {
+    display: none;
+}
+.iti-mobile .intl-tel-input.iti-container {
+    display: contents;
+}
+.iti-mobile .intl-tel-input .country-list {
+    max-height: initial;
+    width: 100%;
+}
+</style>
+{% endif %}
+{% endif %}

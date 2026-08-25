@@ -1,0 +1,43 @@
+@font-face {
+font-family: "Arial";
+src: url("../fonts/arial.ttf");
+src:url("../fonts/arial.woff") format("woff");
+}
+@font-face {
+font-family: "Arial Black";
+src: url("../fonts/arial_black.ttf");
+src:url("../fonts/arial_black.woff") format("woff");
+}
+@font-face {
+font-family: "Arquitecta";
+src: url("../fonts/arquitecta.ttf");
+src:url("../fonts/arquitecta.woff") format("woff");
+}
+@font-face {
+font-family: "Belinda";
+src: url("../fonts/belinda.ttf");
+src:url("../fonts/belinda.woff") format("woff");
+}
+@font-face {
+font-family: "Calibri Italic";
+src: url("../fonts/calibri_italic.ttf");
+src:url("../fonts/calibri_italic.woff") format("woff");
+}
+@font-face {
+font-family: "Cambria Regular";
+src: url("../fonts/cambria_w02_regular.ttf");
+src:url("../fonts/cambria_w02_regular.woff") format("woff");
+}
+@font-face {
+font-family: "Grafolita";
+src: url("../fonts/grafolita.ttf");
+src:url("../fonts/grafolita.woff") format("woff");
+}
+@font-face {
+font-family: "Kruti Dev 010";
+src: url("../fonts/Kruti_Dev_010.ttf");
+}
+@font-face {
+font-family: "Kruti Dev 070";
+src: url("../fonts/Kruti_Dev_070_Wide.ttf");
+}

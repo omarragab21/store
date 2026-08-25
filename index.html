@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>متجر وسوق توكي | Toki Store & Marketplace - شبيه نون</title>
+  <meta name="description" content="منصة ومتجر توكي الإلكتروني - سوق إلكتروني متعدد التجار وتخصيص المنتجات وشحن سريع لجميع مدن المملكة العربية السعودية ودول الخليج.">
+  
+  <!-- Google Fonts: Cairo -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Toki Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="image/catalog/demo/icon.png" type="image/png">
+</head>
+<body>
+
+  <!-- 1. Top Notice Bar -->
+  <div class="top-notice-bar">
+    <div>
+      <span>🚚 شحن سريع ومجاني للطلبات فوق <span class="highlight">200 ر.س</span> لجميع مناطق المملكة</span>
+    </div>
+    <div class="top-notice-links">
+      <a href="javascript:void(0)" onclick="openModal('apiExplorerModal')">⚡ مستكشف الـ API (Vercel)</a>
+      <a href="javascript:void(0)" onclick="openModal('dbExplorerModal')">🗄️ استعراض قاعدة البيانات (109 جدول)</a>
+      <a href="javascript:void(0)">📞 خدمة العملاء: 800-TOKI-CARE</a>
+    </div>
+  </div>
+
+  <!-- 2. Main Header -->
+  <header class="main-header">
+    <div class="header-container">
+      
+      <!-- Logo -->
+      <a class="logo-area" href="/">
+        <div class="logo-badge">TOKI توكي</div>
+        <div class="logo-text-group">
+          <span class="logo-title">متجر وسوق توكي</span>
+          <span class="logo-sub">سوق إلكتروني متكامل | شبيه نون</span>
+        </div>
+      </a>
+
+      <!-- Live Search -->
+      <div class="search-wrapper">
+        <div class="search-box">
+          <input type="text" id="searchInput" class="search-input" placeholder="ابحث عن المنتجات، الماركات، الجوالات، اللابتوبات..." autocomplete="off">
+          <button class="search-btn" onclick="handleSearch(document.getElementById('searchInput').value)">
+            🔍 بحث
+          </button>
+        </div>
+        <div id="searchSuggestions" class="search-suggestions"></div>
+      </div>
+
+      <!-- Header Actions -->
+      <div class="header-actions">
+        
+        <!-- Language Switcher -->
+        <select class="action-btn" onchange="setLanguage(this.value)" style="outline: none;">
+          <option value="ar" selected>🇸🇦 العربية (AR)</option>
+          <option value="en">🇺🇸 English (EN)</option>
+        </select>
+
+        <!-- Currency Switcher -->
+        <select class="action-btn" onchange="setCurrency(this.value)" style="outline: none;">
+          <option value="SAR" selected>🇸🇦 ر.س (SAR)</option>
+          <option value="USD">🇺🇸 $ (USD)</option>
+          <option value="AED">🇦🇪 د.إ (AED)</option>
+        </select>
+
+        <!-- Cart Button -->
+        <button class="action-btn cart-btn" onclick="openCartDrawer()">
+          🛒 السلة
+          <span id="cartBadge" class="cart-count-badge">0</span>
+        </button>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- 3. Sub-Nav Categories Bar -->
+  <nav class="sub-nav">
+    <div class="sub-nav-container">
+      <ul class="nav-links">
+        <li class="nav-link-item pill-highlight" onclick="filterByCategory(null)">⚡ جميع العروض</li>
+        <li class="nav-link-item" onclick="filterByCategory(57)">📱 الموبايلات</li>
+        <li class="nav-link-item" onclick="filterByCategory(62)">💻 الإلكترونيات</li>
+        <li class="nav-link-item" onclick="filterByCategory(73)">🖥️ اللابتوبات</li>
+        <li class="nav-link-item" onclick="filterByCategory(70)">🛒 السوبر ماركت</li>
+        <li class="nav-link-item" onclick="filterByCategory(61)">💄 الجمال والعناية</li>
+        <li class="nav-link-item" onclick="filterByCategory(74)">👗 الأزياء والموضة</li>
+        <li class="nav-link-item" onclick="filterByCategory(63)">📷 الكاميرات</li>
+        <li class="nav-link-item" onclick="filterByCategory(77)">🏷️ خصومات حتى 70%</li>
+        <li class="nav-link-item" onclick="openModal('apiExplorerModal')">🚀 API Serverless</li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- 4. Main Body Content -->
+  <main class="main-wrapper">
+
+    <!-- Hero Promotional Banner Slider -->
+    <section class="hero-grid">
+      <div class="slider-card">
+        <img id="sliderImg" class="slider-img" src="image/catalog/demo/banners/slider.png" alt="Toki Mega Sale" onerror="this.src='image/catalog/demo/banners/bann1.png'">
+        <div class="slider-overlay">
+          <div class="slider-title">مهرجان تخفيضات توكي الكبرى 🛍️</div>
+          <p>خصومات تصل إلى 60% على أحدث الهواتف الذكية والإلكترونيات مع شحن فوري</p>
+        </div>
+      </div>
+      <div class="side-promo-grid">
+        <div class="promo-card" onclick="filterByCategory(57)">
+          <img src="image/catalog/demo/banners/bann1.png" alt="Promo 1" onerror="this.src='image/catalog/phone.gif'">
+        </div>
+        <div class="promo-card" onclick="filterByCategory(62)">
+          <img src="image/catalog/demo/banners/bann2.png" alt="Promo 2" onerror="this.src='image/catalog/wat.gif'">
+        </div>
+      </div>
+    </section>
+
+    <!-- Categories Strip -->
+    <section>
+      <div class="section-title-wrap">
+        <h2 class="section-title">تسوق حسب الأقسام</h2>
+      </div>
+      <div id="categoriesStrip" class="categories-strip">
+        <!-- Injected dynamically via JS -->
+      </div>
+    </section>
+
+    <!-- Flash Deals Countdown Bar -->
+    <section class="flash-deals-banner">
+      <div class="flash-title-area">
+        <span class="flash-badge">⚡ عروض الفلاش</span>
+        <h3 style="font-size: 16px; font-weight: 800;">خصومات حصرية تنتهي قريباً! لا تفوت الفرصة</h3>
+      </div>
+      <div class="countdown-box">
+        <span style="font-size: 13px; font-weight: bold; margin-left: 8px;">متبقي على نهاية العرض:</span>
+        <span id="cdHours" class="time-digit">05</span> :
+        <span id="cdMinutes" class="time-digit">42</span> :
+        <span id="cdSeconds" class="time-digit">19</span>
+      </div>
+    </section>
+
+    <!-- Products Showcase Section -->
+    <section>
+      <div class="section-title-wrap">
+        <h2 class="section-title">أحدث المنتجات والعروض المميزة</h2>
+        <span id="productsCount" style="font-size: 13px; color: #64748b; font-weight: bold;"></span>
+      </div>
+      
+      <!-- Filter / Sort Toolbar -->
+      <div style="display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap;">
+        <button class="action-btn" onclick="renderProducts(allProducts)">🌟 الكل</button>
+        <button class="action-btn" onclick="renderProducts([...allProducts].sort((a,b) => (a.special_price_sar||a.price_sar) - (b.special_price_sar||b.price_sar)))">💸 الأقل سعراً</button>
+        <button class="action-btn" onclick="renderProducts([...allProducts].sort((a,b) => (b.special_price_sar||b.price_sar) - (a.special_price_sar||a.price_sar)))">💎 الأعلى سعراً</button>
+        <button class="action-btn" onclick="renderProducts([...allProducts].sort((a,b) => b.rating - a.rating))">⭐ الأعلى تقييماً</button>
+      </div>
+
+      <!-- Products Grid -->
+      <div id="productsGrid" class="products-grid">
+        <!-- Injected dynamically via JS -->
+      </div>
+    </section>
+
+    <!-- Multi-Vendor Marketplace Section -->
+    <section class="marketplace-section">
+      <div class="section-title-wrap">
+        <h2 class="section-title">متاجر وشركاء سوق توكي (Multi-Vendor Marketplace)</h2>
+      </div>
+      <div class="vendors-grid">
+        <div class="vendor-card">
+          <div class="vendor-avatar">🏪</div>
+          <div class="vendor-info">
+            <h4>متجر النخبة للإلكترونيات الذكية</h4>
+            <p>الرياض | ⭐ 4.9 (1,420 مبيعات) | تاجر موثق ذهبي 🥇</p>
+          </div>
+        </div>
+        <div class="vendor-card">
+          <div class="vendor-avatar">👗</div>
+          <div class="vendor-info">
+            <h4>عالم الموضة والأزياء الخليجية</h4>
+            <p>جدة | ⭐ 4.8 (850 مبيعات) | تاجر بلاتيني 💎</p>
+          </div>
+        </div>
+        <div class="vendor-card">
+          <div class="vendor-avatar">🎨</div>
+          <div class="vendor-info">
+            <h4>استوديو توكي للطباعة والتخصيص</h4>
+            <p>الدمام | ⭐ 5.0 (3,200 مبيعات) | المتجر الرسمي لتوكي 👑</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 5. Cart Drawer -->
+  <div id="cartDrawer" class="cart-drawer">
+    <div class="cart-header">
+      <h3 style="font-size: 16px; font-weight: 800;">🛍️ سلة المشتريات</h3>
+      <button style="background:none; border:none; font-size:20px; cursor:pointer;" onclick="closeCartDrawer()">✕</button>
+    </div>
+    <div id="cartItemsList" class="cart-items-list">
+      <!-- Injected via JS -->
+    </div>
+    <div class="cart-footer">
+      <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:6px;">
+        <span>المجموع الفرعي:</span>
+        <strong id="cartSubtotal">0.00 ر.س</strong>
+      </div>
+      <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:6px;">
+        <span>ضريبة القيمة المضافة (15%):</span>
+        <strong id="cartVat">0.00 ر.س</strong>
+      </div>
+      <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:8px;">
+        <span>تكلفة الشحن:</span>
+        <strong id="cartShipping">مجاني 🚚</strong>
+      </div>
+      <div style="display:flex; justify-content:space-between; font-size:16px; font-weight:900; padding-top:8px; border-top:1px solid #e2e8f0; margin-bottom:14px;">
+        <span>الإجمالي:</span>
+        <span id="cartTotal" style="color:#e11900;">0.00 ر.س</span>
+      </div>
+      <button class="add-to-cart-btn" style="padding: 12px;" onclick="openCheckoutModal()">
+        💳 متابعة إتمام الطلب والدفع
+      </button>
+    </div>
+  </div>
+
+  <!-- 6. Quick View Modal -->
+  <div id="quickViewModal" class="modal-overlay">
+    <div class="modal-box">
+      <button class="modal-close-btn" onclick="closeModal('quickViewModal')">✕</button>
+      <div id="quickViewContent">
+        <!-- Injected via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. One-Page Checkout Modal -->
+  <div id="checkoutModal" class="modal-overlay">
+    <div class="modal-box" style="max-width: 600px;">
+      <button class="modal-close-btn" onclick="closeModal('checkoutModal')">✕</button>
+      <h2 style="font-size: 18px; font-weight: 800; margin-bottom: 16px;">🚚 إتمام الشراء والتوصيل السريع</h2>
+      
+      <form id="checkoutForm" onsubmit="handlePlaceOrder(event)">
+        <div style="margin-bottom: 12px;">
+          <label style="display:block; font-size:12px; font-weight:bold; margin-bottom:4px;">الاسم الكامل *</label>
+          <input type="text" name="fullName" value="عمر رجب" required style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:6px; font-family:inherit;">
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+          <div>
+            <label style="display:block; font-size:12px; font-weight:bold; margin-bottom:4px;">البريد الإلكتروني *</label>
+            <input type="email" name="email" value="omarragab@example.com" required style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:6px; font-family:inherit;">
+          </div>
+          <div>
+            <label style="display:block; font-size:12px; font-weight:bold; margin-bottom:4px;">رقم الجوال *</label>
+            <input type="tel" name="phone" value="+966 50 123 4567" required style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:6px; font-family:inherit;">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+          <div>
+            <label style="display:block; font-size:12px; font-weight:bold; margin-bottom:4px;">المدينة *</label>
+            <select name="city" style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:6px; font-family:inherit;">
+              <option value="الرياض" selected>الرياض</option>
+              <option value="جدة">جدة</option>
+              <option value="الدمام">الدمام</option>
+              <option value="مكة المكرمة">مكة المكرمة</option>
+              <option value="المدينة المنورة">المدينة المنورة</option>
+              <option value="الخبر">الخبر</option>
+            </select>
+          </div>
+          <div>
+            <label style="display:block; font-size:12px; font-weight:bold; margin-bottom:4px;">شركة الشحن *</label>
+            <select name="shippingCourier" style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:6px; font-family:inherit;">
+              <option value="SMSA Express" selected>سمسا إكسبريس (SMSA)</option>
+              <option value="Aramex">أرامكس (Aramex)</option>
+              <option value="Toki Express">توصيل توكي الفوري</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 12px;">
+          <label style="display:block; font-size:12px; font-weight:bold; margin-bottom:4px;">عنوان التوصيل بالتفصيل *</label>
+          <input type="text" name="address" value="حي النخيل - طريق الملك فهد - مبنى 4" required style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:6px; font-family:inherit;">
+        </div>
+
+        <div style="margin-bottom: 16px;">
+          <label style="display:block; font-size:12px; font-weight:bold; margin-bottom:6px;">طريقة الدفع *</label>
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <label style="display:flex; align-items:center; gap:8px; font-size:13px; cursor:pointer;">
+              <input type="radio" name="paymentMethod" value="مدى / Apple Pay" checked> 💳 مدى / Apple Pay / فيزا (دفع إلكتروني آمن)
+            </label>
+            <label style="display:flex; align-items:center; gap:8px; font-size:13px; cursor:pointer;">
+              <input type="radio" name="paymentMethod" value="تابي (تقسيط على 4 دفعات)"> 🛍️ تابي Tabby (قسمها على 4 دفعات بدون فوائد)
+            </label>
+            <label style="display:flex; align-items:center; gap:8px; font-size:13px; cursor:pointer;">
+              <input type="radio" name="paymentMethod" value="الدفع عند الاستلام"> 💵 الدفع نقدياً عند الاستلام (COD)
+            </label>
+          </div>
+        </div>
+
+        <button type="submit" class="add-to-cart-btn" style="width: 100%; padding: 12px;">
+          🚀 تأكيد الطلب والدفع الفوري
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 8. Order Success / Invoice Modal -->
+  <div id="orderSuccessModal" class="modal-overlay">
+    <div class="modal-box" style="max-width: 500px;">
+      <div id="orderSuccessContent"></div>
+    </div>
+  </div>
+
+  <!-- 9. API Explorer Modal -->
+  <div id="apiExplorerModal" class="modal-overlay">
+    <div class="modal-box" style="max-width: 850px;">
+      <button class="modal-close-btn" onclick="closeModal('apiExplorerModal')">✕</button>
+      <h2 style="font-size: 18px; font-weight: 800; margin-bottom: 6px;">⚡ Vercel Serverless REST API Explorer</h2>
+      <p style="font-size: 13px; color: #64748b; margin-bottom: 14px;">اختبر جميع مسارات الـ API المستخرجة من قاعدة البيانات وتعمل بكفاءة على Vercel Serverless Functions:</p>
+      
+      <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px;">
+        <button class="action-btn" onclick="executeApiExplorer('/api/health')">GET /api/health</button>
+        <button class="action-btn" onclick="executeApiExplorer('/api/products')">GET /api/products</button>
+        <button class="action-btn" onclick="executeApiExplorer('/api/products/1')">GET /api/products/1</button>
+        <button class="action-btn" onclick="executeApiExplorer('/api/categories')">GET /api/categories</button>
+        <button class="action-btn" onclick="executeApiExplorer('/api/banners')">GET /api/banners</button>
+        <button class="action-btn" onclick="executeApiExplorer('/api/vendors')">GET /api/vendors</button>
+        <button class="action-btn" onclick="executeApiExplorer('/api/coupons')">GET /api/coupons</button>
+        <button class="action-btn" onclick="executeApiExplorer('/api/shipping')">GET /api/shipping</button>
+        <button class="action-btn" onclick="executeApiExplorer('/api/zones')">GET /api/zones</button>
+        <button class="action-btn" onclick="executeApiExplorer('/api/settings')">GET /api/settings</button>
+      </div>
+
+      <div style="font-size: 12px; font-weight: bold; margin-bottom: 6px;">
+        الرابط المستعلم عنه: <code id="apiUrlDisplay" style="color:#2563eb;">/api/health</code>
+      </div>
+
+      <pre id="apiResponseViewer" class="code-viewer">{ "message": "اضغط على أي زر أعلاه لتشغيل الاستعلام المباشر" }</pre>
+    </div>
+  </div>
+
+  <!-- 10. Database Explorer Modal (109 tables) -->
+  <div id="dbExplorerModal" class="modal-overlay">
+    <div class="modal-box" style="max-width: 850px;">
+      <button class="modal-close-btn" onclick="closeModal('dbExplorerModal')">✕</button>
+      <h2 style="font-size: 18px; font-weight: 800; margin-bottom: 6px;">🗄️ مستكشف جداول قاعدة البيانات المستخرجة من SQL</h2>
+      <p style="font-size: 13px; color: #64748b; margin-bottom: 14px;">تم استخراج 109 جدول كامل من ملف الـ SQL وتحويلها إلى JSON Dummy Data جاهزة للاستخدام بدون حاجة لخادم MySQL محلي:</p>
+      
+      <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px;">
+        <button class="action-btn" onclick="loadDbTable('tables')">📊 قائمة جميع الـ 109 جدول</button>
+        <button class="action-btn" onclick="loadDbTable('oc_product')">oc_product (المنتجات)</button>
+        <button class="action-btn" onclick="loadDbTable('oc_category')">oc_category (الأقسام)</button>
+        <button class="action-btn" onclick="loadDbTable('oc_banner')">oc_banner (البانرات)</button>
+        <button class="action-btn" onclick="loadDbTable('oc_customer')">oc_customer (العملاء)</button>
+        <button class="action-btn" onclick="loadDbTable('oc_order')">oc_order (الطلبات)</button>
+        <button class="action-btn" onclick="loadDbTable('oc_coupon')">oc_coupon (الكوبونات)</button>
+        <button class="action-btn" onclick="loadDbTable('oc_setting')">oc_setting (الإعدادات)</button>
+      </div>
+
+      <pre id="dbResponseViewer" class="code-viewer">{ "message": "اضغط على أي جدول لعرض محتوياته وسجلاته المستخرجة" }</pre>
+    </div>
+  </div>
+
+  <!-- 11. Main Footer -->
+  <footer class="main-footer">
+    <div class="footer-container">
+      <div class="footer-col">
+        <div class="logo-badge" style="display: inline-block; margin-bottom: 12px;">TOKI توكي</div>
+        <p style="font-size: 13px; line-height: 1.6;">منصة وسوق توكي للتجارة الإلكترونية وشحن البضائع والطباعة المخصصة. تجربة تسوق تحاكي كبرى المتاجر مع حلول دفع لوجستية متطورة.</p>
+      </div>
+      <div class="footer-col">
+        <h4>روابط سريعة</h4>
+        <ul>
+          <li><a href="/">الرئيسية والعروض</a></li>
+          <li><a href="javascript:void(0)" onclick="filterByCategory(57)">الموبايلات والإلكترونيات</a></li>
+          <li><a href="javascript:void(0)" onclick="filterByCategory(70)">السوبر ماركت والجمال</a></li>
+          <li><a href="javascript:void(0)" onclick="openModal('apiExplorerModal')">مستكشف الـ API</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>خدمة العملاء</h4>
+        <ul>
+          <li><a href="javascript:void(0)">تتبع الشحنات</a></li>
+          <li><a href="javascript:void(0)">سياسة الاسترجاع والضمان</a></li>
+          <li><a href="javascript:void(0)">الشروط والأحكام</a></li>
+          <li><a href="javascript:void(0)">حسابات التجار والشركاء</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>طرق الدفع والشحن المعتمدة</h4>
+        <p style="font-size: 12px; margin-bottom: 10px;">مدى • أبل باي • فيزا • ماستركارد • تابي • سمسا • أرامكس</p>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <img src="image/catalog/mada.png" alt="Mada" style="height: 24px; background: #fff; padding: 2px 6px; border-radius: 4px;" onerror="this.style.display='none'">
+          <img src="image/catalog/Maroof.png" alt="Maroof" style="height: 24px; background: #fff; padding: 2px 6px; border-radius: 4px;" onerror="this.style.display='none'">
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>جميع الحقوق محفوظة © 2024 متجر وسوق توكي (Toki Store & Marketplace).</div>
+      <div>جاهز للنشر على Vercel و GitHub 🚀</div>
+    </div>
+  </footer>
+
+  <!-- Application Logic -->
+  <script src="app.js"></script>
+</body>
+</html>

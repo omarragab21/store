@@ -1,0 +1,220 @@
+{% if field.custom_field is not defined  %} 
+{% if field.show and (field.type != 'checkbox') %}
+{% if key != 'customer_group_id'  %} 
+<div class="group regular-field{{ field.hide_guest?' hide_guest':'' }}{{ field.type == 'select'?' filled':'' }}" id="regular-field-{{ key }}">
+{% if    field.type in ['text','date','datetime','password','email','tel']  %}
+{% if    field.type in ['password','email'] and false   %}
+{# this was supposed to be a fix to disable autofill in chrome and other browsers that ignore automplete #} 
+<input name="email" style="display: none;" readonly disabled type="text" />
+<input name="password" style="display: none;" readonly disabled type="password" />
+{% endif %} 
+<input autocomplete="off" type="{{ field.type }}" id="input-{{ key }}" name="{{ key }}" value="{{ field.value }}"  {{ field.maximum ?'maxlength="'~field.maximum~'"':'' }} {% if field.readonly  %} {{ "readonly" }}{% endif %} class="inputMaterial{{ field.readonly ?' readonly':'' }}{{ field.dependency ?' dependent':'' }}{{ field.numeric ?' '~field.numeric:'' }}{{ field.is_mask ?' mask':'' }}" {% if    field.required  %} {{ "required" }}{% endif %} />
+<label>{{ field.title }} 
+<span class="{{ field.required?'required':'' }}">
+{% if    field.tooltip  %} 
+<span data-placement="right" data-toggle="tooltip" data-container="body" title="{{ field.tooltip }}" class="is_floating_tooltip"></span>
+{% endif %} 
+</span>
+</label>
+{{ constant('false') and field.required ?'<required data-placement="left" data-toggle="tooltip" title="Required" class="is_required"></required>':'' }} 
+{{ constant('false') and field.tooltip?'<tooltip data-placement="left" data-toggle="tooltip" title="'~field.tooltip~'" class="is_tooltip"></tooltip>':'' }} 
+{% elseif (field.type == 'select')  %} 
+<select name="{{ key }}" id="input-{{ key }}" class="inputMaterial">
+{% for option in field.select_values %} 
+<option value="{{ option.value_id }}" {{ field.value == option.value_id?'selected="selected"':'' }}>{{ option.display_name }}</option>
+{% endfor %} 
+</select>
+<label>{{ field.title }}{{ field.required?'<span class="required"></required>':'' }}</label>
+<labelselect></labelselect>
+{% endif %} 
+</div>
+{% else %} 
+{% if customer_groups is defined and customer_group_id is defined  %} 
+<div id="regular-field-{{ key }}" class="form-group required" style="display: {{ customer_groups|length > 1 ? 'block' : 'none' }};">
+            <label class="control-label" style="padding-left: 0px;">{{ field.title }}</label>
+            <div>
+              {% for customer_group in customer_groups %} 
+              {% if    customer_group.customer_group_id == customer_group_id  %} 
+              <div>
+                <label class="pointer">
+                  <input type="radio" class="input-radio" name="customer_group_id" value="{{ customer_group.customer_group_id }}" checked="checked" />
+                  {{ customer_group.name }}</label>
+              </div>
+              {% else %} 
+              <div>
+                <label class="pointer">
+                  <input type="radio" class="input-radio" name="customer_group_id" value="{{ customer_group.customer_group_id }}" />
+                  {{ customer_group.name }}</label>
+              </div>
+              {% endif %} 
+              {% endfor %} 
+            </div>
+          </div>
+{% endif %}          
+{% endif %} 
+{% else %} 
+<input type="hidden" name="{{ key }}" value="{{ field.value }}" />
+{% endif %} 
+{% else %} 
+{% set custom_field = field %} 
+    {% if  custom_field.type == 'select'  %}    
+    <div id="custom-field{{ custom_field.custom_field_id }}" class="group custom-field filled">      
+        <select name="custom_field[{{ custom_field.custom_field_id }}]" id="input-custom_field{{ custom_field.custom_field_id }}" class="inputMaterial">
+          <option value="">{{ text_select }}</option>
+          {% for custom_field_value in custom_field.custom_field_value %} 
+		  {% if    value_custom_field[custom_field['custom_field_id']] is defined and custom_field_value.custom_field_value_id == value_custom_field[custom_field['custom_field_id']]  %} 
+          <option value="{{ custom_field_value.custom_field_value_id }}" selected="selected">{{ custom_field_value.name }}</option>
+          {% else %} 
+          <option value="{{ custom_field_value.custom_field_value_id }}">{{ custom_field_value.name }}</option>
+          {% endif %}          
+          {% endfor %} 
+        </select>        
+        <label for="input-account-custom-field{{ custom_field.custom_field_id }}">
+        {{ custom_field.name }} 
+        <span class="fieldlabel {{ custom_field.required ? 'required': '' }}">
+		{% if    custom_field.tips  %} 
+		<span data-placement="right" data-toggle="tooltip" data-container="body" title="{{ custom_field.tips }}" class="is_floating_tooltip"></span>
+		{% endif %} 
+		</span>
+        </label>
+        <labelselect></labelselect>
+    </div>    
+    {% elseif custom_field.type == 'radio' %}    
+    <div id="custom-field{{ custom_field.custom_field_id }}" class="form-group custom-field is{{ custom_field.type }}">
+      	<label class="control-label">{{ custom_field.name }} 
+      	<span class="fieldlabel {{ custom_field.required ? 'required': '' }}">
+      	{% if    custom_field.tips  %} 
+		<span data-placement="right" data-toggle="tooltip" data-container="body" title="{{ field.tips }}" class="is_floating_tooltip"></span>
+		{% endif %} 
+		</span>
+		</label>
+        <div id="input-custom_field{{ custom_field.custom_field_id }}">
+          {% for custom_field_value in custom_field.custom_field_value %} 
+          <div class="">
+            {% if    value_custom_field[custom_field['custom_field_id']] is defined and custom_field_value.custom_field_value_id == value_custom_field[custom_field['custom_field_id']]  %} 
+            <label class="pointer">
+              <input class="input-radio" type="radio" name="custom_field[{{ custom_field.custom_field_id }}]" value="{{ custom_field_value.custom_field_value_id }}" checked="checked" />
+              {{ custom_field_value.name }}</label>
+            {% else %} 
+            <label class="pointer">
+              <input class="input-radio" type="radio" name="custom_field[{{ custom_field.custom_field_id }}]" value="{{ custom_field_value.custom_field_value_id }}" />
+              {{ custom_field_value.name }}</label>
+            {% endif %} 
+          </div>
+          {% endfor %} 
+        </div>
+      </div>    
+    {% elseif custom_field.type == 'checkbox'  %} 
+    <div id="custom-field{{ custom_field.custom_field_id }}" class="form-group custom-field is{{ custom_field.type }}">
+      	<label class="control-label">{{ custom_field.name }} 
+      	<span class="fieldlabel {{ custom_field.required ? 'required': '' }}">
+      	{% if    custom_field.tips  %} 
+		<span data-placement="right" data-toggle="tooltip" data-container="body" title="{{ field.tips }}" class="is_floating_tooltip"></span>
+		{% endif %} 
+		</span>
+		</label>
+        <div id="input-custom_field{{ custom_field.custom_field_id }}">
+          {% for custom_field_value in custom_field.custom_field_value %} 
+          <div class="checkbox is_checkbox">
+            {% if    value_custom_field[custom_field['custom_field_id']] is defined and custom_field_value.custom_field_value_id in value_custom_field[custom_field['custom_field_id']]  %} 
+            <label>
+              <input class="input-checkbox" type="checkbox" name="custom_field[{{ custom_field.custom_field_id }}][]" value="{{ custom_field_value.custom_field_value_id }}" checked="checked" />
+              {{ custom_field_value.name }} 
+              </label>
+            {% else %} 
+            <label>
+              <input class="input-checkbox" type="checkbox" name="custom_field[{{ custom_field.custom_field_id }}][]" value="{{ custom_field_value.custom_field_value_id }}" />
+              {{ custom_field_value.name }} 
+              </label>
+            {% endif %} 
+          </div>
+          {% endfor %} 
+        </div>
+      </div>
+    {% elseif custom_field.type == 'text'  %}    
+    <div id="custom-field{{ custom_field.custom_field_id }}" class="group custom-field">      
+        <input  type="text" name="custom_field[{{ custom_field.custom_field_id }}]" value="{{ value_custom_field[custom_field['custom_field_id']] is defined ? value_custom_field[custom_field['custom_field_id']] : custom_field.value }}" {{ custom_field.maximum ?'maxlength="'~custom_field.maximum~'"':'' }} id="input-custom_field{{ custom_field.custom_field_id }}" class="inputMaterial {% if    custom_field.isnumeric  %} {{ "numeric" }}{% endif %}" />
+        <label for="input-account-custom-field{{ custom_field.custom_field_id }}">
+        {{ custom_field.name }} 
+        <span class="fieldlabel {{ custom_field.required?' required':'' }}">
+		{% if    custom_field.tips  %} 
+		<span data-placement="right" data-toggle="tooltip" data-container="body" title="{{ custom_field.tips }}" class="is_floating_tooltip"></span>
+		{% endif %} 
+		</span>
+        </label>        
+      </div>    
+    {% elseif custom_field.type == 'textarea'  %}    
+    <div id="custom-field{{ custom_field.custom_field_id }}" class="group custom-field">      
+        <textarea  name="custom_field[{{ custom_field.custom_field_id }}]" rows="5" id="input-custom_field{{ custom_field.custom_field_id }}" class="inputMaterial">{{ value_custom_field[custom_field['custom_field_id']] is defined ? value_custom_field[custom_field['custom_field_id']] : custom_field.value }}</textarea>
+        <label for="input-account-custom-field{{ custom_field.custom_field_id }}">
+        {{ custom_field.name }} 
+        <span class="fieldlabel {{ custom_field.required?' required':'' }}">
+		{% if    custom_field.tips  %} 
+		<span data-placement="right" data-toggle="tooltip" data-container="body" title="{{ custom_field.tips }}" class="is_floating_tooltip"></span>
+		{% endif %} 
+		</span>
+        </label>
+      </div>    
+    {% elseif custom_field.type == 'file'  %}    
+    <div id="custom-field{{ custom_field.custom_field_id }}" class="form-group custom-field is{{ custom_field.type }}">
+      	<label class="control-label">{{ custom_field.name }} 
+      	<span class="fieldlabel {{ custom_field.required ? 'required': '' }}">
+      	{% if    custom_field.tips  %} 
+		<span data-placement="right" data-toggle="tooltip" data-container="body" title="{{ field.tips }}" class="is_floating_tooltip"></span>
+		{% endif %} 
+		</span>
+		</label>
+        <button  type="button" id="button-custom-field{{ custom_field.custom_field_id }}" data-loading-text="{{ text_loading }}" class="btn btn-default"><i class="fa fa-upload"></i> {{ button_upload }}</button>
+        <input type="hidden" name="custom_field[{{ custom_field.custom_field_id }}]" value="{{ value_custom_field[custom_field['custom_field_id']] is defined ? value_custom_field[custom_field['custom_field_id']] : custom_field.value }}"  id="input-custom_field{{ custom_field.custom_field_id }}" />
+      </div>    
+    {% elseif custom_field.type == 'date'  %}    
+    <div id="custom-field{{ custom_field.custom_field_id }}" class="group custom-field">      
+        <div class="input-group date">
+          <input  type="text" name="custom_field[{{ custom_field.custom_field_id }}]" value="{{ value_custom_field[custom_field['custom_field_id']] is defined ? value_custom_field[custom_field['custom_field_id']] : custom_field.value }}"  data-date-format="YYYY-MM-DD" id="input-custom_field{{ custom_field.custom_field_id }}" class="inputMaterial" />
+          <label for="input-account-custom-field{{ custom_field.custom_field_id }}">
+	        {{ custom_field.name }} 
+	        <span class="fieldlabel {{ custom_field.required ? 'required': '' }}">
+			{% if    custom_field.tips  %} 
+			<span data-placement="right" data-toggle="tooltip" data-container="body" title="{{ custom_field.tips }}" class="is_floating_tooltip"></span>
+			{% endif %} 
+			</span>
+	        </label>
+          <span class="input-group-btn">
+          <button onclick="$(this).closest('.group').addClass('filled');" type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+          </span></div>
+      </div>    
+    {% elseif custom_field.type == 'time'  %}    
+    <div id="custom-field{{ custom_field.custom_field_id }}" class="group custom-field">      
+        <div class="input-group time">
+          <input  type="text" name="custom_field[{{ custom_field.custom_field_id }}]" value="{{ value_custom_field[custom_field['custom_field_id']] is defined ? value_custom_field[custom_field['custom_field_id']] : custom_field.value }}"  data-date-format="HH:mm" id="input-custom_field{{ custom_field.custom_field_id }}" class="inputMaterial" />
+          <label for="input-account-custom-field{{ custom_field.custom_field_id }}">
+	        {{ custom_field.name }} 
+	        <span class="fieldlabel {{ custom_field.required ? 'required': '' }}">
+			{% if    custom_field.tips  %} 
+			<span data-placement="right" data-toggle="tooltip" data-container="body" title="{{ custom_field.tips }}" class="is_floating_tooltip"></span>
+			{% endif %} 
+			</span>
+	        </label>
+          <span class="input-group-btn">
+          <button onclick="$(this).closest('.group').addClass('filled');" type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+          </span></div>
+      </div>    
+    {% elseif custom_field.type == 'datetime'  %}    
+    <div id="custom-field{{ custom_field.custom_field_id }}" class="group custom-field">      
+        <div class="input-group datetime">
+          <input  type="text" name="custom_field[{{ custom_field.custom_field_id }}]" value="{{ value_custom_field[custom_field['custom_field_id']] is defined ? value_custom_field[custom_field['custom_field_id']] : custom_field.value }}"  data-date-format="YYYY-MM-DD HH:mm" id="input-custom_field{{ custom_field.custom_field_id }}" class="inputMaterial" />
+          <label for="input-account-custom-field{{ custom_field.custom_field_id }}">
+          {{ custom_field.name }} 
+          <span class="fieldlabel {{ custom_field.required ? 'required': '' }}">
+		  {% if    custom_field.tips  %} 
+		  <span data-placement="right" data-toggle="tooltip" data-container="body" title="{{ custom_field.tips }}" class="is_floating_tooltip"></span>
+		  {% endif %} 
+		</span>
+        </label>
+          <span class="input-group-btn">
+          <button onclick="$(this).closest('.group').addClass('filled');" type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+          </span></div>
+      </div>
+    {% endif %} 
+    <div class="clearfix"></div>
+    {% endif %}

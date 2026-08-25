@@ -1,0 +1,16 @@
+.bookprintingcontent .product-info .right .options .option.option-file > label {
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+.bookprintingcontent .control-label.text-qty {
+  display: block !important;
+  position: absolute;
+  top: 0;
+  text-align:left !important;
+}
+.bookprintingcontent .product-info .right .cart div .qty {
+margin-top:26px !important;
+}
+.bookprintingcontent .product-info .right .cart div .button.button-cart {
+margin-top:26px !important;
+} 

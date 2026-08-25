@@ -1,0 +1,37 @@
+<div class="clearfix"></div>
+
+<div id="banner{{ module }}" class="banner">
+       {% for banner in banners %}
+      <div class="banner-item">
+        <div class="item">
+
+        {% if banner.link %}
+        <a href="{{ banner.link }}">
+          <img src="{{ banner.image }}" alt="{{ banner.title }}" class="img-responsive" />
+          </a>
+        {% else %}
+
+            <a href="{{ banner.link }}">
+                <img src="{{ banner.image }}" alt="{{ banner.title }}" class="img-responsive" />
+            </a>
+        {% endif %}
+
+        <div class="exc">
+<div class="exc-cont">
+          <h3>{{ banner.title }}</h3>
+          <p>{{ banner.description }}</p>
+</div>
+         
+        </div>
+        </div>
+
+      </div>
+      {% endfor %}
+  </div>
+  <script type="text/javascript"><!--
+$('#banner{{ module }}').swiper({
+	effect: 'fade',
+	autoplay: 2500,
+    autoplayDisableOnInteraction: false
+});
+--></script> 

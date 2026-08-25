@@ -1,0 +1,1664 @@
+{{ header }}
+{% for font in fonts %}   
+<link rel="stylesheet"
+  href="https://fonts.googleapis.com/css?family={{font.font_name}}">
+{% endfor %} 
+<div id="product-product" class="pts-d-container container">
+  <ul class="pts-d-breadcrumb">
+    {% for breadcrumb in breadcrumbs %}
+    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+    {% endfor %}
+  </ul>
+     <div style="{% if ptserror %} {% else %} display:none {% endif %}" class="pts-d-alert pts-d-alert-danger pts-d-alert-dismissible">{{ ptserror }}</div>
+	   <div id="pts-success" style="{% if ptssuccess %} {% else %} display:none {% endif %}" class="pts-d-alert pts-d-alert-success pts-d-alert-dismissible">{{ ptssuccess }}<i class="fa fa-check-circle"></i></div>
+  <div class="pts-d-row">
+    {% set class = 'pts-d-row-col-sm-12' %}
+    <div id="content" style="width:100%" class="{{ class }}">
+	<!--buttons-->
+			<!--/buttons-->
+      <div class="pts-d-row"> 
+        {% set class = 'pts-d-row-col-sm-12' %}
+        <div class="{{ class }}"> 				
+        <div class="thumbnails ptsdesignerthumb"> 
+		<div id="pts_loader" style="top:100px" ><img src='{{ baseurl }}catalog/view/theme/default/stylesheet/ptsproductdesign/images/loader.gif' width="250" height="250" />
+		<span id="label-cnt" style="display: none; position: absolute;left: 50px;top: 180px;"></span>
+		</div>	
+		<div class=""> 
+			<div class="btndivleft pts-d-row-col-sm-8 mt12 text-left pts-d-row-col-xs-7">
+								<a class="pts-d-btn pts-d-btn-default " id="pts-flip"  title="Toggle Flip"  >
+									<i class="fa fa-random"></i>
+								</a>
+								<a id="h-align" class="pts-d-btn pts-d-btn-default" title="Horizontal Align"   >
+									<i class="fa fa-text-width"></i>
+								</a>
+								<a id="v-align"  class="pts-d-btn pts-d-btn-default" title="Vertical Align" id="v-align"  >
+									<i class="fa fa-text-height"></i>
+								</a>
+								<a class="pts-d-btn pts-d-btn-default" title="Move Left" id="move-left"  >
+									<i class="fa fa-angle-left"></i>
+								</a>
+								<a class="pts-d-btn pts-d-btn-default" title="Move Right"id="move-right" >
+									<i class="fa fa-angle-right"></i>
+								</a>
+								<a class="pts-d-btn pts-d-btn-default" title="Move Up" id="move-up" >
+									<i class="fa fa-angle-up"></i>
+								</a>
+								<a class="pts-d-btn pts-d-btn-default" title="Move Down" id="move-down" >
+									<i class="fa fa-angle-down"></i>
+								</a>
+								<a class="pts-d-btn pts-d-btn-default" title="Remove" id="pts-remove" >
+									<i class="fa fa-trash"></i>
+								</a>
+								
+								<a id="pts-copy" class="pts-d-btn pts-d-btn-default" title="Copy"  >
+									<i class="fa fa-files-o"></i>
+								</a>
+								<a id="pts-pdf-generate" class="pts-d-btn pts-d-btn-default" title="Download PDF">
+									<i class="fa fa-file-pdf-o"></i><div id="pts-pdf-generate-loader" class=""></div>
+								</a>
+								<a id="pts-send-mail" class="pts-d-btn pts-d-btn-default" title="Send Design PDF"  >
+								<i class="fa fa-envelope" aria-hidden="true"></i>
+								<div id="pts-send-mail-loader" class=""></div>
+								</a>
+								{% if use_help_image %}
+								<a id="pts-information" class="pts-d-btn pts-d-btn-default" title="Information"  data-toggle="modal" data-target="#view_help_model">
+								<i class="fa fa-info-circle" aria-hidden="true"></i>
+								<div id="pts-information" class=""></div>
+								</a>
+								{% endif %}
+								
+								<a id="pts-fullscreen" class="pts-d-btn" title="Fullscreen"><i class="fa fa-window-restore" aria-hidden="true"></i> Fullscreen
+								</a>
+			</div>
+			<div class="btndivleft btndivrightt pts-d-row-col-sm-4 mt12 text-right pts-d-row-col-xs-5">
+			<a class="pts-d-btn pts-d-btn-default" title="Save for Later" id="pts-Save">
+				<i class="fa fa-save"></i>
+				</a>
+			<a class="pts-d-btn pts-d-btn-default" title="Reset" id="pts-reset" >
+									<i class="fa fa-refresh"></i>
+								</a >
+			<button title="View" id="pts-view" class="pts-d-btn pts-d-btn-default" data-toggle="modal" data-target="#view_model">
+					<i class="fa fa-eye"></i><br> <span class="pts-d-hidden-xs pts-d-hidden-sm"></span>
+				</button>
+			<button title="Undo" id="pts-undo" class="pts-d-btn pts-d-btn-default">
+					<i class="fa fa-undo"></i><br> <span class="pts-d-hidden-xs pts-d-hidden-sm"> </span>
+				</button>	
+				<button title="Redo" id="pts-redo" class="pts-d-btn pts-d-btn-default">
+					<i class="fa fa-repeat"></i><br><span class="pts-d-hidden-xs pts-d-hidden-sm"> </span>
+				</button>
+				<button class="pts-d-btn pts-d-btn-default" title="Reset" id="pts-zoom-anc" >
+					{% for key,product_design_image in product_design_images %}		
+					{% set key=key+1 %}					
+				<select class="pts-zoom-class"	{% if key!=1 %} style="display:none" {% endif %} id="pts-zoom{{ key }}" >
+				
+				{% set scale = 1 %}		
+				{% if product_design_image.div_width > product_design_image.div_width1 %}
+				{% set scale = product_design_image.div_width/product_design_image.div_width1 %}	
+				 {% endif %}
+				 {% set valu1 = 0.50/scale %}
+					<option value="{{ valu1 }}">
+					50%
+					</option>
+					{% set valu2 = 1/scale %}
+					<option value="{{ valu2 }}" selected="selected">
+					100%
+					</option>
+					 {% set valu3 = 1.25/scale %}
+					<option value="{{ valu3 }}">
+					125%
+					</option>
+					 {% set valu4 = 1.50/scale %}
+					<option value="{{ valu4 }}">
+					150%
+					</option>
+					{% set valu41 = 1.75/scale %}
+					<option value="{{ valu41 }}">
+					175%
+					</option>
+					 {% set valu5 = 2/scale %}
+					<option value="{{ valu5 }}">
+					200%
+					</option>
+					{% set valu6 = 3/scale %}
+					<option value="{{ valu6 }}">
+					300%
+					</option>
+					{% set valu7 = 4/scale %}
+					<option value="{{ valu7 }}">
+					400%
+					</option>
+				</select>
+				
+					{% endfor %}
+				<i class="fa fa-search-plus " id="zoomresponsive"></i>
+				</button >
+			</div>
+
+			</div>
+			
+			<div class="pts-d-row-col-lg-3 pts-d-row-col-md-3 pts-d-row-col-xs-12 pts-d-pull-right rightsidepts1">
+					<div class="ptslabelbuttons">
+					{% set j = 1 %}	
+						{% for key,product_design_image in product_design_images %}	
+						{% if j==1 %}											
+						<span id="lable_{{ j }}" class="pts-d-btn pts-d-btn-primary pts-can-active" onclick="getProductDesignImage(this);">{{ product_design_image.lable }}</span>
+						{% else %}
+						<span id="lable_{{ j }}" class="pts-d-btn pts-d-btn-default" onclick="getProductDesignImage(this);">{{ product_design_image.lable }}</span>	
+						{% endif %}
+							{% set j=j+1 %}
+						{% endfor %}
+							</div>
+							<ul class="custom-list-unordered pts-list-unordered pts-cursor" id="add_layer">
+								<!--add text-->
+								<li class="dropdown view-dropdown" id="add_text">
+									<a href="javascript:void(0);"><i class="fa fa-plus-circle"></i> <span class="pdl_7"> {{ text_add_text }}</span></a>
+									
+								</li>
+								<!--/add text-->
+					<div id="pts-product-design">
+					<div class="custom-layers-unordered pts-layer-list"  id="accordion11" >
+								 <a data-toggle="collapse" data-parent="#accordion11" href="#collapse111">
+									 <h4>
+										<small><i class="fa fa-plus-circle"></i>&nbsp; Add Images</small>
+										<i class="fa fa-caret-down pull-right"></i>
+									</h4>
+								</a>
+						<div id="collapse111" class="layers-list collapse add-image" aria-expanded="false">
+                            <div class="pts-d-row dragit-contained">
+								
+							<div class="ptss-divsort pts-d-row-col-md-12 pts-d-row-col-xs-12" style="display:none">
+								<div id="">
+								<li style="display: block;"  data-toggle="modal" data-target="#ptsClipart" id="add_clipart">
+									<div><i class="fa fa-picture-o"></i><span class="pdl_7"> {{ text_add_clipart }}<span></div>
+								</li>	  
+								<li style="display: block;"  data-toggle="modal" data-target="#ptsIcon" id="add_icon">
+									<div><i class="fa fa-certificate" aria-hidden="true"></i>
+								<span class="pdl_7">  Add Icons<span></div>
+								</li>
+								<li style="display: block;" id="add_shapes">
+									<div><i class="fa fa-circle" aria-hidden="true"></i>
+								<span class="pdl_7"> Add Shapes<span></div>
+								</li>
+								<li style="display: block;" id="add_image">
+									<div id="pts-upload-image"><i class="fa fa-upload"></i><span class="pdl_7">{{ text_upload_image }}</span>
+								</div>
+								</li>
+										</div>
+									</div>
+								</div>
+                        </div>
+					</div>
+					</div>
+							</ul>
+							<!--layers-->
+              <input type="hidden" id="product_id" name="product_id" value="{{ product_id }}" />
+              <input type="hidden" id="template_id" name="template_id" value="{{ template_id }}" />
+              <input type="hidden" id="buy_design_status" name="buy_design_status" value="" />
+			<div class="pts-d-row pts-row">
+	<div class="pts-d-row-col-lg-12">
+	 <div id="mydivcan">
+				</div>
+              <a style="margin-top:13px;" id="gobackproduct" href="{{ product_url }}" class="pts-d-row-col-lg-12 pts-d-row-col-xs-12  btn btn-secondary btn-block"><i class="fa fa-arrow-left fa-2" style="padding-right:7px;"></i>Go back to Product Page</a>
+			  <button type="button" style="margin-top:13px;" id="button-cart" data-loading-text="{{ text_loading }}" class="pts-d-row-col-lg-12 pts-d-row-col-xs-12 btn btn-primary btn-block">{{ button_cart }}</button>
+				  {% if buy_design_button_status==1 %}
+			  <button type="button" style="margin-top:13px;" id="button-cart-buy-design" data-loading-text="{{ text_loading }}" class="pts-d-row-col-lg-12 pts-d-row-col-xs-12 btn btn-primary btn-block">{{ button_buy_design }}</button>
+				  {% endif %}
+			  </div>
+			  </div>
+							
+							<!--/layers-->
+<div class="optionsss pts-d-hidden-lg pts-d-hidden-md">							
+	</div>
+		<form id="form1" runat="server">
+								  <input type='file' id="imgInp"  style="display:none" />
+								  <!--img id="blah" src="#" alt="your image" /-->
+								</form>
+						</div>
+						<div class="pts-d-row-col-lg-3 pts-d-row-col-md-3 pts-d-row-col-xs-12 pts-d-pull-right rightsidepts2">
+			<div class="custom-layers-unordered pts-accordion-list"  id="accordion" >
+								 <a data-toggle="collapse" data-parent="#accordion" href="#collapse11">
+									 <h4>
+										<small>{{ text_layers }}</small>
+										<i class="fa fa-caret-down pull-right"></i>
+									</h4>
+								</a>
+								<div id="collapse11" class="layers-list collapse in">
+                             
+                            <div class="pts-d-row dragit-contained">
+								
+									<div class="ptss-divsort pts-d-row-col-md-12 pts-d-row-col-xs-12" style="display:none">
+										<ul id="pts-sortable">
+										  
+										</ul>
+									</div>
+								</div>
+                             </div>
+							</div>
+							</div>
+						<!--/menus-->
+		<div class="pts-d-row-col-lg-6 pts-d-row-col-md-6 pts-d-row-col-xs-12 fixedwidth550">
+										
+						<img src="" class="img-responsive">     
+						<div class="minheighh550" style="direction:ltr;">
+						<img style="display:none" id="canvas_display_img" src="" />	
+						<form id="formCanvasData">				
+						{% set i=1 %}
+						{% for key,product_design_image in product_design_images %}	
+						<div  id="canvas_image_div_{{ i }}" style="display:none; position:absolutewidth:{{ product_design_image.div_width1 }};">
+							<canvas id="canvas_image_{{ i }}" width="{{ product_design_image.div_width }}" height="{{ product_design_image.div_height }}" style="width:{{ product_design_image.div_width1 }};">
+						</canvas>
+						<input type="hidden" name="product_design_image[{{ i }}][canvasJsonData]" value="" />
+						<div id="pts_canvas_frame_left_{{ i }}"></div>
+						<div id="pts_canvas_frame_top_{{ i }}"></div>
+						<div id="pts_canvas_frame_right_{{ i }}"></div>
+						<div id="pts_canvas_frame_bottom_{{ i }}"></div>
+						
+						<div id="pts_crop_line_left_{{ i }}"></div>
+						<div id="pts_crop_line_top_{{ i }}"></div>
+						<div id="pts_crop_line_right_{{ i }}"></div>
+						<div id="pts_crop_line_bottom_{{ i }}"></div>
+						
+						<div id="pts_bleed_line_left_{{ i }}"></div>
+						<div id="pts_bleed_line_top_{{ i }}"></div>
+						<div id="pts_bleed_line_right_{{ i }}"></div>
+						<div id="pts_bleed_line_bottom_{{ i }}"></div>
+						
+						{% for key,fold_line in product_design_image.fold_line %}
+						<div id="pts_fold_line_{{ i }}_{{ key }}"></div>
+						{% endfor %}
+						
+						</div>	 
+						<img id="img_{{ i }}" src="{{ product_design_image.design_images }}" style="display:none" />
+						<span style="display:none" id="can_area_{{ i }}">{{ product_design_image.can_left }},{{ product_design_image.can_top }},{{ product_design_image.can_width }},{{ product_design_image.can_height }},{{ product_design_image.image_width }},{{ product_design_image.image_height }},{{ product_design_image.canvas_left }},{{ product_design_image.canvas_top }},{{ product_design_image.canvas_width }},{{ product_design_image.canvas_height }},{{ product_design_image.dpi }},{{ product_design_image.bleed_size }},{{ product_design_image.crop_left }},{{ product_design_image.crop_top }},{{ product_design_image.crop_width }},{{ product_design_image.crop_height }},{{ product_design_image.bleed_left }},{{ product_design_image.bleed_top }},{{ product_design_image.bleed_width }},{{ product_design_image.bleed_height }},{{ product_design_image.safe_line }},{{ product_design_image.crop_line }},{{ product_design_image.bleed_line }}</span>	
+						<div class="pts-d-row">									
+							{% set i=i+1 %}
+						</div>
+						{% endfor %}
+							</form>
+						</div> </div>
+					
+					</div>
+
+
+        </div>
+		<div class="custom-shpape-popup" style="margin-top: 152px; margin-left: 800px;">
+			<div class="custom-heading">
+				<h4><span>Add shapes</span>
+					<i class="fa fa-close close-shape-popup"></i>
+				</h4>
+			</div>
+			<div class="arrow-demo"></div>
+				<div id="pts-circle-shape" class="pts-d-row-col-md-4 pts-d-row-col-xs-4">
+					<i class="fa fa-circle" style="font-size:36px"></i>
+				</div>
+				
+				<div id="pts-rect-shape" class="pts-d-row-col-md-4 pts-d-row-col-xs-4" >
+					<div style="width:30px; height:30px; background-color:black; margin-top:3px" >
+					</div>
+				</div>
+				
+				<div id="pts-line-shape" class="pts-d-row-col-md-4 pts-d-row-col-xs-4">
+					<div class="pts-shape-line"></div>				
+				</div>
+		</div>
+	<div class="custom-icon-content" style="margin-top: 152px; margin-left: 800px;">
+			<div class="custom-heading">
+				<h4><span>Edit Icons</span>
+					<i class="fa fa-close close-icon-popup"></i>
+				</h4>
+			</div>
+			<div class="arrow-demo"></div>
+			<div class="pts-d-row-col-md-12 pts-d-row-col-xs-12 pts-shape-edit">
+				<div class="pts-d-row-col-md-8 pts-d-row-col-xs-8">
+				<label for="color-text">Background Color</label>
+				</div>
+				<div class="pts-d-row-col-md-4 pts-d-row-col-xs-4">
+				{% if cmykStatus==1 %}
+					<input id="icons-bg-div-color-cmyk" type="text" value="000000" maxlength="8" class="pts-d-control-label pts-d-control-label1" >
+					{% else %}
+					<input id="icons-bg-div-color" type="text" onchange="updateIconsBgColor(this.jscolor)" value="000000" maxlength="8" class="pts-d-control-label pts-d-control-label1 jscolor" >
+					{% endif %}	
+				
+				<input type="hidden" id="pts-icons-bg-color" value="#000000" >
+			</div>
+			</div>
+		</div>
+		
+		<div class="custom-shpape-circle-popup" style="margin-top: 152px; margin-left: 800px;">
+			<div class="custom-heading">
+				<h4><span>Edit Circle</span>
+					<i class="fa fa-close close-shape-circle-popup"></i>
+				</h4>
+			</div>
+			<div class="arrow-demo"></div>
+			<div class="pts-d-row-col-md-12 pts-d-row-col-xs-12 pts-shape-edit">
+				<div class="pts-d-row-col-md-8 pts-d-row-col-xs-8">
+				<label for="color-text">Background Color</label>
+				</div>
+				<div class="pts-d-row-col-md-4 pts-d-row-col-xs-4">
+				
+				
+					{% if cmykStatus==1 %}
+					<input id="circle-bg-div-color-cmyk" type="text" value="000000" maxlength="8" class="pts-d-control-label pts-d-control-label1" >
+					{% else %}
+					<input id="circle-bg-div-color" type="text" onchange="updateCircleBgColor(this.jscolor)" value="000000" maxlength="8" class="pts-d-control-label pts-d-control-label1 jscolor" >
+					{% endif %}	
+				<input type="hidden" id="pts-circle-bg-color" value="#000000" >
+			</div>
+			</div>
+			<div class="pts-d-row-col-md-12 pts-d-row-col-xs-12 pts-shape-edit">
+			<div class="pts-d-row-col-md-8 pts-d-row-col-xs-8">
+				<label for="color-text">Stroke</label>
+				</div>
+				<div class="pts-d-row-col-md-4 pts-d-row-col-xs-4">
+				{% if cmykStatus==1 %}
+					<input id="circle-border-div-color-cmyk" type="text" value="000000" maxlength="8" class="pts-d-control-label pts-d-control-label1" >
+					{% else %}
+					<input id="circle-border-div-color" type="text" onchange="updateCircleBorderColor(this.jscolor)" value="000000" maxlength="8" class="pts-d-control-label pts-d-control-label1 jscolor" >
+					{% endif %}	
+				<input type="hidden" id="pts-circle-border-color" value="#000000" >
+			</div>
+			</div>
+			<div class="pts-d-row-col-md-12 pts-d-row-col-xs-12 pts-shape-edit">
+				<div class="pts-d-row-col-md-8 pts-d-row-col-xs-8">
+					<label for="color-text">Stroke Width</label>
+				</div>
+				<div class="pts-d-row-col-md-4 pts-d-row-col-xs-4">
+				<select class="pts-d-control-label pts-d-control-label1" id="pts-circle-stroke-width">
+					{% for stokewith in range(1, 10) %}
+					<option value="{{ stokewith }}" >{{ stokewith }}</option>
+					{% endfor %}
+				</select>
+				</div>
+		   </div>
+		</div>
+		<div class="custom-shpape-rect-popup" style="margin-top: 152px; margin-left: 800px;">
+			<div class="custom-heading">
+				<h4><span>Edit Rectangle</span>
+					<i class="fa fa-close close-shape-rect-popup"></i>
+				</h4>
+			</div>
+			<div class="arrow-demo"></div>
+			 <div class="pts-d-row-col-md-12 pts-d-row-col-xs-12 pts-shape-edit">
+				<div class="pts-d-row-col-md-8 pts-d-row-col-xs-8">
+				<label for="color-text">Background Color</label>
+				</div>
+				<div class="pts-d-row-col-md-4 pts-d-row-col-xs-4">
+				{% if cmykStatus==1 %}
+					<input id="rect-bg-div-color-cmyk" type="text" value="000000" maxlength="8" class="pts-d-control-label pts-d-control-label1" >
+					{% else %}
+					<input id="rect-bg-div-color" type="text" onchange="updateRectBgColor(this.jscolor)" value="000000" maxlength="8" class="pts-d-control-label pts-d-control-label1 jscolor" >
+					{% endif %}	
+				
+				<input type="hidden" id="pts-rect-bg-color" value="#000000" >
+			</div>
+			</div>
+			<div class="pts-d-row-col-md-12 pts-d-row-col-xs-12 pts-shape-edit">
+			<div class="pts-d-row-col-md-8 pts-d-row-col-xs-8">
+				<label for="color-text">Stroke</label>
+				</div>
+				<div class="pts-d-row-col-md-4 pts-d-row-col-xs-4">
+				{% if cmykStatus==1 %}
+					<input id="rect-border-div-color-cmyk" type="text" value="000000" maxlength="8" class="pts-d-control-label pts-d-control-label1" >
+					{% else %}
+					<input id="rect-border-div-color" type="text" onchange="updateRectBorderColor(this.jscolor)" value="000000" maxlength="8" class="pts-d-control-label pts-d-control-label1 jscolor" >
+					{% endif %}	
+				
+				<input type="hidden" id="pts-rect-border-color" value="#000000" >
+			</div>
+			</div>
+			<div class="pts-d-row-col-md-12 pts-d-row-col-xs-12 pts-shape-edit">
+				<div class="pts-d-row-col-md-8 pts-d-row-col-xs-8">
+					<label for="color-text">Stroke Width</label>
+				</div>
+				<div class="pts-d-row-col-md-4 pts-d-row-col-xs-4">
+				<select class="pts-d-control-label pts-d-control-label1" id="pts-rect-stroke-width">
+					{% for stokewith in range(1, 10) %}
+					<option value="{{ stokewith }}" >{{ stokewith }}</option>
+					{% endfor %}
+				</select>
+				</div>
+		   </div>
+		</div>
+			<div class="custom-shpape-line-popup" style="margin-top: 152px; margin-left: 800px;">
+			<div class="custom-heading">
+				<h4><span>Edit Line</span>
+					<i class="fa fa-close close-shape-line-popup"></i>
+				</h4>
+			</div>
+			<div class="arrow-demo"></div>
+			<div class="pts-d-row-col-md-12 pts-d-row-col-xs-12 pts-shape-edit">
+			<div class="pts-d-row-col-md-8 pts-d-row-col-xs-8">
+				<label for="color-text">Stroke</label>
+				</div>
+				<div class="pts-d-row-col-md-4 pts-d-row-col-xs-4">
+				{% if cmykStatus==1 %}
+					<input id="line-border-div-color-cmyk" type="text" value="000000" maxlength="8" class="pts-d-control-label pts-d-control-label1" >
+					{% else %}
+					<input id="line-border-div-color" type="text" onchange="updateLineBorderColor(this.jscolor)" value="000000" maxlength="8" class="pts-d-control-label pts-d-control-label1 jscolor" >
+					{% endif %}	
+				
+				<input type="hidden" id="pts-line-border-color" value="#000000" >
+			</div>
+			</div>
+			<div class="pts-d-row-col-md-12 pts-d-row-col-xs-12 pts-shape-edit">
+				<div class="pts-d-row-col-md-8 pts-d-row-col-xs-8">
+					<label for="color-text">Stroke Width</label>
+				</div>
+				<div class="pts-d-row-col-md-4 pts-d-row-col-xs-4">
+				<select class="pts-d-control-label pts-d-control-label1" id="pts-line-stroke-width">
+					{% for stokewith in range(1, 10) %}
+					<option value="{{ stokewith }}" >{{ stokewith }}</option>
+					{% endfor %}
+				</select>
+				</div>
+		   </div>
+		</div>
+        {% set class = 'medip0' %}
+        <div class="{{ class }}">
+		
+		<div class="custom-dropdown-content">
+										<div class="custom-heading">
+											<h4><span>{{ text_edit }}</span>
+												<i class="fa fa-close closeedittext"></i>
+											</h4>
+										</div>
+										<div class="arrow-demo"></div>
+										<div class="pts-d-form-group">
+											<textarea id="pts-text" rows="1" type="text" class="pts-d-control-label">{{ text_demo }}</textarea>
+										</div>
+										<div class="pts-d-row pts-d-form-group">
+											<div class="pts-d-row-col-md-8 pts-d-row-col-xs-8">
+												<label for="color-choose">{{ text_font_family }}</label>
+												<button class="pts-dropdown-btn pts-dropdown-btn-primary" id="pts-font-choose" data-toggle="modal" data-target="#font_model"><span id="pts-font-name"></span>
+												<span class="pts-dropdown-caret"></span></button>
+											</div>
+											<div class="pts-d-row-col-md-4 pts-d-row-col-xs-4">
+												<label for="color-text">{{ text_color }}</label>
+													{% if cmykStatus==1 %}
+													<input id="text-div-color-cmyk" type="text" value="000000" maxlength="8" class="pts-d-control-label pts-d-control-label1">
+													{% else %}
+													<input id="text-div-color" type="text" onchange="update(this.jscolor)" value="000000" maxlength="8" class="pts-d-control-label pts-d-control-label1 jscolor">
+													{% endif %}	
+												
+												<input type="hidden" id="pts-text-color" value="#000000" >
+											</div>
+										</div>
+											<div class="pts-d-row pts-d-form-group">
+											<div class="pts-d-row-col-md-8 pts-d-row-col-xs-8">
+												<label for="pts-font-size">{{ text_font_size }}</label>
+												<select class="pts-d-control-label pts-d-control-label1" id="pts-font-size">
+													<option value="10" >10</option>
+													<option value="12" >12</option>
+													<option value="14" >14</option>
+													<option value="16" >16</option>
+													<option value="18" >18</option>
+													<option value="20" >20</option>
+													<option value="22" >22</option>
+													<option value="24" >24</option>
+													<option value="26" >26</option>
+													<option value="28" >28</option>
+													<option value="30" >30</option>
+													<option value="32" >32</option>
+													<option value="34" >34</option>
+													<option value="36" >36</option>
+													<option value="38" >38</option>
+													<option value="40" >40</option>
+													<option value="42" >42</option>
+													<option value="44" >44</option>
+													<option value="46" >46</option>
+													<option value="48" >48</option>
+													<option value="50" >50</option>
+													<option value="52" >52</option>
+													<option value="54" >54</option>
+													<option value="56" >56</option>
+													<option value="58" >58</option>
+													<option value="60" >60</option>
+													<option value="62" >62</option>
+													<option value="64" >64</option>
+													<option value="66" >66</option>
+													<option value="68" >68</option>
+													<option value="70" >70</option>
+													<option value="72" >72</option>
+													<option value="74" >74</option>
+													<option value="76" >76</option>
+													<option value="78" >78</option>
+													<option value="80" >80</option>
+													<option value="82" >82</option>
+													<option value="84" >84</option>
+													<option value="86" >86</option>
+													<option value="88" >88</option>
+													<option value="90" >90</option>
+													<option value="92" >92</option>
+													<option value="94" >94</option>
+													<option value="96" >96</option>
+													<option value="98" >98</option>
+													<option value="100" >100</option>
+													<option value="102" >102</option>
+													<option value="104" >104</option>
+													<option value="106" >106</option>
+													<option value="108" >108</option>
+													<option value="110" >110</option>
+													<option value="112" >112</option>
+													<option value="114" >114</option>
+													<option value="116" >116</option>
+													<option value="118" >118</option>
+													<option value="120" >120</option>
+													<option value="122" >122</option>
+													<option value="124" >124</option>
+													<option value="126" >126</option>
+													<option value="128" >128</option>
+													<option value="130" >130</option>
+													<option value="132" >132</option>
+													<option value="134" >134</option>
+													<option value="136" >136</option>
+													<option value="138" >138</option>
+													<option value="140" >140</option>
+													<option value="142" >142</option>
+													<option value="144" >144</option>
+													<option value="146" >146</option>
+													<option value="148" >148</option>
+													<option value="150" >150</option>
+												</select>
+											</div>
+											<div class="pts-d-row-col-md-4 pts-d-row-col-xs-4">
+												<label for="color-text">{{ text_bg_color }} (<a href="#" id="resetbgcolor">{{ text_bg_reset }}</a>)</label>
+												{% if cmykStatus==1 %}
+													<input id="text-div-bg-color-cmyk" type="text" value="000000" maxlength="8" class="pts-d-control-label pts-d-control-label1">
+													{% else %}
+													<input id="text-div-bg-color" type="text" onchange="updateBgColor(this.jscolor)" value="000000" maxlength="8" class="pts-d-control-label pts-d-control-label1 jscolor" >
+													{% endif %}	
+												<input type="hidden" id="pts-text-bg-color" value="" >
+											</div>
+											</div>
+								<div class="pts-d-row pts-d-form-group">
+								<div class="text_shadow_class">
+											<label for="color-text"><b>{{ text_shadow }}</b></label>
+											</div>
+											<div class="pts-d-row-col-md-3 pts-d-row-col-xs-4">
+											<label for="color-text">{{ text_shadow_right }}</label>
+												<input type="text" id="pts-text-shadow-left" value="0" maxlength="2" class="pts-d-control-label pts-d-control-label1" >
+											</div>
+											<div class="pts-d-row-col-md-3 pts-d-row-col-xs-4">
+											<label for="color-text">{{ text_shadow_bottom }}</label>
+												<input type="text" id="pts-text-shadow-right" value="0" maxlength="2" class="pts-d-control-label pts-d-control-label1" >
+											</div>
+											<div class="pts-d-row-col-md-3 pts-d-row-col-xs-4">
+											<label for="color-text">{{ text_shadow_blur }}</label>
+												<input type="text" id="pts-text-shadow-bottom" value="0" maxlength="2" class="pts-d-control-label pts-d-control-label1" >
+											</div>
+											<div class="pts-d-row-col-md-3 pts-d-row-col-xs-4">
+											<label for="color-text">{{ text_shadow_color }}</label>
+											{% if cmykStatus==1 %}
+													<input id="text-div-shadow-color-cmyk" type="text" value="000000" maxlength="8" class="pts-d-control-label pts-d-control-label1" >
+													{% else %}
+													<input id="text-div-shadow-color" type="text" onchange="updateShadowColor(this.jscolor)" value="000000" maxlength="8" class="pts-d-control-label pts-d-control-label1 jscolor" >
+													{% endif %}	
+													
+											
+											
+												<input type="hidden" id="pts-text-shadow-color" value="" >
+											</div>
+										</div>
+										
+										<div class="pts-d-row pts-d-form-group">
+											<div class="pts-d-row-col-md-6 pts-d-row-col-xs-6">
+												<label>{{ text_style }}</label>
+												<ul class="custom-font">
+													<li id="pts-bold" >
+														<i class="fa fa-bold"></i>
+													</li>
+													<li id="pts-italic">
+														<i class="fa fa-italic"></i>
+													</li>
+													<li id="pts-underline">
+														<i class="fa fa-underline" ></i>
+													</li>
+													
+												</ul>
+											</div>
+											<div class="pts-d-row-col-md-6 pts-d-row-col-xs-6">
+												<label>{{ text_align }}</label>
+												<ul class="custom-font">
+													<li id="pts-left">
+														<i class="fa fa-align-left"></i>
+													</li>
+													<li id="pts-center">
+														<i class="fa fa-align-center"></i>
+													</li>
+													<li id="pts-right">
+														<i class="fa fa-align-right" ></i>
+													</li>
+												</ul>
+											</div>
+										</div>
+										<div class="pts-d-row pts-d-form-group">
+											<div class="pts-d-row-col-md-6 pts-d-row-col-xs-6">
+												<label>{{ text_horizontal_width }}</label>
+												<input type="text" id="pts-width" class="pts-d-control-label pts-d-control-label1" maxlength="4" value="1" />
+											</div>
+											<div class="pts-d-row-col-md-6 pts-d-row-col-xs-6">
+												<label>{{ text_vertical_height }}</label>
+												<input type="text" id="pts-height" class="pts-d-control-label pts-d-control-label1"maxlength="4" value="1" />
+											</div>
+										</div>
+										<div class="pts-d-row pts-d-form-group">
+											<div class="pts-d-row-col-md-6 pts-d-row-col-xs-6">
+												<label for="rotate">{{ text_rotation }}</label><br>
+												<input type="text" maxlength="3" id="pts-rotate" class="pts-d-control-label pts-d-control-label1" value="0" />
+											</div>
+											<div class="pts-d-row-col-md-6 pts-d-row-col-xs-6">
+												<label for="pts-line-height">{{ text_line_height }}</label>
+												<input type="text" id="pts-line-height" class="pts-d-control-label pts-d-control-label1" maxlength="3" value="1" />
+											</div>
+										</div>
+										
+										<div class="pts-d-row pts-d-form-group">
+											<div class="pts-d-row-col-md-6 pts-d-row-col-xs-6">
+												<label for="pts-outline-width">{{ text_outline_width }}</label><br>
+												<input type="text" id="pts-outline-width" class="pts-d-control-label pts-d-control-label1" maxlength="3" value="0" />
+												
+											</div>
+											<div class="pts-d-row-col-md-6 pts-d-row-col-xs-6">
+												<label for="color-text">{{ text_outline_color }}</label>
+												
+												{% if cmykStatus==1 %}
+													<input id="text-div-outline-color-cmyk" type="text" value="000000" maxlength="8" class="pts-d-control-label pts-d-control-label1" >
+													
+													{% else %}
+													<input id="text-div-outline-color" type="text" onchange="updateOutlineColor(this.jscolor)" value="000000" maxlength="8" class="pts-d-control-label pts-d-control-label1 jscolor" >
+													{% endif %}	
+												
+												
+												<input type="hidden" id="pts-text-outline-color" >
+											</div>
+
+										</div>
+									</div>
+      </div>
+      {{ content_bottom }}</div>
+    {{ column_right }}</div>
+
+</div>
+<!--add custom option-->
+{% set max_height_respons = max_height + plusvallue %}
+<style type="text/css">   
+.thumbnails {
+	min-height:{{ max_height }}px;
+}
+@media(max-width: 600px){
+	.thumbnails {
+		min-height:{{ max_height_respons }}px !important;
+	}
+}
+
+#pts-product-design .custom-layers-unordered {
+	margin-top: 0px;
+	margin-bottom: 0px;
+	border: 0px solid #dedddd;
+}
+#pts-product-design .custom-font li, .custom-layers-unordered li {
+	list-style: none;
+	display: inline;
+	border-bottom: 1px solid #dedede;
+	padding: 7px;
+}
+.add-image li {
+    padding: 0px !important;
+}
+#pts-product-design a {
+text-decoration:none !important;
+font-size:14px !important;
+}
+#pts-product-design a small {
+font-size:14px !important;
+}
+
+.add-image li {
+    border: none;
+    border-bottom: 1px solid #dedede;
+}
+
+</style>
+{% set i=1 %}
+{% for key,product_design_image in product_design_images %}	
+<canvas id="canvas_save_{{ i }}" width="{{ product_design_image.image_width }}" height="{{ product_design_image.image_height }}" style="display:none;" ></canvas>	
+
+<canvas id="canvas_view_{{ i }}" width="{{ product_design_image.image_width }}" height="{{ product_design_image.image_height }}" style="display:none;" ></canvas>	
+
+<canvas id="canvas_w_{{ i }}" width="{{ product_design_image.div_width }}" height="{{ product_design_image.div_height }}" style="display:none;" ></canvas>	
+
+<canvas id="canvas_withoutimg_{{ i }}" width="{{ product_design_image.image_width }}" height="{{ product_design_image.image_height }}" style="display:none;" ></canvas>	
+
+<canvas id="canvas_withimg_{{ i }}" width="{{ product_design_image.image_width }}" height="{{ product_design_image.image_height }}" style="display:none;" ></canvas>	
+
+<canvas id="canvas_pdf_img_{{ i }}" width="{{ product_design_image.image_width }}" height="{{ product_design_image.image_height }}" style="display:none;" ></canvas>	
+
+<canvas id="canvas_lines_{{ i }}" width="{{ product_design_image.image_width }}" height="{{ product_design_image.image_height }}" style="display:none;" ></canvas>	
+			
+{% set i=i+1 %}
+{% endfor %}
+
+<div style="display:none;">
+<canvas id="canvas_watermark" width="550" height="550" style="display:none;" ></canvas>	
+</div>
+</div>
+{{ footer }} 
+
+	<!-- add art Modal -->
+		<div class="blue block">
+		  <div class="pts-d-modal fade" id="ptsClipart" role="dialog">
+			<div class="pts-d-modal-dialog pts-d-modal-lg">
+			
+			  <!-- Modal content-->
+			  <div class="pts-d-modal-content">
+				<div class="pts-d-modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					
+					<div class="form-inline">
+						<div class="pts-d-form-group">
+							<div class="input-group">
+								<input type="text" name="art_search_keyword" id="art-keyword" class="pts-d-control-label" placeholder="Search for...">
+								<span id="pts-search" class="input-group-pts-d-btn">
+									<button class="pts-d-btn pts-d-btn-default" type="button">
+										<i class="fa fa-search" aria-hidden="true"></i>
+									</button>
+								</span>
+							</div>
+						</div>
+						<div class="pts-d-form-group">
+							<div class="">
+								 <button id="pts_select_image" type="button" class="pts-d-btn pts-d-btn-primary pts_margin_left pts-dis-none">{{ text_select_image }}</button>
+							</div>
+						</div>
+						
+					</div>
+				</div>
+				<div class="pts-d-modal-body">
+					<div class="art-image-list">
+					  {% if clipArtImages %}
+					{% for clipArtImage in clipArtImages %}
+						<div class="art-image">
+							<div class="artimagediv">
+								<img style="display:none" src="image/{{ clipArtImage.clipart_image }}" class="img-responsive"  />
+								{% if clipArtImage.ext!='svg' %}
+								<img src="{{ clipArtImage.thumb_clipart_image }}" class="img-responsive" />
+								{% else %}
+								<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="100" height="100">       
+								<image height="100" width="100" xlink:href="{{ clipArtImage.svg_image }}"></image>
+							</svg>
+							{% endif %}
+							</div>
+							<div class="art-text" >
+							<p >{{ clipArtImage.image_name }}</p>
+							</div>
+						</div>	
+						{% endfor%}
+						      {% endif %}
+					</div>	
+				</div>
+			  </div>
+			  
+			</div>
+		  </div>
+		</div>
+		<!--/add art model-->
+		<!-- add icon Modal -->
+		<div class="blue block">
+		  <div class="pts-d-modal fade" id="ptsIcon" role="dialog">
+			<div class="pts-d-modal-dialog pts-d-modal-lg">
+			
+			  <!-- Modal content-->
+			  <div class="pts-d-modal-content">
+				<div class="pts-d-modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<div class="form-inline">
+				<div class="pts-d-form-group">
+							<div class="input-group">
+								<input type="text" name="icon_search_keyword" id="icon-keyword" class="pts-d-control-label" placeholder="Search for..." style="margin-top: 5px;">
+								<span id="pts-icon-search" class="input-group-pts-d-btn">
+									<button class="pts-d-btn pts-d-btn-default" type="button">
+										<i class="fa fa-search" aria-hidden="true"></i>
+									</button>
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="pts-d-modal-body">
+					<div class="icon-image-list">
+					{% if ptsIcons %}
+					{% for category,ptsFaIcons in ptsIcons %}
+					<div class="pts-category">{{ category }}</div>
+					<div class="pts-category-container">
+						{% for key,ptsIcon in ptsFaIcons %}
+						<div id="icon-id-{{ key }}" class="pts-upper off">
+						<div class="pts-icon" ><i class="fa {{ ptsIcon.class }} pts-icon-i"></i> </div>
+						<div class="pts-icon-text" ><p>{{ ptsIcon.name }} </p></div>
+						<span style="display:none" >{{ ptsIcon.unicode }}</span>
+						<div class="pts-unicode" style="display:none" >{{ ptsIcon.class }}</div>
+						</div>
+						{% endfor %}
+					</div>
+					{% endfor %}
+					{% endif %}
+
+					</div>	
+				</div>
+			  </div>
+			  
+			</div>
+		  </div>
+		</div>
+		<!--/add icon model-->
+		
+		<!--upload image-->
+			<!-- Large modal -->
+
+			<div class="pts-d-modal fade" id="upload-image" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+			  <div class="pts-d-modal-dialog pts-d-modal-lg">
+				<div class="pts-d-modal-content">
+				   <div class="pts-d-modal-body">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					 <ul class="nav nav-tabs">
+						<li class="active"><a data-toggle="tab" href="#upload">{{ text_upload_photo }}</a></li>
+						<li><a data-toggle="tab" href="#uploaded">{{ text_photo_uploaded }}</a></li>
+					  </ul>
+
+					  <div class="pts-d-tab-content tab2">
+						<!--image upload-->
+						<div id="upload" class="pts-d-tab-pane fade in active">
+						
+						<!-- Standar Form -->
+						<div class="pts-d-row">
+						<div class="pts-d-row-col-md-6">
+						  <h5>{{ text_choose_file }}</h5>
+						  <form action="" method="post" enctype="multipart/form-data" id="js-upload-form">
+							<div class="form-inline">
+							  <div class="pts-d-form-group">
+								<input type="file" name="files[]" id="js-upload-files" multiple>
+							  </div>
+							</div>
+						  </form>
+						</div>
+						<div class="pts-d-row-col-md-6">	
+							<h6><b>{{ text_file_type }}</b></h6>
+							<p>{{ text_file_types }} <b>{{ text_file_formate }}</b></p>
+						</div>
+						<div class="pts-d-row-col-md-12">
+							<label for="agree">
+								<input type="checkbox" name="" id="agree"> 
+								<small>{{ text_copyright }}</small>
+							</label>
+						  <!-- Drop Zone -->
+						  <h5>{{ text_drop }}</h5>
+						  <div class="upload-drop-zone" id="drop-zone">
+						  {{ text_drop_info }}
+						  </div>
+							<!-- Progress Bar -->
+						  <div class="progress">
+							<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" >
+							  <span class="sr-only"></span>
+							</div>
+						  </div>
+						  <div class="text-right">
+							<button type="submit" class="pts-d-btn pts-d-btn-sm pts-d-btn-primary" id="js-upload-submit">{{ text_upload_files }}</button>
+							</div>
+						</div>
+						</div>
+						</div>
+						<!--/image upload-->
+						<div id="uploaded" class="pts-d-tab-pane fade">
+							<div class="pts-d-row">
+								<div class="pts-d-row-col-md-12">
+									<div class="uploaded-img">
+										<a href="#">
+										</a>
+									</div>	
+								</div>
+							</div>
+						</div>
+					  </div>
+				  </div>
+				</div>
+			  </div>
+			</div>
+		<!--/upload image-->
+<!-- Button trigger modal -->
+
+		<!--Popup Loing-->
+<!--button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+  Launch demo modal
+</button-->
+
+<!-- Modal -->
+<div class="modal fade" id="customerLogin" tabindex="-1" role="dialog" aria-labelledby="customerLoginLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="customerLoginLabel">Customer Login</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+		    <div class="form-group">
+      <label for="email">E-Mail Address:</label>
+      <input type="email" class="form-control" id="email" placeholder="Enter email">
+    </div>
+    <div class="form-group">
+      <label for="pwd">Password:</label>
+      <input type="password" class="form-control" id="pwd" placeholder="Enter password">
+    </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Login</button>
+      </div>
+    </div>
+  </div>
+</div>
+		<!--/Popup Loing-->
+   <!-- Font Model -->
+   		  <div class="pts-d-modal fade" id="font_model" role="dialog">
+			<div class="pts-d-modal-dialog">
+			
+			  <!-- Modal content-->
+			  <div class="pts-d-modal-content pts-model-height">
+				<div class="pts-d-modal-header">
+				  <button type="button" class="close pts-mgn-top" data-dismiss="modal">&times;</button>
+				  <h4 class="pts-d-modal-title pts-float-left">{{ text_font_family }}</h4>
+					<button id="pts_select_font_family" type="button" class="pts-d-btn pts-d-btn-primary pts_margin_left pts-dis-none">{{ text_select_font }}</button>
+							
+				</div>
+				<div class="pts-d-modal-body pts-scrollable">
+				  <div id="pts-font-pts-d-row" class="pts-d-row">
+				  {% for font in fonts %}                              
+				  <div class="pts-box-font" ><h2 style="font-family:'{{ font.font_name }}'">
+				  {{ text_font_rang }}</h2>
+				  <span>{{ font.font_name }}</span></div>
+				  {% endfor%}
+			</div>
+				</div>
+				<div class="pts-d-modal-footer">
+				  <button id="pts-close" type="button" class="pts-d-btn pts-d-btn-default " data-dismiss="modal">{{ text_close }}</button>
+				</div>
+			  </div>
+			  
+			</div>
+		  </div>
+   <!-- Font Model -->
+      <!-- view Model -->
+   		  <div class="pts-d-modal fade" id="view_model" role="dialog">
+			<div class="pts-d-modal-dialog">
+			
+			  <!-- Modal content-->
+			  <div class="pts-d-modal-content">
+				<div class="pts-d-modal-header">
+				  <button type="button" class="close" data-dismiss="modal">&times;</button>
+				  <h4 class="pts-d-modal-title">{{ text_view }}</h4>
+				</div>
+				<div class="pts-d-modal-body">
+				  <div class="pts-d-row">
+				 <img id="view_img" src=""> 
+
+			</div>
+				</div>
+				<div class="pts-d-modal-footer">
+				  <button type="button" class="pts-d-btn pts-d-btn-default" data-dismiss="modal">{{ text_close }}</button>
+				</div>
+			  </div>
+			  
+			</div>
+		  </div>
+   <!-- view Model -->
+    <!-- view help image -->
+   		  <div class="pts-d-modal fade" id="view_help_model" role="dialog">
+			<div class="pts-d-modal-dialog">
+			
+			  <!-- Modal content-->
+			  <div class="pts-d-modal-content">
+				<div class="pts-d-modal-header">
+				  <button type="button" class="close" data-dismiss="modal">&times;</button>
+				  <h4 class="pts-d-modal-title">{{ text_help }}</h4>
+				</div>
+				<div class="pts-d-modal-body">
+				  <div class="pts-d-row">
+				 <img style="max-width: 595px;" id="view_help_img" src="{{ help_image }}"> 
+			</div>
+				</div>
+				<div class="pts-d-modal-footer">
+				  <button type="button" class="pts-d-btn pts-d-btn-default" data-dismiss="modal">{{ text_close }}</button>
+				</div>
+			  </div>
+			  
+			</div>
+		  </div>
+   <!-- view help Model -->
+		    <input type="hidden" name="pts_option_label" value="" id="pts-option-label" class="pts-d-control-label" />
+             <input type="hidden" name="pts_layer_price" value="" id="pts-layer-price" class="pts-d-control-label" />
+<!--add custom option-->
+<script type="text/javascript">
+var Timeout=0;
+var loader_time_out = 3000;
+ $('.thumbnails').addClass('overlay');
+$('#pts_loader').css('display','block');
+var price							= 0;
+var content							= ''; 
+var text_design_total_layer_limit	= '{{ text_design_total_layer_limit }}';
+var text_total_clipart_layer_limit	= '{{ text_total_clipart_layer_limit }}';
+var text_total_image_layer_limit	= '{{ text_total_image_layer_limit }}';
+var text_total_text_layer_limit		= '{{ text_total_text_layer_limit }}';
+var product_design_max_min			= '{{ product_design_max_min }}';
+var text_total_icon_layer_limit		= 'You can not add other icon layer, limit exceed';
+var text_total_shapes_layer_limit	= 'You can not add other shape layer, limit exceed';
+var max_layers						= '{{ total_layers }}';
+var max_text_layers					= '{{ total_text_layers }}';
+var max_clipart_layers				= '{{ total_clipart_layers }}';
+var max_image_layers				= '{{ total_image_layers }}';
+var max_shaps_layers				= '{{ total_shapes_layers }}';
+var max_icons_layers				= '{{ total_icons_layers }}';
+var cof_msg 						= '{{ bg_conf_message }}';
+var confirm_message 				= '{{ confirm_message }}';
+var wm_status						= "{{ wm_status }}";
+var wm_text							= "{{ wm_text }}";
+var no_of_canvas					= '{{ no_of_canvas }}';
+var designerData					= {{ designResults }};
+var designData						= {{ designResults }};
+var bleed_size						= 0;
+var safe_line						= 0;
+var alwaysontop						= 0;
+var baseurl							= '{{ baseurl }}';
+var product_id						= '{{ product_id }}';
+var session_id						= '{{ session_id }}';
+var customer_id						= '{{ customer_id }}';
+var template_id						= '{{ template_id }}';
+var adminCanId						= 1;
+var search_url		= 'index.php?route=extension/purpletree_product_designer/product_template_designer/iconSearch';
+search_clipart_url	= 'index.php?route=extension/purpletree_product_designer/product_template_designer/search';
+ $('#pts-Save').on('click', function() {
+		var fetchData=$('#formCanvasData').serializeArray();
+		$.ajax({
+				type: 'POST',
+				url: 'index.php?route=extension/purpletree_product_designer/product_template_designer/uploadCanvasData',
+				data: {fetchData,'product_id':product_id,'template_id':template_id},
+				dataType: 'json',
+				beforeSend: function( xhr ) {
+				  },
+				success: function(jsonData) {
+					if(jsonData.success){
+						$('#pts-success').css('display','block').text(jsonData.success);
+					}
+					if(jsonData.error){
+						alert(jsonData.error);
+					}
+					
+					if(jsonData.status=='login'){
+						var actionUrl=jsonData.action;
+						var url=actionUrl.replace(/&amp;/g, '&');
+						window.open(url, '_self');
+					}
+					
+					
+			 },
+			error: function(xhr, ajaxOptions, thrownError) {
+				$('.fixedwidth550').css('visibility','visible');
+				zoomthecanvas();
+				alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+			}
+		});
+ });
+ 
+async function uploadImage(input) {
+return new Promise((resolve, reject) => {
+	var dataReturn={};
+  if (input.files && input.files[0]) {
+	  file = input.files[0];
+    var reader = new FileReader();
+		reader.fileName = file.name;
+	reader.onprogress = function(event) {
+		 $('.thumbnails').addClass('overlay');
+		 $('#pts_loader').css('display','block');
+	};
+	//reader.onloadend = function(event) {
+		//setTimeout(function(){
+			//$('.thumbnails').removeClass('overlay');
+			//$('#pts_loader').css('display','none');
+			//},100);
+	//};
+	
+    reader.onload = function(e) {
+		var imageurl=e.target.result;
+		var formData = new FormData();
+		formData.append("uploadfile", imageurl);  
+		dataReturn.fileName=e.target.fileName;
+		 $.ajax({
+				type: 'POST',
+				url: 'index.php?route=extension/purpletree_product_designer/product_template_designer/uploadImage',
+				cache: false,
+				contentType: false,
+				processData: false,
+				data: formData,
+				dataType: 'json',
+				beforeSend: function( xhr ) {
+				  },
+				success: function(jsonData) {
+					setTimeout(function(){ 
+				$('.thumbnails').removeClass('overlay');
+			$('#pts_loader').css('display','none');
+			},8005);
+					dataReturn.url=jsonData.url;
+					console.log(dataReturn);
+					resolve(dataReturn);
+			 },
+			error: function(xhr, ajaxOptions, thrownError) {
+			setTimeout(function(){ 
+			$('.thumbnails').removeClass('overlay');
+			$('#pts_loader').css('display','none');
+			},4000);					
+			//$('.fixedwidth550').css('visibility','visible');
+				//zoomthecanvas();
+				alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+			}
+		});	
+	}
+	 reader.readAsDataURL(input.files[0]);
+  }
+});
+}
+var click=0;	 	
+$('#pts-send-mail').on('click', function(e) {
+	$('.fixedwidth550').css('visibility','hidden');
+	zoomOutForAll();	
+setTimeout(function(){
+	var t_canvas=$('.canvas-container [id^=canvas_image_]').length;
+	var canvas_id=1;
+	var pts_image_canvas;
+	var pts_save_can;
+	var pts_w_canvas;
+	var can_id;
+	var imageSrc;
+	var cn_bg_url=[];
+	var cn_url=[];
+	var layerDiv='';
+	var bgLayer;
+	while(t_canvas>0){
+		for(let i=1; i<=no_of_canvas; i++){
+			if(canvas_id==i){
+				pts_image_canvas = window['canvas_img_'+i];
+				pts_w_canvas       = window['canvas_w_'+i];
+				can_id="#canvas_image_"+i;
+				imageSrc= "#img_"+i;
+				layerDiv=".purpletree-canvas-"+i;
+				pts_save_can = window['canvas_save_'+i];
+				pts_save_can_id = "canvas_save_"+i;
+				bgLayer = "canlayer"+i+"_1";
+			}
+		}
+	cn_bg_url[canvas_id-1]= getCanvasImagebgUrl(imageSrc,pts_w_canvas,pts_save_can,canvas_id,can_id,layerDiv,pts_image_canvas);
+	canvas_id++;
+	t_canvas--;	
+	}
+	
+	var labels = [];
+{% for key,product_design_image in product_design_images %}	
+	labels.push('{{ product_design_image.lable }}_{{ product_design_image.dpi }}');
+	{% endfor %}
+	 if(click==0){
+		setTimeout(function(){
+			click++
+			$('#pts-send-mail').trigger("click");	
+		},500);
+	} else {
+	var template_id = {{ template_id }};
+	var product_id  = {{ product_id }};
+	var fetchData	= $('#formCanvasData').serializeArray();
+			$.ajax({
+				type: 'POST',
+				url: 'index.php?route=extension/purpletree_product_designer/product_template_designer/productDesignerPdfMail',
+				data: { fetchData,'imageBgData': cn_bg_url,'labels':labels,'product_id':product_id,'template_id':template_id  },
+				dataType: 'json',
+				beforeSend: function( xhr ) {
+					$('#pts-send-mail-loader').removeClass('loader');
+					$('#pts-send-mail-loader').addClass('loader');
+				},
+				success: function(jsonData) {
+				$('.fixedwidth550').css('visibility','visible');
+			zoomthecanvas();
+					$('#pts-send-mail-loader').removeClass('loader');
+			if(jsonData.status == 'success'){
+					$('#pts-success').css('display','block').text(jsonData.msg)
+						}
+						if(jsonData.error){
+							alert(jsonData.error);
+						}
+						if(jsonData.status=='login'){
+							var actionUrl=jsonData.action;
+							var url=actionUrl.replace(/&amp;/g, '&');
+							window.open(url, '_self');
+						}
+						
+						
+			},
+			error: function(xhr, ajaxOptions, thrownError) {
+					$('.fixedwidth550').css('visibility','visible');
+					zoomthecanvas();
+					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+			}
+		});
+	}		
+},200);	
+});
+var click2	= 0;
+$('#pts-pdf-generate').on('click', function(e) {
+	$('.fixedwidth550').css('visibility','hidden');
+	zoomOutForAll();	
+setTimeout(function(){
+	var t_canvas=$('.canvas-container [id^=canvas_image_]').length;
+	var canvas_id=1;
+	var pts_image_canvas;
+	var pts_save_can;
+	var pts_w_canvas;
+	var can_id;
+	var imageSrc;
+	var cn_bg_url=[];
+	var cn_url=[];
+	var layerDiv='';
+	var bgLayer;
+	while(t_canvas>0){
+		for(let i=1; i<=no_of_canvas; i++){
+			if(canvas_id==i){
+				pts_image_canvas = window['canvas_img_'+i];
+				pts_w_canvas       = window['canvas_w_'+i];
+				can_id="#canvas_image_"+i;
+				imageSrc= "#img_"+i;
+				layerDiv=".purpletree-canvas-"+i;
+				pts_save_can = window['canvas_save_'+i];
+				pts_save_can_id = "canvas_save_"+i;
+				bgLayer = "canlayer"+i+"_1";
+			}
+		}
+	cn_bg_url[canvas_id-1]= getCanvasImagebgUrl(imageSrc,pts_w_canvas,pts_save_can,canvas_id,can_id,layerDiv,pts_image_canvas);
+	canvas_id++;
+	t_canvas--;	
+	}
+	var labels = [];
+{% for key,product_design_image in product_design_images %}	
+	labels.push('{{ product_design_image.lable }}_{{ product_design_image.dpi }}');
+	{% endfor %}
+	 if(click2==0){ 
+setTimeout(function(){
+	click2++
+	$('#pts-pdf-generate').trigger("click");	
+},500);
+	} else {
+	var template_id 	= {{ template_id }};
+	var product_id 		= {{ product_id }};
+	var fetchData		= $('#formCanvasData').serializeArray();
+		$.ajax({
+			type: 'POST',
+			url: 'index.php?route=extension/purpletree_product_designer/product_template_designer/downloadPdf',
+			data: { fetchData,'imageBgData': cn_bg_url,'labels':labels,'product_id':product_id,'template_id':template_id  },
+			dataType: 'json',
+			beforeSend: function( xhr ) {
+				$('#pts-pdf-generate-loader').removeClass('loader');
+				$('#pts-pdf-generate-loader').addClass('loader');
+			  },
+			success: function(jsoncanvas) {
+			$('.fixedwidth550').css('visibility','visible');
+			zoomthecanvas();
+				$('#pts-pdf-generate-loader').removeClass('loader');
+			if(jsoncanvas.status == 'success') {
+			var actionUrl=jsoncanvas.pdf_url;
+			var url=actionUrl.replace(/&amp;/g, '&');
+			window.open(url, '_blank');
+			} else {
+				if(jsoncanvas.status == 'login') {
+			window.open('{{ action }}', '_self');
+				}
+			}
+		},
+		error: function(xhr, ajaxOptions, thrownError) {
+			$('.fixedwidth550').css('visibility','visible');
+			zoomthecanvas();
+			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+		}
+	});
+	}
+},200);	
+});
+function addToCart(e){
+	exitfullscreen();
+		//if(!click1){
+			 $('.thumbnails').addClass('overlay');
+			 $('#pts_loader').css('display','block');
+		//}
+	$('.fixedwidth550').css('visibility','hidden');
+	$('#button-cart').button('loading');
+	zoomOutForAll();	
+	var t_canvas=$('.canvas-container [id^=canvas_image_]').length;
+	var canvas_id=1;
+	var pts_image_canvas;
+	var pts_save_can;
+	var pts_w_canvas;
+	var can_id;
+	var imageSrc;
+	var cn_bg_url=[];
+	var cn_url=[];
+	var cnWWM=[];
+	var layerDiv='';
+	var bgLayer;
+	while(t_canvas>0){
+		for(let i=1; i<=no_of_canvas; i++){
+			if(canvas_id==i){
+				pts_image_canvas = window['canvas_img_'+i];
+				pts_w_canvas       = window['canvas_w_'+i];
+				can_id="#canvas_image_"+i;
+				imageSrc= "#img_"+i;
+				layerDiv=".purpletree-canvas-"+i;
+				pts_save_can = window['canvas_save_'+i];
+				pts_save_can_id = "canvas_save_"+i;
+				bgLayer = "canlayer"+i+"_1";
+			}
+		}
+	cn_bg_url[canvas_id-1]= getCanvasImagebgUrl(imageSrc,pts_w_canvas,pts_save_can,canvas_id,can_id,layerDiv,pts_image_canvas);
+	cn_url[canvas_id-1]= getCanvasImageUrl(imageSrc,pts_w_canvas,pts_save_can,canvas_id,can_id,bgLayer,pts_save_can_id,pts_image_canvas);
+	cnWWM[canvas_id-1]= getImageWithoutWM(imageSrc,pts_w_canvas,pts_save_can,canvas_id,can_id,layerDiv,pts_image_canvas);
+	canvas_id++;
+	t_canvas--;	
+	}
+ if(click1==0){ 
+setTimeout(function(){
+	click1++
+	if(e.buydesignsts==1){
+		$('#button-cart-buy-design').trigger("click");
+	} else {
+		$('#button-cart').trigger("click");
+	}		
+},500);
+} else {  
+var labels = [];
+var label_name= [];
+{% for key,product_design_image in product_design_images %}	
+	labels.push('{{ product_design_image.lable }}_{{ product_design_image.dpi }}');
+	label_name.push('{{ product_design_image.lable }}');
+	{% endfor %}
+			document.getElementById("mydivcan").innerHTML = '';
+			var ext='';
+		setTimeout(function(){	
+		for(let i=0; i< cn_bg_url.length; i++){	
+			ext='_bg.png';
+				$.ajax({
+                        type: 'POST',
+                        url: 'index.php?route=extension/purpletree_product_designer/product_template_designer/UploadCanvasImage',
+                        data: { 'imageData': cn_bg_url[i], 'ext':ext,'id':i },
+                        dataType: 'json',
+						success: function(json1) {
+							if(json1.status == 'success') {
+								var input = document.createElement("input");
+								input.setAttribute("type", "hidden");
+								input.setAttribute("name", "canvaslabel["+labels[i]+"_"+i+"]");
+								input.setAttribute("id","canvaslabel"+i);
+								input.setAttribute("class","canvaslabel");
+								input.setAttribute("value", json1.image_root);
+								document.getElementById("mydivcan").appendChild(input);
+				//second image code
+								ext='.png';	
+								$.ajax({
+									type: 'POST',
+									url: 'index.php?route=extension/purpletree_product_designer/product_template_designer/UploadCanvasImage',
+									data: { 'imageData': cn_url[i], 'ext':ext,'id':i },
+									dataType: 'json',
+									success: function(json2) {
+										if(json2.status == 'success') {
+											var input_without_bgImg = document.createElement("input");
+											input_without_bgImg.setAttribute("type", "hidden");
+											input_without_bgImg.setAttribute("name", "canvas_without_bg_img["+labels[i]+"_"+i+"]");
+											input_without_bgImg.setAttribute("id","canvas_without_bg_img"+i);
+											input_without_bgImg.setAttribute("class","canvaslabel2");
+											input_without_bgImg.setAttribute("value", json2.image_root);
+											document.getElementById("mydivcan").appendChild(input_without_bgImg);
+					//third iamge code
+							ext='_wwm.png';	
+							$.ajax({
+								type: 'POST',
+								url: 'index.php?route=extension/purpletree_product_designer/product_template_designer/UploadCanvasImage',
+								data: { 'imageData': cnWWM[i], 'ext':ext,'id':i },
+								dataType: 'json',
+								success: function(json3) {
+									if(json3.status == 'success') {
+										var input_without_bgImg = document.createElement("input");
+										input_without_bgImg.setAttribute("type", "hidden");
+										input_without_bgImg.setAttribute("name", "canvas_without_WM_img["+labels[i]+"_"+i+"]");
+										input_without_bgImg.setAttribute("id","canvas_without_WM_img"+i);
+										input_without_bgImg.setAttribute("class","canvaslabelwm");
+										input_without_bgImg.setAttribute("value", json3.image_root);
+										document.getElementById("mydivcan").appendChild(input_without_bgImg);
+		var labelcnt=i+1;								
+	$('#label-cnt').css('display','block');									
+	$('#label-cnt').text('Label '+labelcnt+' Image Uploading...');									
+
+if(i==(cn_bg_url.length-1)){
+setTimeout(function(){
+	$.ajax({
+		url: 'index.php?route=checkout/cart/add',
+		type: 'post',
+		data: $('#template_id, #product_id, .canvaslabel, .canvaslabel2, .canvaslabelwm, #pts-layer-price, #pts-option-label, #buy_design_status'),
+		dataType: 'json',
+		beforeSend: function() {
+		
+		},
+		complete: function() {
+		 $('#button-cart').button('reset');
+		 $('#label-cnt').css('display','block');
+		},
+		success: function(json) {
+			$('.fixedwidth550').css('visibility','visible');
+			zoomthecanvas();
+			$('.alert-dismissible, .text-danger').remove();
+			$('.pts-d-form-group').removeClass('has-error');
+
+			if (json['error']) {
+				if (json['error']['option']) {
+					for (i in json['error']['option']) {
+						var element = $('#input-option' + i.replace('_', '-'));
+						if (element.parent().hasClass('input-group')) {
+							element.parent().after('<div class="text-danger">' + json['error']['option'][i] + '</div>');
+						} else {
+							element.after('<div class="text-danger">' + json['error']['option'][i] + '</div>');
+						}
+					}
+				}
+				else if (json['error']['product_designer']) {
+				$('html, body').animate({ scrollTop: 0 }, 'slow');
+					$('.pts-d-alert.pts-d-alert-danger').show();
+					//alert(json['error']['product_designer']);
+					$('.pts-d-alert.pts-d-alert-danger').text(json['error']['product_designer']);
+					$('.thumbnails').removeClass('overlay');
+					$('#pts_loader').css('display','none');
+					$('#label-cnt').css('display','none');
+					$('#label-cnt').text('');
+					setTimeout(function(){ 
+					$('.pts-d-alert.pts-d-alert-danger').text();
+					$('.pts-d-alert.pts-d-alert-danger').hide();
+					}, 8000);
+					
+				}	
+				if (json['error']['recurring']) {
+					$('select[name=\'recurring_id\']').after('<div class="text-danger">' + json['error']['recurring'] + '</div>');
+				}
+				$('.text-danger').parent().addClass('has-error');
+			}
+			if (json['success']) {
+				$('.breadcrumb').after('<div class="alert alert-success alert-dismissible">' + json['success'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+				$('#cart > button').html('<span id="cart-total"><i class="fa fa-shopping-cart"></i> ' + json['total'] + '</span>');
+				$('#cart > ul').load('index.php?route=common/cart/info ul li');
+				$('html, body').animate({ scrollTop: 0 }, 'slow');
+				location.reload();
+			 
+			}
+		},
+        error: function(xhr, ajaxOptions, thrownError) {
+				$('.thumbnails').removeClass('overlay');
+				$('#button-cart').button('reset');
+				$('#pts_loader').css('display','none');
+				$('#label-cnt').css('display','none');
+				$('#label-cnt').text('');
+				$('.fixedwidth550').css('visibility','visible');
+				zoomthecanvas();
+				$('.alert-dismissible, .text-danger').remove();
+				$('.pts-d-form-group').removeClass('has-error');
+		
+       alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+        }
+	});
+	},5000);
+}			
+										
+							if(json3.status=='error'){
+									$('html, body').animate({ scrollTop: 0 }, 'slow');
+									$('.pts-d-alert.pts-d-alert-danger').show();
+									$('.pts-d-alert.pts-d-alert-danger').text(json3.msg);
+									setTimeout(function(){ 
+									$('.pts-d-alert.pts-d-alert-danger').text();
+									$('.pts-d-alert.pts-d-alert-danger').hide();
+									}, 5000);
+									
+									$('.thumbnails').removeClass('overlay');
+									$('#pts_loader').css('display','none');
+									$('#button-cart').button('reset');
+									$('#label-cnt').css('display','none');
+									$('#label-cnt').text('');
+									$('.fixedwidth550').css('visibility','visible');
+									zoomthecanvas();
+									$('.alert-dismissible, .text-danger').remove();
+									$('.pts-d-form-group').removeClass('has-error');
+								}			
+							}
+						},
+					error: function(xhr, ajaxOptions, thrownError) {
+										$('.thumbnails').removeClass('overlay');
+				$('#button-cart').button('reset');
+				$('#pts_loader').css('display','none');
+				$('#label-cnt').css('display','none');
+				$('#label-cnt').text('');
+				$('.fixedwidth550').css('visibility','visible');
+				zoomthecanvas();
+				$('.alert-dismissible, .text-danger').remove();
+				$('.pts-d-form-group').removeClass('has-error');
+
+						alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+					}
+					});
+					//third iamge code
+									if(json2.status=='error'){
+									$('html, body').animate({ scrollTop: 0 }, 'slow');
+									$('.pts-d-alert.pts-d-alert-danger').show();
+									$('.pts-d-alert.pts-d-alert-danger').text(json2.msg);
+									setTimeout(function(){ 
+									$('.pts-d-alert.pts-d-alert-danger').text();
+									$('.pts-d-alert.pts-d-alert-danger').hide();
+									}, 5000);
+									
+									$('.thumbnails').removeClass('overlay');
+									$('#pts_loader').css('display','none');
+									$('#button-cart').button('reset');
+									$('#label-cnt').css('display','none');
+									$('#label-cnt').text('');
+									
+									$('.fixedwidth550').css('visibility','visible');
+									zoomthecanvas();
+									$('.alert-dismissible, .text-danger').remove();
+									$('.pts-d-form-group').removeClass('has-error');
+								}
+							}
+						},
+					error: function(xhr, ajaxOptions, thrownError) {
+										$('.thumbnails').removeClass('overlay');
+				$('#button-cart').button('reset');
+				$('#pts_loader').css('display','none');
+				$('#label-cnt').css('display','none');
+				$('#label-cnt').text('');
+				$('.fixedwidth550').css('visibility','visible');
+				zoomthecanvas();
+				$('.alert-dismissible, .text-danger').remove();
+				$('.pts-d-form-group').removeClass('has-error');
+
+						alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+					}
+					});
+			//second image code
+							}
+								if(json1.status=='error'){
+									$('html, body').animate({ scrollTop: 0 }, 'slow');
+									$('.pts-d-alert.pts-d-alert-danger').show();
+									$('.pts-d-alert.pts-d-alert-danger').text(json1.msg);
+									setTimeout(function(){ 
+									$('.pts-d-alert.pts-d-alert-danger').text();
+									$('.pts-d-alert.pts-d-alert-danger').hide();
+									}, 5000);
+									
+									$('.thumbnails').removeClass('overlay');
+									$('#button-cart').button('reset');
+									$('#pts_loader').css('display','none');
+									$('#label-cnt').css('display','none');
+									$('#label-cnt').text('');
+									$('.fixedwidth550').css('visibility','visible');
+									zoomthecanvas();
+									$('.alert-dismissible, .text-danger').remove();
+									$('.pts-d-form-group').removeClass('has-error');
+								}					
+						},
+					error: function(xhr, ajaxOptions, thrownError) {
+										$('.thumbnails').removeClass('overlay');
+				$('#button-cart').button('reset');
+				$('#pts_loader').css('display','none');
+				$('#label-cnt').css('display','none');
+				$('#label-cnt').text('');
+				$('.fixedwidth550').css('visibility','visible');
+				zoomthecanvas();
+				$('.alert-dismissible, .text-danger').remove();
+				$('.pts-d-form-group').removeClass('has-error');
+
+						alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+					}
+					});
+			}
+},5000);
+	
+}
+}
+var click1=0;
+	<!--addtocart-->
+	$('#button-cart').on('click', function(e) {
+		$('#buy_design_status').val('0');
+		e.buydesignsts=0;
+		addToCart(e);
+	});
+	
+	$('#button-cart-buy-design').on('click', function(e) {
+		$('#buy_design_status').val('1');
+		e.buydesignsts=1;
+		addToCart(e);
+		
+	});
+
+</script>
+<script type="text/javascript">
+var jsLoaded = false;
+setTimeout("callback()", 2000);
+function callback() {
+    if (!jsLoaded) {
+        console.log("Javascript not loaded after 2 seconds!");
+    } else {
+        console.log('Loaded');
+    }
+}
+$( document ).ready(function() {
+{% if downloadpdf %}
+window.open('{{ downloadpdf }}', '_blank');
+{% endif %}
+});
+</script>
+<script src="system/library/purpletree_product_designer/js/pts_product_designer.js" type="text/javascript" onload="jsLoaded=true"></script>

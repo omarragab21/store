@@ -1,0 +1,57 @@
+{% if address_modal  %} 
+<div id="addressModal{{ section }}" class="modal fixed xmargin"  tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">    
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">{{ text_new_address_heading }}</h4>
+      </div>
+      <div class="modal-body">
+{% endif %}      
+    	<div id="guestLoader{{ section }}" class="loader"></div>    
+          <form id="form_guest_address_{{ section }}" role="form" action="#" autocomplete="off" method="post" novalidate enctype="multipart/form-data"> 
+          {% if    not address_modal  %} 
+          	<h3 class="address_title">{{ text_new_address_heading }}</h3>
+          	{% endif %}         
+            <fieldset id="guestfields{{ section }}">            
+            <input type="hidden" value="{{ section }}" name="section" />
+            {% if    same_shipping  %} 
+            <input type="hidden" value="1" name="xshipping_address_check" />
+            {% endif %} 
+            {% for html in fields[section] %} 
+          		{{ html }} 
+          	  {% endfor %} 
+        	<div class="{{ addresses?'group-half group-left group':'' }}">
+        	<div class="buttons">
+         			<input type="submit" section="{{ section }}" value="{{ button_continue }}" id="saveGuestAddress" data-loading-text="Loading..." class="btn btn-success width100" />
+				</div>     	
+			</div>  		
+			{% if    addresses  %}	
+        	<div class="group-half group-right group">
+        	<div class="progress progress-continue-disabled">
+        		{% if    address_modal  %} 
+                    <div data-dismiss="modal" class="progress-bar" role="progressbar" id="cancelAddress" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                     <span>{{ text_cancel }}</span>
+                    </div>
+                    {% else %} 
+                    <div onclick="toggleElement('#guestPanel , {{ section == 'payment'?'#guest_payment_panel':'#guest_shipping_panel' }}');$('.col-md-3.lborder').removeClass('xblur');" class="progress-bar" role="progressbar" id="cancelAddress" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                     <span>{{ text_cancel }}</span>
+                    </div>                      
+                    {% endif %}                     
+                  </div>
+			</div>   		
+			{% endif %} 
+            </fieldset>
+          </form>
+{% if  address_modal  %}          
+      </div>     
+    </div>
+  </div>
+</div>
+{% endif %} 
+<script type="text/javascript">
+ $('#guestfields{{ section }} {{ display_country?'select':'input' }}[name=\'country_id\']').bind('change', function() {
+		loadZone({{ "'guestfields"~section~"',this.value,'"~zone_id[section]~"','"~text_select~"','"~text_none ~"'" }});	
+	});
+$('#guestfields{{ section }} {{ display_country?'select':'input' }}[name=\'country_id\']').trigger('change');
+ </script>

@@ -1,0 +1,338 @@
+<!--newsletter code start-->
+
+<!--newsletter footer start-->
+{% if (footerstatus == 1 and newsletter_status == 1) %}
+    {% if (showonlayout is not empty) %}
+        <div class="top-footer">
+        <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+            <div id="addft">
+                <div class="footer-newsletter" id="footer-newsletter">
+                    <div class="container">
+
+                        <div class="col-sm-12 text-center">
+                            {% if (footer_titlestatus == 1) %}
+                                <h3 class="newsletter-tittle">{{ newsletter_footertitle_text }}</h3>
+                            {% endif %}
+                            <p class="newsletter-paragraph text-center">{{ newsletter_footerdesc_text }}</p>
+
+                        </div>
+
+                        {% if (footer_namestatus == 1 or footer_namestatus == 2) %}
+                            <div class="col-sm-11 col-xs-12">
+                                <div class="form-group">
+                                    <div class="col-sm-6">
+                                        <input type="text" name="name" value="" class="form-control"
+                                               placeholder="{{ newsletter_footername_text }}">
+                                        <div class="name_error"></div>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <input type="text" name="email" value="" class="form-control"
+                                               placeholder="{{ newsletter_footeremail_text }}">
+                                        <div class="email_error"></div>
+                                    </div>
+                                    <div class="footer_success"></div>
+                                </div>
+
+                            </div>
+                            <div class="col-sm-1 col-xs-12">
+          <span class="input-group-btn">
+            <button type="button"
+                    class="btn btn-primary button newsletters-footer">{{ newsletter_footerbtn_text }}</button>
+          </span>
+                            </div>
+                        {% else %}
+                            <div class="col-sm-offset-2 col-sm-8">
+                                <div class="input-group newsletters-grop">
+                                    <input type="text" name="email" value="" class="form-control"
+                                           placeholder="{{ newsletter_footeremail_text }}">
+                                    <span class="input-group-btn">
+                <button type="button"
+                        class="btn btn-primary button newsletters-footer">{{ newsletter_footerbtn_text }}</button>
+                 </span>
+                                </div>
+                                <div class="email_error"></div>
+                                <br/>
+                                <div class="footer_success"></div>
+                            </div>
+
+                        {% endif %}
+                        <!--new code start-->
+                        {% if (agree_status ==1) %}
+                            <div class="col-sm-11 col-xs-12">
+                                <div class="checkbox text-center">
+                                    <label>
+                                        <input type="checkbox" name="subscribe_agree" value="1"/>
+                                        {{ text_agree }} <a class="report" data-toggle="modal"
+                                                            data-target="#myModal">{{ text_privacy }}</a>
+                                    </label>
+                                </div>
+                            </div>
+                        {% endif %}
+                        <!--new code start -->
+
+
+                    </div>
+                </div>
+            </div>
+        </form>
+        </div>
+        <script>
+            $('.newsletters-footer').click(function () {
+                var successtext = '{{ newsletter_footersuccess_text }}';
+                $.ajax({
+                    url: 'index.php?route=extension/newsletter_popup/addnewsletterfooter',
+                    type: 'post',
+                    data: $('#addft input[type=\'text\'], #addft input[type=\'checkbox\']:checked'),
+                    dataType: 'json',
+                    beforeSend: function () {
+                        $('.newsletters-footer').button('loading');
+                        $('.loader').removeClass('hide');
+
+                    },
+                    complete: function () {
+                        $('.newsletters-footer').button('reset');
+                    },
+                    success: function (json) {
+                        $('.alert, .alert-success, .text-danger, .warning').remove();
+                        /* validation class has error */
+                        $('.form-group').removeClass('has-error');
+                        /* validation class has error */
+                        $('.loader').addClass('hide');
+                        if (json['error']) {
+                            $('.warning').fadeIn('slow');
+
+                            if (json['error']['name']) {
+                                $('.name_error').html('<div class="text-danger">' + json['error']['name'] + '</div>');
+                            }
+
+                            if (json['error']['email']) {
+                                $('.email_error').html('<div class="text-danger">' + json['error']['email'] + '</div>');
+                            }
+                            //new code start
+                            else if (json['error']['agree']) {
+                                alert('{{ error_agree }}');
+                            }
+                            //new code end
+
+                        }
+
+                        if (json['success']) {
+
+                            $('.footer_success').html('<div class="alert alert-success">' + successtext + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+                            $('input[name=name]').val('');
+                            $('input[name=email]').val('');
+                            // $('.alert-successnews').fadeOut(4000);
+                        }
+
+                    }
+                });
+            });
+        </script>
+
+        <style>
+            .footer-newsletter {
+                background: {{ footer_bgcolor }};
+                color: {{ footer_fontcolor }};
+            }
+
+            .footer-newsletter h3 {
+                color: {{ footer_fontcolor }};
+            }
+
+            {{ customcss }}
+        </style>
+    {% endif %}
+{% endif %}
+<!--newsletter footer end-->
+
+<!--newsletter popup start-->
+{% if (popupstatus == 1 and newsletter_status == 1) %}
+    {% if (showpopuplayout is not empty) %}
+        <div class="modal-newsletter modal in" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                        <div id="addpop">
+
+                            <div class="modal-body"
+                                 style="background:url('{{ popup_bgimage }}')no-repeat; background-position:center;height:450px;width:650px;">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;
+                                </button>
+
+                                <div class="newsletters text-center">
+                                    {% if (popup_titlestatus == 1) %}
+                                        <h3>{{ newsletter_popuptitle_text }}</h3>
+                                    {% endif %}
+
+                                    {{ newsletter_popupdesc_text }}
+
+                                    <div class="donot">
+                                        {% if (popup_namestatus == 1 or popup_namestatus == 2) %}
+                                            <div class="form-group">
+                                                <div class="col-sm-12">
+                                                    <input type="text" name="name" value="" class="form-control"
+                                                           placeholder="{{ newsletter_popupname_text }}">
+                                                    <div class="name_errorpop"></div>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+
+                                        <div class="form-group">
+                                            <div class="col-sm-12">
+                                                <input type="text" name="email" value="" class="form-control"
+                                                       placeholder="{{ newsletter_popupemail_text }}">
+                                                <div class="email_errorpop"></div>
+                                            </div>
+                                        </div>
+
+                                        {% if (agree_status == 1) %}
+                                            <!--new code start   -->
+                                            <div class="checkbox">
+                                                <label>
+                                                    <input type="checkbox" name="subscribe_agree" value="1"/>
+                                                    {{ text_agree }} <a class="report" data-toggle="modal"
+                                                                        data-target="#myModal">{{ text_privacy }}</a>
+                                                </label>
+                                            </div>
+                                            <!--new code start   -->
+                                        {% endif %}
+                                        <div class="popup_success"></div>
+
+                                        <button type="button" class="btn btn-success button pull-right"
+                                                id="newsletters-subspopup">{{ newsletter_popupbtn_text }}</button>
+                                        <button type="button" class="btn btn-danger button pull-left"
+                                                id="news-popupshow">{{ newsletter_popupdontbtn_text }}</button>
+                                    </div>
+                                </div>
+                            </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        </div>
+        <script>
+            $('#newsletters-subspopup').click(function () {
+                var successtext = '{{ newsletter_popupsuccess_text }}';
+                $.ajax({
+                    url: 'index.php?route=extension/newsletter_popup/addnewsletterpopup',
+                    type: 'post',
+                    data: $('#addpop input[type=\'text\'], #addpop input[type=\'checkbox\']:checked'),
+                    dataType: 'json',
+                    beforeSend: function () {
+                        $('#newsletters-subspopup').button('loading');
+                        $('.loader').removeClass('hide');
+
+                    },
+                    complete: function () {
+                        $('#newsletters-subspopup').button('reset');
+                    },
+                    success: function (json) {
+                        $('.alert, .alert-success, .text-danger, .warning').remove();
+                        /* validation class has error */
+                        $('.form-group').removeClass('has-error');
+                        /* validation class has error */
+                        $('.loader').addClass('hide');
+                        if (json['error']) {
+                            $('.warning').fadeIn('slow');
+
+                            if (json['error']['name']) {
+                                $('.name_errorpop').html('<div class="text-danger">' + json['error']['name'] + '</div>');
+                            }
+
+                            if (json['error']['email']) {
+                                $('.email_errorpop').html('<div class="text-danger">' + json['error']['email'] + '</div>');
+                            }
+                            //new code start
+                            else if (json['error']['agree']) {
+                                alert('{{ error_agree }}');
+                            }
+                            //new code end
+
+                        }
+
+                        if (json['success']) {
+
+                            $('.popup_success').html('<div class="alert alert-success">' + successtext + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+                            $('input[name=name]').val('');
+                            $('input[name=email]').val('');
+                            localStorage.setItem("MyId", 'hidenews');
+                            setTimeout(function (e) {
+                                $('.close').trigger('click');
+                                location.reload();
+                            }, 4000);
+
+                            //$('.alert-successnews').fadeOut(4000);
+                        }
+
+                    }
+                });
+            });
+        </script>
+
+        <script>
+            $(window).load(function () {
+                if (localStorage.getItem('MyId') !== 'hidenews') {
+                    $('.modal-newsletter').fadeIn();
+                    $('.modal-newsletter').modal('show');
+                }
+            });
+
+
+        </script>
+
+
+        <script>
+            $('#news-popupshow').on('click', function () {
+                localStorage.setItem("MyId", 'hidenews');
+                $('.modal-newsletter').modal('hide');
+            });
+        </script>
+
+        <style>
+            .modal-newsletter .modal-dialog {
+                width: 600px !important;
+            }
+
+            .modal-newsletter .center {
+                text-align: center;
+            }
+
+            .donot {
+                text-align: center;
+                margin-top: 50px;
+                padding-bottom: 50px !important;
+            }
+
+            .modal-newsletter .modal-body {
+                max-height: auto !important;
+                max-height: 150 !important;
+
+            }
+
+            .footer-newsletter {
+                padding-bottom: 15px;
+            }
+
+            {{ customcss }}
+        </style>
+    {% endif %}
+{% endif %}
+<!--newsletter popup end-->
+
+<!-- agree model -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="tab-first"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">{{ text_privacy }} </h4>
+            </div>
+            <div class="modal-body">
+                <p>{{ newsletter_privacy_text }} </p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- agree model -->

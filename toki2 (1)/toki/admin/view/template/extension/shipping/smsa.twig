@@ -1,0 +1,249 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-shipping" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if error_warning %}
+    <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+      </div>
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-shipping" class="form-horizontal">
+          <ul class="nav nav-tabs">
+             <li class="active"><a href="#tab-setting" data-toggle="tab">{{ tab_setting }}</a></li>
+            <li><a href="#tab-shipping" data-toggle="tab">{{ tab_shipping }}</a></li>
+            <li><a href="#tab-support" data-toggle="tab">{{ tab_support }}</a></li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane active" id="tab-setting">
+              <div class="form-group">
+            <label class="col-sm-3 control-label" for="input-status">{{ entry_status }}</label>
+            <div class="col-sm-9">
+              <select name="shipping_smsa_status" id="input-status" class="form-control">
+                {% if shipping_smsa_status %}
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+                {% endif %} 
+              </select>
+            </div>
+          </div>
+          <div class="form-group required">
+            <label class="col-sm-3 control-label" for="input-passkey">{{ entry_passkey }}</label>
+            <div class="col-sm-9">
+              <input type="text" name="shipping_smsa_passkey" value="{{ shipping_smsa_passkey }}" placeholder="{{ entry_passkey }}" id="input-passkey" class="form-control" />
+              {% if error_passkey %}
+              <div class="text-danger">{{ error_passkey }}</div>
+              {% endif %}
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-3 control-label" for="input-mode">{{ entry_mode }}</label>
+            <div class="col-sm-9">
+              <select name="shipping_smsa_mode" id="input-mode" class="form-control">
+                {% if shipping_smsa_mode %}
+                <option value="1" selected="selected">{{ text_live }}</option>
+                <option value="0">{{ text_test }}</option>
+                {% else %}
+                <option value="1">{{ text_live }}</option>
+                <option value="0" selected="selected">{{ text_test }}</option>
+                {% endif %}
+              </select>
+            </div>
+          </div>
+          {# <div class="form-group">
+            <label class="col-sm-3 control-label" for="input-mode">{{ entry_shipping_charge }}</label>
+            <div class="col-sm-9">
+              <select name="shipping_smsa_charge" id="input-mode" class="form-control">
+                {% if shipping_smsa_charge %}
+                <option value="1" selected="selected">{{ text_enable }}</option>
+                <option value="0">{{ text_disable }}</option>
+                {% else %}
+                <option value="1">{{ text_enable }}</option>
+                <option value="0" selected="selected">{{ text_disable }}</option>
+                {% endif %}
+              </select>
+            </div>
+          </div> #}
+          <div class="form-group required">
+            <label class="col-sm-3 control-label" for="input-code">{{ entry_name }}</label>
+            <div class="col-sm-9">
+              <input type="text" name="shipping_smsa_name" value="{{ shipping_smsa_name }}" placeholder="{{ entry_name }}" id="input-code" class="form-control" />
+              {% if error_name %}
+              <div class="text-danger">{{ error_name }}</div>
+              {% endif %}
+            </div>
+          </div>         
+          <div class="form-group required">
+            <label class="col-sm-3 control-label" for="input-telephone">{{ entry_telephone }}</label>
+            <div class="col-sm-9">
+              <input type="text" name="shipping_smsa_telephone" value="{{ shipping_smsa_telephone }}" placeholder="{{ entry_telephone }}" id="input-telephone" class="form-control" />
+              {% if error_telephone %}
+              <div class="text-danger">{{ error_telephone }}</div>
+              {% endif %}
+            </div>
+          </div>
+          <div class="form-group required">
+            <label class="col-sm-3 control-label" for="input-address_1">{{ entry_address_1 }}</label>
+            <div class="col-sm-9">
+              <input type="text" name="shipping_smsa_address_1" value="{{ shipping_smsa_address_1 }}" placeholder="{{ entry_address_1 }}" id="input-address_1" class="form-control" />
+              {% if error_address_1 %}
+              <div class="text-danger">{{ error_address_1 }}</div>
+              {% endif %}
+            </div>
+          </div>
+          <div class="form-group required">
+            <label class="col-sm-3 control-label" for="input-address_2">{{ entry_address_2 }}</label>
+            <div class="col-sm-9">
+              <input type="text" name="shipping_smsa_address_2" value="{{ shipping_smsa_address_2 }}" placeholder="{{ entry_address_2 }}" id="input-address_2" class="form-control" />
+              {% if error_address_2 %}
+              <div class="text-danger">{{ error_address_2 }}</div>
+              {% endif %}
+            </div>
+          </div>
+          <div class="form-group required">
+            <label class="col-sm-3 control-label" for="input-city">{{ entry_city }}</label>
+            <div class="col-sm-9">
+              <input type="text" name="shipping_smsa_city" value="{{ shipping_smsa_city }}" placeholder="{{ entry_city }}" id="input-city" class="form-control" />
+              {% if error_city %}
+              <div class="text-danger">{{ error_city }}</div>
+              {% endif %}
+            </div>
+          </div>
+          <div class="form-group required">
+            <label class="col-sm-3 control-label" for="input-country">{{ entry_country }}</label>
+            <div class="col-sm-9">
+              <input type="text" name="shipping_smsa_country" value="{{ shipping_smsa_country }}" placeholder="{{ entry_country }}" id="input-country" class="form-control" />
+              {% if error_country %}
+              <div class="text-danger">{{ error_country }}</div>
+              {% endif %}
+            </div>
+          </div>
+            </div>
+            <div class="tab-pane" id="tab-shipping">
+              <div class="row">
+            <div class="col-sm-2">
+              <ul class="nav nav-pills nav-stacked">
+                <li class="active"><a href="#tab-general" data-toggle="tab">{{ tab_general }}</a></li>
+                {% for geo_zone in geo_zones %}
+                <li><a href="#tab-geo-zone{{ geo_zone.geo_zone_id }}" data-toggle="tab">{{ geo_zone.name }}</a></li>
+                {% endfor %}
+              </ul>
+            </div>
+            <div class="col-sm-10">
+              <div class="tab-content">
+                <div class="tab-pane active" id="tab-general">
+                       <div class="form-group">
+                       <label class="col-sm-2 control-label" for="input-mode">{{ entry_shipping_charge }}<div>(Only Works On Live Mode)</div></label>
+                 <div class="col-sm-10">
+                   <select name="shipping_smsa_charge" id="input_smsa_charge" class="form-control">
+                     {% if shipping_smsa_charge %}
+                     <option value="1" selected="selected">{{ text_enable }}</option>
+                     <option value="0">{{ text_disable }}</option>
+                     {% else %}
+                     <option value="1">{{ text_enable }}</option>
+                     <option value="0" selected="selected">{{ text_disable }}</option>
+                     {% endif %}
+                   </select>
+                 </div>
+                 </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-tax-class">{{ entry_tax_class }}</label>
+                    <div class="col-sm-10">
+                      <select name="shipping_smsa_tax_class_id" id="input-tax-class" class="form-control">
+                        <option value="0">{{ text_none }}</option>
+                        {% for tax_class in tax_classes %}
+                        {% if tax_class.tax_class_id == shipping_smsa_tax_class_id %}
+                        <option value="{{ tax_class.tax_class_id }}" selected="selected">{{ tax_class.title }}</option>
+                        {% else %}
+                        <option value="{{ tax_class.tax_class_id }}">{{ tax_class.title }}</option>
+                        {% endif %}
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-sort-order">{{ entry_sort_order }}</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="shipping_smsa_sort_order" value="{{ shipping_smsa_sort_order }}" placeholder="{{ entry_sort_order }}" id="input-sort-order" class="form-control" />
+                    </div>
+                  </div>
+                 
+                </div>
+                {% for geo_zone in geo_zones %}
+                <div class="tab-pane" id="tab-geo-zone{{ geo_zone.geo_zone_id }}">
+                  
+
+                  <div class="form-group smsa_rate
+                  {% if shipping_smsa_charge %}
+                      smsa_rate1
+                     {% endif %}
+                  ">
+                    <label class="col-sm-2 control-label" for="input-rate{{ geo_zone.geo_zone_id }}"><span data-toggle="tooltip" title="{{ help_rate }}">{{ entry_rate }}</span></label>
+                    <div class="col-sm-10">
+                      <textarea name="shipping_smsa_{{ geo_zone.geo_zone_id }}_rate" rows="5" placeholder="{{ entry_rate }}" id="input-rate{{ geo_zone.geo_zone_id }}" class="form-control ">{{ shipping_smsa_geo_zone_rate[geo_zone.geo_zone_id] ? shipping_smsa_geo_zone_rate[geo_zone.geo_zone_id] }}</textarea>
+                    </div>
+                  </div>
+                  
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-status{{ geo_zone.geo_zone_id }}">{{ entry_status }}</label>
+                    <div class="col-sm-10">
+                      <select name="shipping_smsa_{{ geo_zone.geo_zone_id }}_status" id="input-status{{ geo_zone.geo_zone_id }}" class="form-control">
+                        {% if shipping_smsa_geo_zone_status[geo_zone.geo_zone_id] %}
+                        <option value="1" selected="selected">{{ text_enabled }}</option>
+                        <option value="0">{{ text_disabled }}</option>
+                        {% else %}
+                        <option value="1">{{ text_enabled }}</option>
+                        <option value="0" selected="selected">{{ text_disabled }}</option>
+                        {% endif %}
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+              </div>
+            </div>
+            <div class="tab-pane" id="tab-support">
+              {{support}}
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{{ footer }}
+<script>
+   $("#input_smsa_charge").change(function(){
+    var value = $("#input_smsa_charge").val();
+    if(value == true){
+        $(".smsa_rate").addClass("smsa_rate1");
+    }else{
+      $(".smsa_rate").removeClass("smsa_rate1");
+    }
+  });
+</script>
+<style type="text/css">
+  .smsa_rate1{
+   display :none;
+  }
+</style>

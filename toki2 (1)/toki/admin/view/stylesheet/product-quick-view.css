@@ -1,0 +1,39 @@
+/*
+  Product Quick View
+  OpenCart Version: 2.x - 3.x
+  Author: MagDevel (support@magdevel.com)
+*/
+
+.md-panel-title {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.md-store-switcher {
+  position: relative;
+}
+
+fieldset:not(:last-child) {
+  margin-bottom: 20px;
+}
+
+.md-btn {
+  background-color: #fff;
+  color: #888;
+  border-color: #aaa;
+}
+
+.btn-group-vertical > .md-btn {
+  text-align: left;
+}
+
+.well input[type="checkbox"] {
+  margin-bottom: -2px;
+  margin-right: 6px;
+}
+
+.minicolors-theme-bootstrap .minicolors-swatch {
+  bottom: 3px;
+  width: 29px;
+  height: auto;
+}

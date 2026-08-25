@@ -1,0 +1,74 @@
+<div id="cart" class="btn-group btn-block">
+<button type="button" data-toggle="dropdown" data-loading-text="{{ text_loading }}" class="btn btn-inverse btn-block btn-lg dropdown-toggle"><i class="fa fa-shopping-cart"></i> <span id="cart-total">{{ text_items }}</span>
+  <span class="hidden-xs hidden-sm hidden-md text_cart">{{ text_cart }}</span>
+
+</button>
+  <ul class="dropdown-menu pull-right">
+    {% if (products or vouchers) %} 
+    <li class="f-li">
+      <table class="table table-striped">
+        {% for product in products %} 
+        <tr>
+          <td class="text-center">{% if (product['thumb']) %} 
+            <a href="{{ product['href'] }}"><img src="{{ product['thumb'] }}" alt="{{ product['name'] }}" title="{{ product['name'] }}" class="img-thumbnail" /></a>
+            {% endif %}</td>
+          <td class="text-left"><a href="{{ product['href'] }}">{{ product['name'] }}</a>
+            {% if (product['option']) %} 
+            {% for option in product['option'] %} 
+            <br />
+            - <small>{{ option['name'] }} {{ option['value'] }}</small>
+            {% endfor %} 
+            {% endif %} 
+            {% if (product['recurring']) %} 
+            <br />
+            - <small>{{ text_recurring }} {{ product['recurring'] }}</small>
+            {% endif %}</td>
+          <td class="text-right">x {{ product['quantity'] }}</td>
+          <td class="text-right">{{ product['total'] }}</td>
+          <td class="text-center"><button type="button" onclick="cart.remove('{{ product.cart_id }}');" title="{{ button_remove }}" class="btn btn-danger btn-xs"><i class="fa fa-times"></i></button></td>
+        </tr>
+        {% endfor %} 
+        {% for voucher in vouchers %} 
+        <tr>
+          <td class="text-center"></td>
+          <td class="text-left">{{ voucher['description'] }}</td>
+          <td class="text-right">x&nbsp;1</td>
+          <td class="text-right">{{ voucher['amount'] }}</td>
+          <td class="text-center text-danger"><button type="button" onclick="voucher.remove('{{ voucher.key }}');" title="{{ button_remove }}" class="btn btn-danger btn-xs"><i class="fa fa-times"></i></button></td>
+        </tr>
+        {% endfor %} 
+      </table>
+    </li>
+    <li class="s-li">
+      <div>
+        <table class="table totals1">
+          {% for total in totals %} 
+          <tr>
+            <td class="text-left">{{ total['title'] }}</td>
+            <td class="text-left"><strong>{{ total['text'] }}</strong></td>
+          </tr>
+          {% endfor %} 
+        </table>
+        <div class="pay1 clearfix">
+          <br>
+          <div class="list-inline">
+            <span><img src="catalog/view/theme/default/stylesheet/images/maothoq.png"></span>
+            <span><img src="catalog/view/theme/default/stylesheet/images/secure.png"></span>
+            <span><img src="catalog/view/theme/default/stylesheet/images/master.png"></span>
+            <span><img src="catalog/view/theme/default/stylesheet/images/visa.png"></span>
+            <span><img src="catalog/view/theme/default/stylesheet/images/mada.png"></span>
+          </div>
+          <span>{{ text_secure }}</span>
+        </div>
+        <p class="text-right"><a class="btn btn-inverse" href="{{ cart }}"><strong><i class="fa fa-shopping-basket"></i> {{ text_cart }}</strong></a>&nbsp;&nbsp;&nbsp;<a class="btn btn-inverse" href="{{ checkout }}"><strong><i class="fa fa-check-circle"></i> {{ text_checkout }}</strong></a></p>
+      </div>
+    </li>
+    {% else %} 
+    <li>
+      <!-- <img class="img-responsive" style="width: 50%; margin: 0 auto;" src="catalog/view/theme/default/stylesheet/images/empty-cart-icon.png"> -->
+      <br>
+      <p class="text-center">{{ text_empty }}</p>
+    </li>
+    {% endif %}
+  </ul>
+</div>

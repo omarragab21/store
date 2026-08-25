@@ -1,0 +1,178 @@
+<div class="clearfix"></div>
+<footer>
+
+            <!--newsletter 7-5-2019 code start-->
+			    {{ tmdnewsletter }}
+            <!--newsletter 7-5-2019 code end-->
+    <div class="footer-co">
+        <div class="bottom-footer">
+            <div class="container">
+                <div class="bottom-footer-cont">
+                    <div class="container">
+                        <div class="row">
+                            {{ content_footer }}
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="content-footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <h5 data-toggle="collapse" data-target="#col5" class="collapsed">
+                            <i class="fa fa-plus"></i>
+                            <i class="fa fa-minus"></i>{{ text_about }}
+                        </h5>
+                        <div id="col5" class="list-unstyled collapse footer-list">
+                             {{ description }}
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <h5 data-toggle="collapse" data-target="#col1" class="collapsed">
+                            <i class="fa fa-plus"></i>
+                            <i class="fa fa-minus"></i>{{ text_account }}
+                        </h5>
+                        <ul id="col1" class="list-unstyled collapse footer-list">
+                            <li><a href="{{ account }}">{{ text_account }}</a></li>
+                            <li><a href="{{ order }}">{{ text_order }}</a></li>
+                            <li><a href="{{ wishlist }}">{{ text_wishlist }}</a></li>
+                            <li><a href="{{ newsletter }}">{{ text_newsletter }}</a></li>
+                        </ul>
+
+                    </div>
+
+                    <div class="col-sm-2">
+                        <h5 data-toggle="collapse" data-target="#col2" class="collapsed"><i class="fa fa-plus"></i><i
+                                    class="fa fa-minus"></i>{{ text_service }}</h5>
+                        <ul id="col2" class="list-unstyled collapse footer-list">
+                            <li><a href="{{ contact }}">{{ text_contact }}</a></li>
+                            <li><a href="{{ return }}">{{ text_return }}</a></li>
+                            <li><a href="{{ sitemap }}">{{ text_sitemap }}</a></li>
+                            <li><a href="{{ voucher }}">{{ text_voucher }}</a></li>
+
+                        </ul>
+                    </div>
+
+                    {% if  informations %}
+                        <div class="col-sm-2">
+                            <h5 data-toggle="collapse" data-target="#col3" class="collapsed"><i
+                                        class="fa fa-plus"></i><i
+                                        class="fa fa-minus"></i>{{ text_information }}</h5>
+                            <ul id="col3" class="list-unstyled collapse footer-list">
+                                {% for information in informations %}
+                                    <li>
+                                        <a href="{{ information.href }}">{{ information.title }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+
+
+                    <div class="col-sm-2">
+                        <h5 data-toggle="collapse" data-target="#col4" class="collapsed"><i class="fa fa-plus"></i><i
+                                    class="fa fa-minus"></i>{{ text_details }}</h5>
+                        <div id="col4" class="wrap clearfix collapse">
+
+                           <!--  <div class="inf-cont address">
+                                <a href="#" target="blanck"><i class="fa fa-map-marker"></i>
+                                    <span>{{ address }}</span>
+                                </a>
+                            </div> -->
+
+                            <div class="inf-cont phone">
+                                <p>{{ text_support }}</p>
+                                <a href="tel:{{ telephone }}">
+                                    <img src="catalog/view/theme/default/stylesheet/phone-f.png">
+                                    <span>{{ telephone }}</span></a>
+                            </div>
+                            <div class="inf-cont social1">
+<div class="social">
+                   <ul class="list-unstyled">
+
+                     {% if whatsapp is not empty %} <li><a class="whats" href="https://wa.me/{{ whatsapp }}"><i class="fa fa-whatsapp"></i></a></li>{% endif %}
+                      {% if snapchat is not empty %} <li><a href="{{ snapchat }} "><i class="fa fa-snapchat"></i></a></li>{% endif %}
+                       {% if instagram is not empty %} <li><a href="{{ instagram }} "><i class="fa fa-instagram"></i></a></li>{% endif %}
+                      {% if twitter is not empty %} <li><a href="{{ twitter }} "><i class="fa fa-twitter"></i></a></li>{% endif %}
+                      {% if pint is not empty %}  <li><a href="{{ pint }} "><i class="fa fa-pinterest-p"></i></a></li>{% endif %}
+                     {% if youtube is not empty %}   <li><a href="{{ youtube }} "><i class="fa fa-youtube-play"></i></a></li>{% endif %}
+                   {% if facebook is not empty %}    <li><a href="{{ facebook }} "><i class="fa fa-facebook"></i></a></li> {% endif %}
+
+
+                  </ul>
+               </div>
+                            </div>
+                            <!-- <div class="inf-cont email2">
+                                <a href="mailto:{{ email }}"><i class="fa fa-envelope">
+
+                                    </i>
+                                    <span>{{ email }}</span></a>
+                            </div> -->
+
+                        </div>
+
+                    </div>
+
+                </div>
+               
+
+            </div>
+
+        </div>
+        
+            <div class="bottom-footer-item">
+                <div class="pay">
+                    {{ content_foot2 }}
+                </div>
+<div class="container">
+                {{ powered }}
+            </div>
+
+
+        </div>
+        <div class="clearfix"></div>
+
+
+</footer>
+
+                <link href="catalog/view/theme/default/stylesheet/newsletter.css" rel="stylesheet">
+                <style>
+                    footer{padding-top:0px;}
+                </style>
+			
+
+</div>
+</div>
+
+<script type="text/javascript">
+
+    $('#banner0').wrapAll('<div class="container  no-padding "></div>');
+    $('#banner0 .banner-item').addClass('col-md-4 col-sm-4  col-xs-12  ');
+
+
+     $('#banner1, #banner2').wrapAll('<div class="container  no-padding "></div>');
+    $('#banner1').addClass('col-md-5 col-sm-5  col-xs-12    ');
+
+    
+$('#banner2').addClass('col-md-7 col-sm-7  col-xs-12  ');
+
+   $('#banner3 ').wrapAll('<div class="container "></div>');
+
+$('#banner4 ').wrapAll('<div class="container no-padding"></div>');
+ $('#banner4 .banner-item').addClass('col-md-6 col-sm-6  col-xs-12  ');
+
+</script>
+
+
+{% for script in scripts %}
+    <script src="{{ script }}" type="text/javascript"></script>
+{% endfor %}
+{{ config_javascript2 }}
+
+            {{_ocm_script}}
+        
+</body>
+</html>

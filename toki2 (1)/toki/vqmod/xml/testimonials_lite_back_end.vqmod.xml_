@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+    <id>Testimonials Lite Back End</id>
+    <version>1.4.2</version>
+    <author>vanstudio.co.ua</author>
+    <file name="admin/controller/common/column_left.php">
+        <operation>
+            <search position="before"><![CDATA[if ($this->user->hasPermission('access', 'catalog/information')) {]]></search>
+            <add><![CDATA[
+			// Testimonials
+			if ($this->user->hasPermission('access', 'testimonial/testimonial')) {
+				$catalog[] = array(
+					'name'	   => 'Testimonials',
+					'href'     => $this->url->link('testimonial/testimonial', 'user_token=' . $this->session->data['user_token'], true),
+					'children' => array()
+				);
+			}
+            ]]></add>
+        </operation>
+    </file>
+    <file name="admin/controller/setting/setting.php">
+        <operation>
+            <search position="after"><![CDATA[$data['captcha_pages'] = array();]]></search>
+            <add><![CDATA[
+				$data['captcha_pages'][] = array(
+			    'text'  => 'Testimonials',
+			    'value' => 'testimonial'
+		        );
+            ]]></add>
+        </operation>
+        <operation>
+            <search position="after"><![CDATA[$data['mail_alerts'] = array();]]></search>
+            <add><![CDATA[
+				$data['mail_alerts'][] = array(
+			    'text'  => 'Testimonials',
+			    'value' => 'testimonial'
+		        );
+            ]]></add>
+        </operation>
+    </file>
+</modification>

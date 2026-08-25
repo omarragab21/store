@@ -1,0 +1,140 @@
+{% if    redirect is defined  %} 
+<script type="text/javascript"><!--
+location = '{{ redirect }}';
+//--></script>
+{% else %} 
+<div id="socialpanel" class="login-section socialpanel">
+<div id="modalEditLoader" class="loader"></div>
+<button type="button" class="close" onclick="$('#xlogin2').remove();$('#loginPage').show();"><span aria-hidden="true">x</span></button>
+<div class="profile-card {{ platform }}">
+  <div class="profile-card-block">
+      <span class="img-block"><img src="{{ pictureUrl }}"></span>
+    <div class="socialusername">{{ name }}</div>
+  </div>
+</div>
+<div id="socialloginField" class="row socialloginField">
+<div class="col-md-12">
+<div class="alert alert-social-info "><i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;{{ text_social_additional }}</div>
+</div>
+              <div class="col-md-12" >
+          	  <form role="form" id="sociallogin" autocomplete="off"  action="#" novalidate method="post" enctype="multipart/form-data">
+              <input type="hidden" name="country_code" id="input_country_code" />                            
+              {% for html in fields.checkout %} 
+          		{{ html }} 
+          	  {% endfor %} 
+          	  {% if    display_newsletter  %} 
+                  <div class="form-group">
+                      <div class="checkbox is_checkbox">
+					  	<label for="socialnewsletter"><input type="checkbox" class="input-checkbox" name="newsletter" value="1" id="socialnewsletter" checked="checked">{{ entry_newsletter }}</label>
+					  </div>
+                  </div>
+               {% endif %}   
+               {% if    text_agree  %} 
+                  <div id="agreesocialouter" class="form-group">
+                      <div class="checkbox is_checkbox">
+					  	<label for="agreesocial"><input type="checkbox" class="input-checkbox" name="socialagree" value="1" id="agreesocial">{{ text_agree }}</label>
+					  </div>
+                  </div>
+			  {% endif %}                  
+              <div class="buttons">
+         		<input type="submit" value="{{ button_continue }}" id="button-social-register" data-loading-text="Loading..." class="btn btn-success width100" />
+       		  </div>
+          </form>
+          </div>
+        </div>
+</div>        
+{% if mask  %} 
+<script type="text/javascript" src="catalog/view/javascript/xtensions/stylesheet/bs/js/jquery.maskedinput.min.js"></script>
+<script type="text/javascript">
+jQuery(function($){
+{% for key,value in mask %}	      
+$("#sociallogin #{{ key }}").mask("{{ value }}");	      
+{% endfor %}
+});
+</script>
+{% endif %} 
+<script type="text/javascript" src="catalog/view/javascript/xtensions/stylesheet/bs/js/xcustom.js"></script>
+<script type="text/javascript">
+$('#sociallogin input[name=\'customer_group_id\']').on('change', function() {
+	$.ajax({
+		url: 'index.php?route={{ xtensions_controller_path }}checkout/customfield&customer_group_id=' + this.value,
+		dataType: 'json',
+		success: function(json) {
+			$('#socialloginField .custom-field').hide();
+			$('#socialloginField .custom-field label span.fieldlabel').removeClass('required');			
+			for (i = 0; i < json.length; i++) {
+				custom_field = json[i];
+				$('#socialloginField  #custom-field' + custom_field.custom_field_id).show();
+				if (custom_field.required) {					
+					$('#socialloginField #custom-field' + custom_field.custom_field_id + ' label > span.fieldlabel').addClass('required');
+				}
+			}
+		},
+		error: function(xhr, ajaxOptions, thrownError) {
+			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+		}
+	});
+});
+$('#socialloginField input[name=\'customer_group_id\']:checked').trigger('change');
+</script>
+<script type="text/javascript">
+$('[data-toggle="tooltip"]').tooltip();
+$('.date').datetimepicker({
+	language: '{{ datepicker }}',
+	pickTime: false
+});
+$('.time').datetimepicker({
+	language: '{{ datepicker }}',
+	pickDate: false
+});
+$('.datetime').datetimepicker({
+	language: '{{ datepicker }}',
+	pickDate: true,
+	pickTime: true
+});
+</script>
+{% if show_country_code %}
+<script type="text/javascript">
+var inputTelephhone = document.querySelector("#socialloginField #input-telephone");
+var xsiti = window.intlTelInput(inputTelephhone, {
+    	autoHideDialCode: false,
+    	nationalMode: false,
+    	autoFormat: false,
+    	formatOnDisplay: false,
+    	autoPlaceholder: false,
+    	separateDialCode:true,
+    	hiddenInput:'full_telephone',
+    	{% if isMobile and only_top_countries %}
+    		dropdownContainer:document.querySelector("#socialloginField #regular-field-telephone"),
+    	{% endif %}
+    	{% if all_countries %}
+    		onlyCountries: [{{ all_countries }}],
+    	{% endif %}	
+    	{% if top_countries %}
+    		preferredCountries: [{{ top_countries }}],
+    	{% endif %}
+	  utilsScript: "catalog/view/javascript/xtensions/countrycode/js/utils.js" // just for formatting/placeholders etc
+});
+</script>
+{% if only_top_countries %}
+<style type="text/css">
+#sociallogin .intl-tel-input .country-list {
+  min-width: 400px;
+}
+#sociallogin .intl-tel-input .country-list .divider {
+    display: none;
+}
+#sociallogin .intl-tel-input .country-list .country.standard {
+    display: none;
+}
+.iti-mobile .#sociallogin intl-tel-input.iti-container {
+    display: contents;
+}
+.iti-mobile #sociallogin .intl-tel-input .country-list {
+    max-height: initial;
+    width: 100%;
+}
+</style>
+{% endif %}
+{% endif %}
+{% endif %}

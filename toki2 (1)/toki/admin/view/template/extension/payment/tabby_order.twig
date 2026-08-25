@@ -1,0 +1,101 @@
+{% if txn == null %}
+<div class="table-responsive" id="tabbyPayment">
+{{ text_no_transaction }}
+</div>
+{% else %}
+<div class="table-responsive" id="tabbyPayment" data-transaction-id="{{ txn.id }}">
+    <table class="table table-bordered table-hover">
+        <tbody>
+            <tr>
+                <td colspan="2">
+                {% if txn.status == 'AUTHORIZED' %}
+                    <div style="display: flex; justify-content: space-between;">
+                        <div style="display: flex;">
+                            <!--<a class='btn btn-success' onclick="$('.amount_capture').removeClass('hidden');" data-transaction-id="{{ txn.id }}" data-amount="{{ txn.amount }}">{{ text_button_capture }}</a>-->
+                            <a class='btn btn-success capture' onclick="capturePayment(this);" data-transaction-id="{{ txn.id }}" data-amount="{{ txn.amount }}">{{ text_button_capture }}</a>
+                            <div class='amount_capture hidden' style="display: flex; margin-left: 10px;">
+                                <label style="margin: 0">Amount:
+                                    <input type="text" name="amount" placeholder="max: {{ max_amount }}" pattern="^\d*(\.\d{0,2})?$" onchange="this.value = parseFloat(this.value).toFixed(2);" style="height: 100%;" />
+                                </label>
+                                <a class='btn btn-success capture' onclick="capturePayment(this);" data-transaction-id="{{ txn.id }}">{{ button_send }}</a>
+                            </div>
+                        </div>
+                        <div>
+                            <a class='btn btn-warning void' onclick="closePayment(this);" data-transaction-id="{{ txn.id }}" style="float: right;">{{ text_button_closed }}</a>
+                        </div>
+                    </div>
+                {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <th>{{ entry_transaction_id }}</th>
+                <td>{{ txn.id }}</td>
+            </tr>
+            <tr>
+                <th>{{ entry_transaction_date }}</th>
+                <td>{{ txn.created_at }}</td>
+            </tr>
+            <tr>
+                <th>{{ entry_transaction_status }}</th>
+                <td>{{ txn.status }}</td>
+            </tr>
+            <tr>
+                <th>{{ entry_transaction_amount }}</th>
+                <td>{{ txn.amount }}</td>
+            </tr>
+            <tr>
+                <th>{{ entry_transaction_currency }}</th>
+                <td>{{ txn.currency }}</td>
+            </tr>
+            <tr>
+                <th>{{ entry_transaction_reference_id }}</th>
+                <td>{{ txn.order.reference_id }}</td>
+            </tr>
+{% if txn.captures %} 
+            <tr>
+                <th colspan=2>{{ entry_captures }}</td>
+            </tr>
+    {% for capture in txn.captures %}
+            <tr>
+                <td>{{ capture.id }}</th>
+                <td>{{ capture.amount }} {{ txn.currency }} ({{ capture.created_at }})</td>
+            </tr>
+    {% endfor %}
+    {% if txn.status == 'CLOSED' %}
+        {% if max_refund_amount != 0 %}
+        <tr>
+            <td></td>
+            <!--<td><a class="btn btn-danger refund" onclick="refundPayment(this);" data-transaction-id="{{ txn.id }}" data-capture-id="{{ capture.id }}" data-amount="{{ txn.amount }}" style="float: right;">{{ text_button_refund }}</a></td>-->
+            <td>
+                <div style="display: flex; justify-content: space-between;">
+                    <div style="display: flex;">
+                        <a class='btn btn-danger' onclick="$('.amount_refund').removeClass('hidden');" data-capture-id="{{ capture.id }}" data-amount="{{ txn.amount }}">{{ text_button_refund }}</a>
+                        <div class='amount_refund hidden' style="display: flex; margin-left: 10px;">
+                            <label style="margin: 0">Amount:
+                                <input type="number" min="0" max="{{ max_refund_amount }}" name="amount_refund" placeholder="" pattern="^\d*(\.\d{0,2})?$" onchange="this.value = parseFloat(this.value).toFixed(2);this.value = (this.value < {{ max_refund_amount }}) ? this.value : {{ max_refund_amount }};" style="height: 100%; width:190px;" />
+                            </label>
+                            <a class='btn btn-danger refund' onclick="refundPayment(this);" data-transaction-id="{{ txn.id }}">{{ button_send }}</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="amount-danger text-danger" style="display: none; margin-left: 135px;padding: 10px;font-weight: bold">Amount must be > 0 and <=&ensp;{{ max_refund_amount }}!</div>
+            </td>
+        </tr>
+        {% endif %}
+    {% endif %}
+{% endif %}
+{% if txn.refunds %} 
+            <tr>
+                <th colspan=2>{{ entry_refunds }}</td>
+            </tr>
+    {% for refund in txn.refunds %}
+            <tr>
+                <td>{{ refund.id }}</th>
+                <td>{{ refund.amount }} {{ txn.currency }} ({{ refund.created_at }}) ({{ entry_parent_id }}: {{ refund.capture_id }})</td>
+            </tr>
+    {% endfor %}
+{% endif %}
+        </tbody>
+    </table>
+</div>
+{% endif %}

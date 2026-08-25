@@ -1,0 +1,415 @@
+{{ header }}{{ column_left }}
+<div id="content">
+<style>
+td{
+padding:8px;
+}
+</style>
+<div class="page-header">
+    <div class="container-fluid">
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+	  <div class="pull-right">
+        <a href="{{ back_to_order }}"  class="btn btn-primary">{{ text_back_to_order }}</a> 
+    </div>
+  </div>
+<div class="container-fluid">
+<div class="panel-heading">
+			<h3 class="panel-title">
+			{% if success_html  and  success_html is not empty %}
+					{{ success_html.0 }}
+			{% endif %}
+			</h3>
+			<h3 class="panel-title" style="color:red;"> 
+					{% if eRRORS  and  eRRORS is not empty %}
+						{% for val in eRRORS %}
+								{{ val }}
+								{{ "<br>" }}
+						{% endfor %}
+					{% endif %}
+		   </h3>
+</div>
+<div class="panel panel-default">
+<div class="panel-body">
+  <!--  code --->
+  <form enctype="multipart/form-data" action="" method="post" id="schedule_pickup" novalidate="novalidate">
+    <table width="100%" class="table table-bordered table-hover">
+      <tr>
+        <td>
+		  <fieldset id="aramex_shipment_creation_general_info">
+          <legend>Schedule Pickup</legend>
+		  <h3>Pickup Details</h3>
+          <table class="form">
+		  {% if create_order_id  and  create_order_id is not empty %}
+		   <tr>
+           	  <td>Location:</td>
+              <td>
+			  <input type="text" readonly="readonly" name="location" id="pickup_location" value="Reception" />
+			  </td>
+			  <td>Vehicle Type:</td>
+              <td>
+							<select name="vehicle" id="pickup_vehicle" >
+								<option value="Bike">Small (no specific vehicle required)</option>
+								<option value="Car">Medium (regular car or small van)</option>
+								<option value="Truck">Large (large van or truck required)</option>
+							</select>
+              </td>
+            </tr>
+			<tr>
+           	  <td><span class="required">*</span>Date:</td>
+              <td>
+					<input type="text" readonly="readonly" name="date" id="pickup_date" value="{{ date }}" class="date" data-date-format="YYYY-MM-DD"/>
+			  </td>
+              <td colspan="2">
+							<span class="required">*</span>Ready Time:
+							<select name="ready_hour" class="width-60 fl" id="ready_hour">	
+								{%  set time= "now"|date("H") %}
+								{% for i in 7..20 %}
+								{% set val= i<10 ? "0" ~ i  : i  %}
+								<option value="{{ val }}" {{ time == i ? 'selected="selected"': '' }}>{{ val }}</option>
+								{% endfor %}
+							</select>
+							<select name="ready_minute" class="width-60 fl mar-lf-10" id="ready_minute">
+								{%  set time= "now"|date("i") %}
+								{% for i in range(0, 55, 5) %}
+								{% set val= i<10 ? "0" ~ i : i  %}
+								<option value="{{ val }}" {{ time == val?'selected="selected"':'' }}>{{ val }}</option>
+								{% endfor %}
+							</select>
+							<span class="required">*</span>Closing Time:
+							<select name="latest_hour" class="width-60 fl" id="latest_hour">
+								{%  set time= "now"|date("H") %}
+								{%  set time= time + 1 %}
+								{% for i in 7..20 %}
+								{% set val= i<10 ? "0" ~ i : i  %}
+								<option value="{{ val}}" {{ time == val?'selected="selected"':'' }}>{{ val }}</option>
+								{% endfor %}
+							</select>
+							<select name="latest_minute" class="width-60 fl mar-lf-10" id="latest_minute">
+								{%  set time= "now"|date("i") %}
+								{% for i in range(0, 55, 5) %}
+								{% set val= i<10 ?"0" ~ i : i  %}
+								<option value="{{ val }}" {{ time == val?'selected="selected"':'' }}>{{ val }}</option>
+								{% endfor %}
+							</select>
+              </td>
+            </tr>
+			<tr>
+              <td colspan="4"> <h3>Shipment Destination</h3></td>
+		    </tr>
+			<tr>
+			<tr>
+                    <td><span class="required">*</span>Company:</td>
+                    <td>
+						<input type="text" name="company" id="pickup_company" value="{{ company }}" />
+					</td>
+					<td><span class="required">*</span>Contact:</td>
+                    <td>
+						<input type="text" name="contact" id="pickup_contact" value="{{ contact }}" /> 
+					</td>
+         
+			</tr>
+			<tr>
+                    <td><span class="required">*</span>Phone:</td>
+                    <td>
+						<input type="text" name="ext" id="pickup_ext" value="" size="4"/>
+						<input type="text" name="phone" id="pickup_phone" value="{{ phone }}" />
+					</td>
+					<td><span class="required">*</span>Mobile:</td>
+                    <td>
+						
+						<input type="text" name="mobile" id="pickup_mobile" value="{{ mobile }}" class="width-full required-entry" />						
+					</td>
+         
+			</tr>
+			<tr>
+                    <td><span class="required">*</span>Address:</td>
+                    <td colspan="4">
+						<input type="text" name="address" id="pickup_address" value="{{ address }}" style="width:100%"/>
+					</td>
+
+			</tr>
+			<tr>
+              <td><span class="required">*</span>Country:</td>
+              <td>
+			  
+			    <select name="country" id="pickup_country" class="aramex_countries validate-select valid">
+				  {% for ctry in countries %}
+                  	{% if ctry.iso_code_2  ==  country %}
+                 		<option value="{{ ctry.iso_code_2 }}" selected="selected">{{ ctry.name }}</option>
+					  {% else %}
+					  <option value="{{ ctry.iso_code_2 }}">{{ ctry.name }}</option>
+					  {% endif %}
+                  {% endfor %}
+                  </select>
+                </td>
+				<td>State:</td>
+              <td><input type="text" value="{{ state }}" name="state" id="pickup_state">
+              </td>
+			</tr>
+            <tr>
+				<td>City:</td>
+                <td>
+					<input type="text" value="{{ city }}" name="city" id="pickup_city">
+                </td>
+           	  <td>Postal Code:</td>
+              <td><input type="text" value="{{ zip }}" name="zip" id="pickup_zip">
+              </td>
+            </tr>
+			<tr>
+                    <td><span class="required">*</span>Email:</td>
+                    <td colspan="4">
+						<input type="text" name="email" id="pickup_email" value="{{ email }}" style="width:100%"/>
+					</td>
+			</tr>
+			<tr>
+                    <td>Comments:</td>
+                    <td colspan="4">
+						<input type="text" name="comments" id="pickup_comments" value="{{ comments }}" style="width:100%"/>
+					</td>
+			</tr>
+
+			
+			{% if create_order_id  and  create_order_id is not empty %}
+			{% for id in create_order_id %}
+              {%  set name = firstname[id] ~" "~ lastname[id] %}
+			<tr>
+              <td colspan="4"> <h3>Shedule Pickup for {{ name }} order id #{{ id }}</h3></td>
+		    </tr>
+			<tr>
+           	  <td>Reference 1:</td>
+              <td>
+			  <input type="text" name="reference[{{ id }}]" id="pickup_reference" value="{{ id }}" />
+			  </td>
+			  <td><span class="required">*</span>Status:</td>
+              <td>
+							<select name="status[{{ id }}]" id="pickup_status" >
+								<option value="Ready">Ready</option>
+								<option value="Pending">Pending</option>								
+							</select>
+              </td>
+
+            </tr>
+			<tr>
+				 <td><span class="required">*</span>Product Group:</td>
+                    <td>
+                        {% set checkCountry = false %}
+                        {% if group == '' %}
+                            {% set checkCountry = country == destination_country ? true: false %}
+                        {% endif %}
+					<select class="aramex_all_options" id="product_group_{{ id}}" name="product_group[{{ id }}]"  >
+						<option {{ group  == 'DOM' or checkCountry ? 'selected="selected"' :  '' }} value="DOM">Domestic</option>
+						<option {{ group  == 'EXP' or group == '' and not checkCountry ? 'selected="selected"' :  '' }} value="EXP">International Express</option>
+					</select>
+					<div id="aramex_shipment_info_product_group_div" style="display: none;"></div>
+					</td>
+
+
+					<td><span class="required">*</span>Product Type:</td>
+                    <td>
+                        {%  set notHide = ''  %}
+                        {% if country  ==  destination_country and type == '' %}
+                            {%  set notHide = 'display: none' %}
+                        {% endif %}
+                        {% set checkCountry = false %}
+                        {% if type == '' %}
+                            {% set checkCountry = origin_country  ==  destination_country ? true : false  %}
+                        {% endif %}
+
+                        {% set allowed_domestic_methods  =  aramex_allowed_domestic_methods %}
+                        {% set allowed_international_methods  = aramex_allowed_international_methods %}
+                        {% set domestic_methods = all_allowed_domestic_methods %}
+                        {% set international_methods = all_allowed_international_methods %}
+                        {% set allowed_domestic_methods_apply = []  %}
+                        {% set allowed_international_methods_apply = [] %}
+
+					<select class="aramex_all_options" id="product_type_{{ id }}" name="product_type[{{ id }}]">
+                        {% if allowed_domestic_methods |length > 0 %}
+                            {% set i=1 %}
+                            {% for key, val in domestic_methods %}
+                                {% if val.value in allowed_domestic_methods %}
+                                    {% set selected_str = '' %}
+                                    {% if i == 1 %}
+                                        {% set  selected_str =  (type == val.value or checkCountry ) ? 'selected="selected"' :  '' %}
+                                    {% else %}
+                                        {%  set selected_str =  type  ==  val.value ? 'selected="selected"' :  '' %}
+                                    {% endif %}
+                                    {% set allowed_domestic_methods_apply =  allowed_domestic_methods_apply|merge({ (val.value) : val.label })  %}
+									<option {{ selected_str }} value="{{ val.value }}" id="{{ val.value }}"  class="DOM">{{ val.label }}</option>
+                                    {% set i = i + 1 %}
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        {% if allowed_international_methods |length > 0 %}
+                            {% set i=1 %}
+                            {% for key, val in international_methods %}
+                                {% if val.value in allowed_international_methods %}
+                                    {% set selected_str = '' %}
+                                    {% if i == 1%}
+                                        {% if type == val.value or not checkCountry and type == '' %}
+                                            {% set selected_str = 'selected="selected"' %}
+                                        {% endif %}
+                                    {% else %}
+                                        {% if type == val.value %}
+                                            {%  set selected_str = 'selected="selected"' %}
+                                        {% endif %}
+                                    {% endif %}
+                                    {% set allowed_international_methods_apply =  allowed_international_methods_apply|merge({ (val.value) : val.label })  %}
+									<option {{ selected_str }} value="{{ val.value }}" id="{{ val.value }}" class="EXP">{{ val.label }}</option>
+                                    {% set i = i + 1 %}
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+					</select>
+					</td>
+			</tr>
+			<tr>		
+					<td><span class="required">*</span>Payment Type:</td>
+					<td>
+						<select name="payment_type[{{ id }}]" id="payment_type" class="aramex_all_options">
+							<option value="P" {% if pay_type == 'P' %} {{ 'selected="selected"' }} {% endif %}>Prepaid</option>
+							<option value="C" {% if pay_type == 'C' %} {{ 'selected="selected"' }} {% endif %}>Collect</option>
+							<option value="3" {% if pay_type == '3'%} {{ 'selected="selected"' }} {% endif %}>Third Party</option>
+
+						</select>
+					</td>
+					<td><span class="required">*</span>Total weight:</td>
+                    <td>
+					  <div style="display:none" class="text_short">Total weight: <span id="order-total-weight">{{ weighttot.id }}</span> KG</div>
+                      <input type="text" class="fl width-60 mar-right-10" value="{{ weighttot[id] }}" name="text_weight[{{ id }}]">
+                      <select class="fl width-60" name="weight_unit[{{ id }}]">
+						  <option value="KG" {{ weight_unit.id|upper == 'KG' ? 'selected="selected"' : '' }}>KG</option>
+						  <option value="LB" {{ weight_unit.id|upper == 'LB'  ? 'selected="selected"' : '' }}>LB</option>
+                      </select>
+                    </td>
+			</tr>
+			<tr>
+				<tr>
+                    <td><span class="required">*</span>Number of Pieces:</td>
+                    <td>
+						<input type="text" value="{{ no_of_item[id] }}" name="total_count[{{ id }}]" class="fl" />
+					</td>
+					<td>Number of Shipments:</td>
+                    <td>
+						<input type="text" value="1" name="no_shipments[{{ id }}]" class="fl" />
+						<input type="hidden" value="{{ id }}" name="order_id[]" />
+						<input type="hidden" value="{{ id }}" name="reference[{{ id }}]" />
+						
+						
+					</td>
+                  </tr>
+			</tr>
+             {# end of products iteration #}
+            {% endfor %}
+
+		   			{% set falg = true %}
+            {% endif %}
+			  {% else %}
+                  {% set falg = false %}
+		   <tr>
+              <td colspan="4"> <h3>you don't have any orders to create Schedule Pickup</h3></td>
+		    </tr>
+          {% endif %}
+          </table>
+          </fieldset>
+		  </td>
+      </tr>
+	    		  {% if falg  %}
+		
+      <tr>
+        <td colspan="4" align="center">
+   		    <div class="buttons">
+        	    <a class="btn btn-info" onclick="return submit();" id="aramex_shipment_creation_submit_id">Submit</a>
+ 				
+			<div>
+          </td>
+      </tr>
+	   		  {% endif %}
+		
+	  
+    </table>
+	
+	
+  </form>
+  </div>
+  {# print_r($create_order_id); #}
+  <!-- code --->
+  <script type="text/javascript">
+			 $(document).ready(function(){
+					
+						{% if create_order_id  and  create_order_id is not empty %}
+							{% for id in create_order_id %}
+								$("#product_type_{{ id }}").chained("#product_group_{{ id }}");
+							{% endfor %}
+				 		{% endif %}
+						
+					
+					$('.date').datetimepicker({
+						pickTime: false
+					});
+
+			});
+			
+			function submit()
+			{
+					var H='{{ "now"|date("H") }}';
+					var M='{{ "now"|date("i") }}';
+					var D='{{ "now"|date("Y-m-d") }}';
+
+						var rH=$('#ready_hour').val();
+						var lH=$('#latest_hour').val();
+						var rM=$('#ready_minute').val();
+						var lM=$('#latest_minute').val();
+						var error=false;
+						var rDate=$('#pickup_date').val();
+						if(rDate=='' || rDate==null){ alert("Pickup Date should not empty"); return; }
+						rDate=rDate.split("-");
+						cDate=D.split("-");
+ 						var isCheckTime=false;
+						if(rDate[0]<cDate[0]){ // year
+							error=true;
+						}else if(rDate[0]==cDate[0]){
+							if(rDate[1]<cDate[1]){ //month
+								error=true;
+							}else if(rDate[1]==cDate[1]){
+								if(rDate[2]<cDate[2]){ //day
+									error=true;
+								}else if(rDate[2]==cDate[2]){
+									if(rH<H){
+										alert("Ready Time should be greater than Current Time");
+										return;
+									}else if(rH==H && rM<M){
+										alert("Ready Time should be greater than Current Time");
+										return;
+									}
+									isCheckTime=true;
+								}
+							}
+						}
+						if(error){
+							alert("Pickup Date should be greater than Current Date");
+							return;
+						}
+
+						if(isCheckTime){
+							if(lH<rH ){
+								error=true;
+							}else if(lH<=rH && lM<=rM){
+								error=true;
+							}
+							if(error){
+								alert("Closing Time always greater than Ready Time");
+								return;
+							}
+						}
+						$('#schedule_pickup').submit();
+			}
+  </script>
+  
+</div>
+</div>		
+{{ footer}}

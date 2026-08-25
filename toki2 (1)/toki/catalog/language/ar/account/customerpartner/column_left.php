@@ -1,0 +1,30 @@
+<?php
+// Text
+$_['text_marketplace']		= 'المتجر';
+$_['text_my_profile']		= 'الملف الشخصي';
+$_['text_addproduct']		= 'أضف منتج';
+$_['text_productlist']		= 'قائمة المنتجات';
+$_['text_dashboard']		= 'لوحة التحكم';
+$_['text_wkshipping']		= 'إدارة الشحن';
+$_['text_orderhistory']		= 'تاريخ الطلب';
+$_['text_transaction']		= 'المعاملات';
+$_['text_download']			= 'التحميلات';
+$_['text_ask_admin']		= 'اسأل المسؤول';
+$_['text_ask_seller']		= 'تواصل مع البائع';
+$_['text_ask_seller_log']	= 'الرجاء تسجيل الدخول للاتصال بالبائع';
+$_['text_profile']			= 'الملف الشخصي';
+$_['text_manageshipping']	= 'إدارة الشحن';
+$_['text_downloads']		= 'التحميلات';
+$_['text_asktoadmin']		= 'اسأل المسؤول';
+$_['text_notification']		= 'إشعارات';
+$_['text_mode_seller']		= 'تاجر';
+$_['text_mode_customer']	= 'عميل';
+$_['text_category']	      = 'قسم';
+$_['text_information']	      = 'معلومات';
+$_['text_review']	        = 'مراجعات';
+$_['text_product']        = 'منتج';
+$_['text_crosssells']        = 'بيع عبر';
+$_['text_upsell']        = 'Up-Sell';
+$_['text_pa_request']        = 'طلب تنبيه السعر';
+$_['text_pricealert']        = 'منتجات التنبيه السعر';
+$_['text_income']             = "دخل";

@@ -1,0 +1,332 @@
+{{ header }}
+<style>
+    #aramex_loader {
+        background-image: url({{ aramex_loader }});
+    }
+    .ui-autocomplete {
+        max-height: 200px;
+        overflow-y: auto;
+        /* prevent horizontal scrollbar */
+        overflow-x: hidden;
+        /* add padding to account for vertical scrollbar */
+    }
+</style>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var aramex_allow = '{{ aramex_allow}}';
+        /* block script running*/
+        if(aramex_allow == 0){
+            return false;
+        }
+        /* billing_aramex_cities and  shipping_aramex_cities */
+        var type = '.aramex_rate_top';
+        setAutocomplate(type);
+        var type = '.aramex_rate_bottom';
+        setAutocomplate(type);
+
+        function setAutocomplate(type) {
+
+        var shippingAramexCitiesObj;
+        var shipping_aramex_cities_temp;
+        var billing_aramex_cities = '';
+        var shipping_aramex_cities = billing_aramex_cities;
+
+        /* set HTML blocks */
+        jQuery( type ).find(".aramex_city").after('<div id="aramex_loader" style="height:31px; width:31px; display:none;"></div>');
+        shipping_aramex_cities_temp = shipping_aramex_cities;
+
+        /* get Aramex sities */
+        shippingAramexCitiesObj = AutoSearchControls(type, shipping_aramex_cities);
+        jQuery( type ).find(".aramex_countries").change(function () {
+            getAllCitiesJson( type , shippingAramexCitiesObj);
+        });
+         getAllCitiesJson(type, shippingAramexCitiesObj);
+
+        function AutoSearchControls(type, search_city) {
+            return jQuery( type ).find(".aramex_city")
+                    .autocomplete({
+                        /*source: search_city,*/
+                        minLength: 3,
+                        scroll: true,
+                        source: function (req, responseFn) {
+                            var re = $.ui.autocomplete.escapeRegex(req.term);
+                            var matcher = new RegExp("^" + re, "i");
+                            var a = jQuery.grep(search_city, function (item, index) {
+                                return matcher.test(item);
+                            });
+                            responseFn(a);
+                        },
+                        search: function (event, ui) {
+                            /* open initializer */
+                            jQuery('.checkout-index-index .ui-autocomplete').css('display', 'none');
+                            jQuery(type + ' #aramex_loader').css('display', 'block');
+                        },
+                        response: function (event, ui) {
+                            var temp_arr = [];
+                            jQuery(ui.content).each(function (i, v) {
+                                temp_arr.push(v.value);
+                            });
+
+                            jQuery(type + ' #aramex_loader').css('display', 'none');
+                            return temp_arr;
+                        }
+                    });
+        }
+
+        function getAllCitiesJson(type, aramexCitiesObj) {
+            var country_code = jQuery( type ).find(".aramex_countries").val();
+            var url_check = '{{ aramex_searchautocities }}&country_code=' + country_code;
+            shipping_aramex_cities_temp = '';
+            aramexCitiesObj.autocomplete("option", "source", url_check);
+        }
+
+        }
+
+    });
+</script>
+
+{{ column_left }}
+
+<div id="content">
+<style>
+td{
+padding:8px;
+}
+</style>
+<div class="page-header">
+	<div class="container-fluid">
+		<h1>{{ heading_title }}</h1>
+		<ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+	  <div class="pull-right"> 
+  <a href="{{ back_to_order }}" class="btn btn-info">{{ text_back_to_order }}</a> 
+    {% if is_shipment  %}
+	 <a href="{{ aramex_create_sipment }}" class="btn btn-info">Return Shipment</a>
+	<a href="{{ aramex_print_label }}" class="btn btn-info">{{ text_print_label }}</a>
+	<a href="{{ aramex_schedule_pickup }}"  class="btn btn-info">{{ text_schedule_pickup }}</a> 
+	<a href="{{ aramex_traking }}"  class="btn btn-info">{{ text_track }}</a>
+    {% endif %}
+
+  </div>
+	</div>
+</div>
+<div class="box">
+
+<div class="container-fluid">
+<div class="panel-heading">
+			<h3 class="panel-title">
+			{% if rate_html  and  rate_html is not empty %}
+					{{ rate_html }}
+			{% endif %}
+
+			</h3>
+			<h3 class="panel-title" style="color:red;"> 
+					{% if eRRORS  and  eRRORS is not empty %}
+						{% for val in eRRORS %}
+								{{ val }}
+								{{ "<br>" }}
+						{% endfor %}
+					{% endif %}
+		   </h3>
+</div>
+  <!--  code --->
+<div class="panel panel-default">
+	<div class="panel-body">
+  <!--  code --->
+  <form enctype="multipart/form-data" action="" method="post" id="calculate_rate" novalidate="novalidate">
+    <table width="100%" class="table  table-bordered table-hover">
+      <tr>
+        <td>
+		  <fieldset id="aramex_shipment_creation_general_info">
+          <legend>Calculate Rates</legend>
+		  <h3>Shipment Origin</h3>
+          <table class="form">
+            <tr class="aramex_rate_top">
+              <td><span class="required">*</span>Country</td>
+              <td>
+			    <select name="origin_country" id="origin_country" class="aramex_countries validate-select ">
+				  {% for country in countries %}
+                  	{% if country.iso_code_2  ==  origin_country %}
+                  		<option value="{{ country.iso_code_2 }}" selected="selected">{{ country.name }}</option>
+                   	{% else %}
+                  		<option value="{{ country.iso_code_2 }}">{{ country.name }}</option>
+                  	{% endif %}
+                  {% endfor %}
+
+                  </select>
+                </td>
+				<td>City</td>
+                <td>
+					<input type="text" value="{{ origin_city }}" name="origin_city" id="origin_city" class="aramex_city">
+                </td>
+	</tr>
+            <tr>
+           	  <td>Postal Code</td>
+              <td><input type="text" value="{{ origin_zipcode }}" name="origin_zipcode" id="origin_zipcode" class="">
+              </td>
+			  <td>State</td>
+              <td><input type="text" value="{{ origin_state }}" name="origin_state" id="origin_state" class="">
+              </td>
+
+            </tr>
+		    <tr>
+              <td colspan="4"> <h3>Shipment Destination</h3></td>
+		    </tr>
+            <tr class="aramex_rate_bottom">
+              <td><span class="required">*</span>Country</td>
+              <td>
+			    <select name="destination_country" id="destination_country" class="aramex_countries validate-select ">
+				  {% for country in countries %}
+					  {% if country.iso_code_2  ==  destination_country %}
+					  <option value="{{ country.iso_code_2 }}" selected="selected">{{ country.name }}</option>
+					   {% else %}
+					  <option value="{{ country.iso_code_2 }}">{{ country.name }}</option>
+					  {% endif %}
+                  {% endfor %}
+                  </select>
+                </td>
+				<td>City</td>
+                <td>
+					<input type="text" value="{{ destination_city }}" name="destination_city" id="destination_city" class="aramex_city">
+                </td>
+			</tr>
+            <tr>
+           	  <td>Postal Code</td>
+              <td><input type="text" value="{{ destination_zipcode }}" name="destination_zipcode" id="destination_zipcode" class="">
+              </td>
+			  <td>State</td>
+              <td><input type="text" value="{{ destination_state }}" name="destination_state" id="destination_state" class="">
+              </td>
+			  
+            </tr>
+			<tr>
+				<td><span class="required">*</span>Payment Type:</td>
+                <td><select name="payment_type" id="payment_type" class="aramex_all_options ">
+                        <option value="P" {% if pay_type == 'P' %} {{ 'selected="selected"' }} {% endif %}>Prepaid</option>
+						<option value="C" {% if pay_type == 'C' %} {{ 'selected="selected"' }} {% endif %}>Collect</option>
+						<option value="3" {% if pay_type == '3'%} {{ 'selected="selected"' }} {% endif %}>Third Party</option>
+                      </select>
+				</td>
+				 <td><span class="required">*</span>Product Group:</td>
+                    <td>
+                        {% set checkCountry = false %}
+					{% if group == '' %}
+                        {%  set checkCountry = origin_country  ==  destination_country ? true : false %}
+					{% endif %}
+					<select class="aramex_all_options " id="product_group" name="product_group"  >
+						<option {{ group  == 'DOM' or checkCountry ? 'selected="selected"' :  '' }} value="DOM">Domestic</option>
+						<option {{ group  == 'EXP' or group == '' and not checkCountry ? 'selected="selected"' :  '' }} value="EXP">International Express</option>
+					</select>
+					<div id="aramex_shipment_info_product_group_div" style="display: none;"></div>
+					</td>
+			</tr>
+			<tr>		
+					<td><span class="required">*</span>Service Type:</td>
+                    <td>
+                        {%  set notHide = ''  %}
+						{% if origin_country  ==  destination_country and type == '' %}
+                            {%  set notHide = 'display: none' %}
+						{% endif %}
+                        {% set checkCountry = false %}
+						{% if type == '' %}
+                        {% set checkCountry = origin_country  ==  destination_country ? true : false  %}
+						{% endif %}
+
+                        {% set allowed_domestic_methods  =  aramex_allowed_domestic_methods %}
+                        {% set allowed_international_methods  = aramex_allowed_international_methods %}
+                        {% set domestic_methods = all_allowed_domestic_methods %}
+                        {% set international_methods = all_allowed_international_methods %}
+                        {% set allowed_domestic_methods_apply = []  %}
+						{% set allowed_international_methods_apply = [] %}
+
+					
+					<select class="aramex_all_options  " id="service_type" name="service_type">
+					        {% if allowed_domestic_methods |length > 0 %}
+                                {% set i=1 %}
+									 {% for key, val in domestic_methods %}
+									   {% if val.value in allowed_domestic_methods %}
+                                        	{% set selected_str = '' %}
+											{% if i == 1 %}
+												{% set  selected_str =  (type == val.value or checkCountry ) ? 'selected="selected"' :  '' %}
+											{% else %}
+												 {%  set selected_str =  type  ==  val.value ? 'selected="selected"' :  '' %}
+											{% endif %}
+											{% set allowed_domestic_methods_apply =  allowed_domestic_methods_apply|merge({ (val.value) : val.label })  %}
+										   <option {{ selected_str }} value="{{ val.value }}" id="{{ val.value }}"  class="DOM">{{ val.label }}</option>
+										{% set i = i + 1 %}
+                                       {% endif %}
+                                     {% endfor %}
+							{% endif %}
+                        	{% if allowed_international_methods |length > 0 %}
+                                {% set i=1 %}
+                                {% for key, val in international_methods %}
+									  {% if val.value in allowed_international_methods %}
+										 {% set selected_str = '' %}
+                                            {% if i == 1%}
+                                            	{% if type == val.value or not checkCountry and type == '' %}
+													{% set selected_str = 'selected="selected"' %}
+												 {% endif %}
+                                            {% else %}
+										       {% if type == val.value %}
+                                                   {%  set selected_str = 'selected="selected"' %}
+                                               {% endif %}
+											{% endif %}
+											{% set allowed_international_methods_apply =  allowed_international_methods_apply|merge({ (val.value) : val.label })  %}
+
+									   <option {{ selected_str }} value="{{ val.value }}" id="{{ val.value }}" class="EXP">{{ val.label }}</option>
+                                          {% set i = i + 1 %}
+                                      {% endif %}
+                                {% endfor %}
+                            {% endif %}
+					</select>
+
+
+
+					</td>
+					<td><span class="required">*</span>Total weight:</td>
+                    <td><div style="display:none" class="text_short">Total weight: <span id="order-total-weight">210.00</span> KG</div>
+                      <input type="text" class="" value="{{ weighttot }}" name="text_weight">
+                      <select class="" name="weight_unit">
+						  <option value="KG" {{ weight_unit|upper == 'KG' ? 'selected="selected"' : '' }}>KG</option>
+						  <option value="LB" {{ weight_unit|upper == 'LB'  ? 'selected="selected"' : '' }}>LB</option>
+                      </select>
+                    </td>
+			</tr>
+			<tr>
+                        <td><span class="required">*</span>Number of Pieces:</td>
+                        <td><input type="text" value="{{ no_of_item }}" name="total_count" class="" /> </td>
+                        <td> Preferred Currency Code: </td>
+                        <td><input type="text" value="{{ currency_code }}" name="currency_code"  /></td>       
+               
+			</tr>
+          </table>
+          </fieldset>
+		  </td>
+      </tr>
+      <tr>
+        <td colspan="4" align="center">
+   		    <div class="buttons">
+        	    <a class="btn btn-info" onclick="$('#calculate_rate').submit();" id="aramex_shipment_creation_submit_id">Calculate</a>
+ 				
+			<div>
+          </td>
+      </tr>
+	  
+    </table>
+	<input type="hidden" value="{{ reference }}" name="reference" />
+  </form>
+  </div>
+</div>
+  <script type="text/javascript">
+			$(document).ready(function(){
+					$("#service_type").chained("#product_group");
+			});
+  </script>
+  <!-- code --->
+</div>
+</div>		
+{{ footer }}

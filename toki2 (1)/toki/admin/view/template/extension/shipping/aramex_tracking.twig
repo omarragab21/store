@@ -1,0 +1,60 @@
+{{ header }}{{ column_left }}
+<div id="content">
+	<div class="page-header">
+		<div class="container-fluid">
+			<h1>{{ heading_title }}</h1>
+			<ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+					<li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+                {% endfor %}
+			</ul>
+			<div class="pull-right">
+				<a href="{{ back_to_order }}"  class="btn btn-info">{{ text_back_to_order }}</a>
+                {% if is_shipment %}
+				<a href="{{ aramex_create_sipment }}" class="btn btn-info">Return Shipment</a>
+					<a href="{{ aramex_print_label }}"  class="btn btn-info">{{ text_print_label }}</a>
+					<a href="{{ aramex_schedule_pickup }}"  class="btn btn-info">{{ text_schedule_pickup }}</a>
+					<a href="{{ aramex_rate_calculator }}"  class="btn btn-info">{{ text_rate_calculator }}</a>
+                {% else %}
+					<a href="{{ aramex_create_sipment }}" class="button">{{ text_create_sipment }}</a>
+					<a href="{{ aramex_rate_calculator }}"  class="btn btn-info">{{ text_rate_calculator }}</a>
+                {% endif %}
+			</div>
+		</div>
+		<div class="container-fluid">
+			<div class="panel-heading">
+                {% if eRRORS  and  eRRORS is not empty %}
+                {% for val in eRRORS %}
+                    {{ val }}
+                    {{ "<br>" }}
+                {% endfor %}
+				{% endif %}
+			</div>
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<!--  code --->
+					<form enctype="multipart/form-data" action="" method="post" id="calculate_rate" novalidate="novalidate">
+						<table summary="Item Tracking"  class="table table-bordered table-hover">
+							<tr class="filter" align="center">
+								<td colspan="2" style="font-weight: bold;">
+									<input type="text" name="track_awb" value=" {{ awb_no }}" class="form-control">
+									<br />
+									<a class="btn btn-primary" onclick="$('#calculate_rate').submit();">Track</a>
+								</td>
+							</tr>
+							<tr class="filter">
+								<td colspan="2" style="font-weight: bold;;">
+                                    {{ "AWB NO: "~awb_no }}
+								</td>
+							</tr>
+						</table>
+					</form>
+
+                    {% if html  and  html is not empty %}
+                    {{ html }}
+                    {% endif %}
+					<!-- code --->
+				</div>
+			</div>
+		</div>
+{{ footer }}

@@ -1,0 +1,569 @@
+[
+  {
+    "id": 20,
+    "name": "بنر 1",
+    "status": 1,
+    "slides": [
+      {
+        "id": 914,
+        "title": "Discount starts from 20% to 60%",
+        "link": "",
+        "image": "catalog/demo/banners/bann2.png",
+        "sort_order": 2
+      },
+      {
+        "id": 913,
+        "title": "Discount up to 30%",
+        "link": "",
+        "image": "catalog/wat.gif",
+        "sort_order": 1
+      },
+      {
+        "id": 915,
+        "title": "Discount starts from 20% to 60%",
+        "link": "",
+        "image": "catalog/demo/banners/bann1.png",
+        "sort_order": 3
+      },
+      {
+        "id": 911,
+        "title": "خصم يبدأ من %20 الي 60%",
+        "link": "",
+        "image": "catalog/phone.gif",
+        "sort_order": 3
+      },
+      {
+        "id": 912,
+        "title": "خصم يبدأ من %20 الي 60%",
+        "link": "",
+        "image": "catalog/demo/banners/bann1.png",
+        "sort_order": 2
+      },
+      {
+        "id": 910,
+        "title": "خصومات تصل لـ30%",
+        "link": "",
+        "image": "catalog/wat.gif",
+        "sort_order": 1
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "name": "الصور المتحركة في الصفحة الرئيسية - سلايدر",
+    "status": 1,
+    "slides": [
+      {
+        "id": 739,
+        "title": "discounts up to 50%",
+        "link": "",
+        "image": "catalog/demo/banners/slider.png",
+        "sort_order": 1
+      },
+      {
+        "id": 737,
+        "title": "خصومات تصل الى 50%",
+        "link": "",
+        "image": "catalog/demo/banners/slider.png",
+        "sort_order": 0
+      },
+      {
+        "id": 738,
+        "title": "discounts up to 50%",
+        "link": "",
+        "image": "catalog/demo/banners/slider.png",
+        "sort_order": 0
+      },
+      {
+        "id": 736,
+        "title": "خصومات تصل الى 50%",
+        "link": "",
+        "image": "catalog/demo/banners/slider.png",
+        "sort_order": 0
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "name": "وسائل الدفع",
+    "status": 1,
+    "slides": [
+      {
+        "id": 730,
+        "title": "demo title",
+        "link": "",
+        "image": "catalog/Group 72249.png",
+        "sort_order": 1
+      },
+      {
+        "id": 729,
+        "title": "عنوان متغير",
+        "link": "",
+        "image": "catalog/Group 72247.png",
+        "sort_order": 6
+      },
+      {
+        "id": 728,
+        "title": "عنوان متغير",
+        "link": "",
+        "image": "catalog/Mask Group 86.png",
+        "sort_order": 5
+      },
+      {
+        "id": 727,
+        "title": "عنوان متغير",
+        "link": "",
+        "image": "catalog/Image 28.png",
+        "sort_order": 4
+      },
+      {
+        "id": 726,
+        "title": "عنوان متغير",
+        "link": "",
+        "image": "catalog/mada.png",
+        "sort_order": 3
+      },
+      {
+        "id": 725,
+        "title": "عنوان متغير",
+        "link": "",
+        "image": "catalog/Group 72248.png",
+        "sort_order": 2
+      },
+      {
+        "id": 724,
+        "title": "عنوان متغير",
+        "link": "",
+        "image": "catalog/Group 72249.png",
+        "sort_order": 1
+      },
+      {
+        "id": 731,
+        "title": "demo title",
+        "link": "",
+        "image": "catalog/Group 72248.png",
+        "sort_order": 2
+      },
+      {
+        "id": 732,
+        "title": "demo title",
+        "link": "",
+        "image": "catalog/mada.png",
+        "sort_order": 3
+      },
+      {
+        "id": 733,
+        "title": "demo title",
+        "link": "",
+        "image": "catalog/Image 28.png",
+        "sort_order": 4
+      },
+      {
+        "id": 734,
+        "title": "demo title",
+        "link": "",
+        "image": "catalog/Mask Group 86.png",
+        "sort_order": 5
+      },
+      {
+        "id": 735,
+        "title": "demo title",
+        "link": "",
+        "image": "catalog/Group 72247.png",
+        "sort_order": 6
+      }
+    ]
+  },
+  {
+    "id": 18,
+    "name": "مميزاتنا",
+    "status": 1,
+    "slides": [
+      {
+        "id": 708,
+        "title": "وسائل دفع متعددة",
+        "link": "",
+        "image": "catalog/demo/banners/f3.png",
+        "sort_order": 2
+      },
+      {
+        "id": 707,
+        "title": "الشحن السريع",
+        "link": "",
+        "image": "catalog/demo/banners/f2.png",
+        "sort_order": 1
+      },
+      {
+        "id": 706,
+        "title": "إرجاع السلع مجانا",
+        "link": "",
+        "image": "catalog/demo/banners/f1.png",
+        "sort_order": 0
+      },
+      {
+        "id": 713,
+        "title": "Checkout",
+        "link": "",
+        "image": "catalog/demo/banners/f4.png",
+        "sort_order": 3
+      },
+      {
+        "id": 712,
+        "title": "Your furniture to your home",
+        "link": "",
+        "image": "catalog/demo/banners/f3.png",
+        "sort_order": 2
+      },
+      {
+        "id": 710,
+        "title": "Honor us and contact us 24 hours",
+        "link": "",
+        "image": "catalog/demo/banners/f1.png",
+        "sort_order": 0
+      },
+      {
+        "id": 711,
+        "title": "Earn 10% cashback",
+        "link": "",
+        "image": "catalog/demo/banners/f2.png",
+        "sort_order": 1
+      },
+      {
+        "id": 709,
+        "title": "اتمام الشراء",
+        "link": "",
+        "image": "catalog/demo/banners/f4.png",
+        "sort_order": 3
+      }
+    ]
+  },
+  {
+    "id": 23,
+    "name": "بنر الماركات",
+    "status": 1,
+    "slides": [
+      {
+        "id": 924,
+        "title": "bod",
+        "link": "",
+        "image": "catalog/demo/manufacturer/logo1.png",
+        "sort_order": 0
+      },
+      {
+        "id": 925,
+        "title": "banner",
+        "link": "",
+        "image": "catalog/demo/manufacturer/logo1.png",
+        "sort_order": 0
+      },
+      {
+        "id": 922,
+        "title": "anker",
+        "link": "",
+        "image": "catalog/demo/manufacturer/logo3.png",
+        "sort_order": 0
+      },
+      {
+        "id": 923,
+        "title": "xiaomi",
+        "link": "",
+        "image": "catalog/demo/manufacturer/logo2.png",
+        "sort_order": 0
+      },
+      {
+        "id": 920,
+        "title": "بود",
+        "link": "",
+        "image": "catalog/demo/manufacturer/logo1.png",
+        "sort_order": 0
+      },
+      {
+        "id": 921,
+        "title": "بيسوس",
+        "link": "",
+        "image": "catalog/demo/manufacturer/logo4.png",
+        "sort_order": 0
+      },
+      {
+        "id": 918,
+        "title": "شومي",
+        "link": "",
+        "image": "catalog/demo/manufacturer/logo3.png",
+        "sort_order": 0
+      },
+      {
+        "id": 919,
+        "title": "وبو",
+        "link": "",
+        "image": "catalog/demo/manufacturer/logo2.png",
+        "sort_order": 0
+      },
+      {
+        "id": 916,
+        "title": "بيسوس",
+        "link": "",
+        "image": "catalog/demo/manufacturer/logo1.png",
+        "sort_order": 0
+      },
+      {
+        "id": 917,
+        "title": "بيسوس",
+        "link": "",
+        "image": "catalog/demo/manufacturer/logo4.png",
+        "sort_order": 0
+      }
+    ]
+  },
+  {
+    "id": 21,
+    "name": "خصم حتى 70%",
+    "status": 1,
+    "slides": [
+      {
+        "id": 864,
+        "title": "Prices start from 100 riyals",
+        "link": "",
+        "image": "catalog/demo/banners/b2.png",
+        "sort_order": 0
+      },
+      {
+        "id": 863,
+        "title": "Prices start from 100 riyals",
+        "link": "",
+        "image": "catalog/demo/banners/b1.png",
+        "sort_order": 0
+      },
+      {
+        "id": 862,
+        "title": "Prices start from 100 riyals",
+        "link": "",
+        "image": "catalog/demo/banners/b1.png",
+        "sort_order": 0
+      },
+      {
+        "id": 861,
+        "title": "Prices start from 100 riyals",
+        "link": "",
+        "image": "catalog/demo/banners/b1.png",
+        "sort_order": 0
+      },
+      {
+        "id": 860,
+        "title": "أسعار تبدأ من 100 ريال",
+        "link": "",
+        "image": "catalog/demo/banners/b1.png",
+        "sort_order": 5
+      },
+      {
+        "id": 859,
+        "title": "أسعار تبدأ من 100 ريال",
+        "link": "",
+        "image": "catalog/demo/banners/b1.png",
+        "sort_order": 3
+      },
+      {
+        "id": 858,
+        "title": "أسعار تبدأ من 100 ريال",
+        "link": "",
+        "image": "catalog/demo/banners/b1.png",
+        "sort_order": 1
+      },
+      {
+        "id": 857,
+        "title": "أسعار تبدأ من 100 ريال",
+        "link": "",
+        "image": "catalog/demo/banners/b2.png",
+        "sort_order": 4
+      },
+      {
+        "id": 856,
+        "title": "أسعار تبدأ من 100 ريال",
+        "link": "",
+        "image": "catalog/demo/banners/b2.png",
+        "sort_order": 2
+      },
+      {
+        "id": 865,
+        "title": "Prices start from 100 riyals",
+        "link": "",
+        "image": "catalog/demo/banners/b2.png",
+        "sort_order": 0
+      }
+    ]
+  },
+  {
+    "id": 22,
+    "name": "بنر 2",
+    "status": 1,
+    "slides": [
+      {
+        "id": 866,
+        "title": "30%",
+        "link": "",
+        "image": "catalog/demo/banners/bann5.png",
+        "sort_order": 0
+      },
+      {
+        "id": 867,
+        "title": "30%",
+        "link": "",
+        "image": "catalog/demo/banners/bann5.png",
+        "sort_order": 0
+      }
+    ]
+  },
+  {
+    "id": 24,
+    "name": "بنر 3",
+    "status": 1,
+    "slides": [
+      {
+        "id": 869,
+        "title": "50%",
+        "link": "",
+        "image": "catalog/demo/banners/bann4.png",
+        "sort_order": 0
+      },
+      {
+        "id": 868,
+        "title": "50%",
+        "link": "",
+        "image": "catalog/demo/banners/bann4.png",
+        "sort_order": 0
+      }
+    ]
+  },
+  {
+    "id": 25,
+    "name": "بنر 4",
+    "status": 1,
+    "slides": [
+      {
+        "id": 870,
+        "title": "بنر",
+        "link": "",
+        "image": "catalog/demo/banners/bann6.png",
+        "sort_order": 0
+      },
+      {
+        "id": 871,
+        "title": "banner",
+        "link": "",
+        "image": "catalog/demo/banners/bann6.png",
+        "sort_order": 0
+      }
+    ]
+  },
+  {
+    "id": 26,
+    "name": "خصم حتى 60%",
+    "status": 1,
+    "slides": [
+      {
+        "id": 872,
+        "title": "أسعار تبدأ من 100 ريال",
+        "link": "",
+        "image": "catalog/demo/banners/w1.png",
+        "sort_order": 1
+      },
+      {
+        "id": 873,
+        "title": "أسعار تبدأ من 100 ريال",
+        "link": "",
+        "image": "catalog/demo/banners/w2.png",
+        "sort_order": 2
+      },
+      {
+        "id": 874,
+        "title": "أسعار تبدأ من 100 ريال",
+        "link": "",
+        "image": "catalog/demo/banners/w1.png",
+        "sort_order": 3
+      },
+      {
+        "id": 875,
+        "title": "أسعار تبدأ من 100 ريال",
+        "link": "",
+        "image": "catalog/demo/banners/w2.png",
+        "sort_order": 4
+      },
+      {
+        "id": 876,
+        "title": "أسعار تبدأ من 100 ريال",
+        "link": "",
+        "image": "catalog/demo/banners/w1.png",
+        "sort_order": 5
+      },
+      {
+        "id": 877,
+        "title": "Prices start from 100 riyals",
+        "link": "",
+        "image": "catalog/demo/banners/w1.png",
+        "sort_order": 0
+      },
+      {
+        "id": 878,
+        "title": "Prices start from 100 riyals",
+        "link": "",
+        "image": "catalog/demo/banners/w2.png",
+        "sort_order": 0
+      },
+      {
+        "id": 879,
+        "title": "Prices start from 100 riyals",
+        "link": "",
+        "image": "catalog/demo/banners/w1.png",
+        "sort_order": 0
+      },
+      {
+        "id": 880,
+        "title": "Prices start from 100 riyals",
+        "link": "",
+        "image": "catalog/demo/banners/w2.png",
+        "sort_order": 0
+      },
+      {
+        "id": 881,
+        "title": "Prices start from 100 riyals",
+        "link": "",
+        "image": "catalog/demo/banners/w1.png",
+        "sort_order": 0
+      }
+    ]
+  },
+  {
+    "id": 27,
+    "name": "بنر 5",
+    "status": 1,
+    "slides": [
+      {
+        "id": 882,
+        "title": "بنر",
+        "link": "",
+        "image": "catalog/demo/banners/bann7.png",
+        "sort_order": 0
+      },
+      {
+        "id": 883,
+        "title": "بنر",
+        "link": "",
+        "image": "catalog/demo/banners/bann8.png",
+        "sort_order": 0
+      },
+      {
+        "id": 884,
+        "title": "banner",
+        "link": "",
+        "image": "catalog/demo/banners/bann7.png",
+        "sort_order": 0
+      },
+      {
+        "id": 885,
+        "title": "banner",
+        "link": "",
+        "image": "catalog/demo/banners/bann8.png",
+        "sort_order": 0
+      }
+    ]
+  }
+]

@@ -1,0 +1,159 @@
+<fieldset id="section-awb">
+<legend style="margin-bottom:0px;">{{ tab_waybill }}</legend>
+ <table class="table table-bordered">
+  {% if consignment %} 
+  <thead>
+    <tr>
+      <td class="text-left">{{ column_date_added }}</td>
+      <td class="text-left">{{ column_reference_number }}</td>
+      <td class="text-left">{{ column_awb_number }}</td>
+      <td class="text-left">{{ column_shipment_label }}</td>
+      <td class="text-left">{{ column_status }}</td>
+      <!-- <td class="text-left">{{ column_action }}</td> -->
+    </tr>
+  </thead>
+  <tbody> 
+  {% for result in consignment %}
+    <tr>
+      <td class="text-left">{{ result.date_added }}</td>
+      <td class="text-left">{{ result.reference_number }}</td>
+      <td class="text-left">{{ result.awb_number }}</td>
+      <td class="text-left">
+        {% if result.shipment_label %}
+        <a href="{{ result.shipment_label }}" data-toggle="tooltip" data-original-title="View" title="" target="_blank"><i class="fa fa-eye"></i></a>&nbsp;&nbsp;&nbsp;<a href="{{ result.shipment_label }}" title="" download data-original-title="Download" data-toggle="tooltip"><i class="fa fa-download"></i></a>
+        {% endif %}
+      </td>
+      <td class="text-left"><a class="agree" href="{{ result.track }}" data-toggle="modal" data-target="#myModal" title="" class="btn btn-lg" data-original-title="Track Order"><i class="fa fa-paper-plane-o"></i> &nbsp;&nbsp; {{ result.status }}</a> </td>
+    </tr>
+    {% endfor %}
+    {% endif %}
+    {% if awb_btn %}
+      <tbody>
+    <tr>
+      <td colspan="1" class="text-center">Number of packages</td>
+      <td colspan="4" class="text-center"><input type="text" name="" class="form-control" value="1" id="no_packages"></td></tr><tr>
+      <td colspan="5" class="text-center"><button type="button" id="button-smsa-awb" data-loading-text="{{ text_loading }}" class="btn btn-primary">{{ button_awb }} <i class="fa fa-plane fa-spin"></i></button></td>
+    </tr>
+    {% else %}
+    <tr>
+      <td colspan="5" class="text-center">
+        <div class="input-group col-sm-9">
+          <input id="smsa-reason" name="reason" value="Order incomplete" placeholder="Reason required" class="form-control" type="text">
+          <span class="input-group-btn">
+            <button type="button" id="button-smsa-cancel" onclick="cancelShipment('{{ awb_number }}');" data-loading-text="{{ text_loading }}" class="btn btn-danger">{{ button_cancel }} <i class="fa fa-reply"></i></button>
+            <button id="button-cancel-shipment" class="btn btn-danger" style="margin:0 5px;">Ship to origin</button>
+          </span>
+        </div>
+      </td>
+    </tr>
+    {% endif %}
+  </tbody>
+</table>
+</fieldset>
+<br>
+<div id="myModal" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+function cancelShipment(awb_number){
+  $.ajax({
+    url: 'index.php?route=extension/shipping/smsa/cancelShipment&user_token={{ user_token }}&order_id={{ order_id }}',
+    type: 'post',
+    dataType: 'json',
+    data: {awb_number : awb_number, reason : $('#smsa-reason').val()},
+    beforeSend: function() {
+      $('#btn'+awb_number).button('loading');
+    },
+    complete: function() {
+      $('#btn'+awb_number).button('reset');
+    },
+    success: function(json) {
+      $('.text-success, .text-danger').remove();
+      if (json['error']) {
+        $("#section-awb legend").after('<div class="text-danger"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + '</div>');
+      }
+
+      if (json['success']) {
+        $("#section-awb legend").after('<div class="text-success"><i class="fa fa-check-circle"></i> ' + json['success'] + '</div>');
+        $('#smsa').load('index.php?route=extension/shipping/smsa/shipment&user_token={{ user_token }}&order_id={{ order_id }}');
+      }
+    }
+  });
+}
+</script>
+<script type="text/javascript">
+ $('#button-smsa-awb').on('click', function() { 
+  var num = $('#no_packages').val();
+  var smsaurl;
+  if(num > 1){
+       smsaurl =  'index.php?route=extension/shipping/smsa/addShipMPS&user_token={{ user_token }}&order_id={{ order_id }}&packages='+num;
+  }else{
+      smsaurl =  'index.php?route=extension/shipping/smsa/addShip&user_token={{ user_token }}&order_id={{ order_id }}';
+  }
+  $.ajax({
+    url: smsaurl,
+    type: 'post',
+    dataType: 'json',
+    //data: $("#section-awb").serialize(),
+    beforeSend: function() {
+      $('#button-smsa-awb').button('loading');
+    },
+    complete: function() {
+      $('#button-smsa-awb').button('reset');
+    },
+    success: function(json) {
+      $('.text-success, .text-danger').remove();
+      if (json['error']) {
+        $("#section-awb legend").after('<div class="text-danger"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + '</div>');
+      }
+      if (json['success']) {
+        $("#section-awb legend").after('<div class="text-success"><i class="fa fa-check-circle"></i> ' + json['success'] + '</div>');
+        $('#smsa').load('index.php?route=extension/shipping/smsa/shipment&user_token={{ user_token }}&order_id={{ order_id }}');
+      }
+    }
+  });
+});
+</script>
+<script type="text/javascript"><!--
+  $('.date').datetimepicker({
+    pickTime: false
+  });
+
+  $('.time').datetimepicker({
+    pickDate: false
+  });
+
+  $('.datetime').datetimepicker({
+    pickDate: true,
+    pickTime: true
+  });
+  //--></script>
+  <script type="text/javascript">
+    $('.btn-link').on('click', function(e){
+    e.preventDefault();
+
+    $('#myModal').modal('show').find('.modal-content').load($(this).attr('href'));
+    });
+  </script>
+  <script type="text/javascript">
+$('#button-cancel-shipment').on('click', function() { 
+   $.ajax({
+           url: 'index.php?route=extension/shipping/smsa/cancelOrderStatus&user_token={{ user_token }}&order_id={{ order_id }}',
+           type: 'post',
+           success: function (json) {
+             $('.text-success, .text-danger').remove();
+             if (json['error']) {
+               $("#section-awb legend").after('<div class="text-danger"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + '</div>');
+             }
+
+             if (json['success']) {
+               $("#section-awb legend").after('<div class="text-success"><i class="fa fa-check-circle"></i> ' + json['success'] + '</div>');
+               $('#smsa').load('index.php?route=extension/shipping/smsa/shipment&user_token={{ user_token }}&order_id={{ order_id }}');
+             }
+           }
+          });
+});
+</script>

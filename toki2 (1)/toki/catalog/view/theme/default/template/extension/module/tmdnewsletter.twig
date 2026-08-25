@@ -1,0 +1,159 @@
+ <div class="clearfix"></div>
+<div class="contctseller-head">
+         {% if (newsletter_layoutstatus == 1 and newsletter_status == 1) %}
+            <div class="contctseller">
+                <div class="col-sm-5">
+                    <div class="contctseller_title">
+                    <img src="catalog/view/theme/default/stylesheet/news.png">
+                    <div class="contctseller_titles">
+                {% if (newsletter_titlestatus == 1) %}
+                    <h3>{{ newsletter_title_text }}</h3>
+                {% endif %}
+
+                 {% if (newsletter_descstatus == 1) %}
+                    <p class="text-center">{{ newsletter_desc_text }}</p>
+                {% endif %}
+                </div>
+                </div>
+                </div>
+                <div class="col-sm-7">
+                <div class="enquire">
+                    <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                        <div id="addsubs">
+                            <div class="newsletter-icon text-center">{% if (newsletter_iconestatus == 1) %}
+                                    <i class="{{ newsletter_iconclass }}" aria-hidden="true"></i>
+                                {% endif %}
+                            </div>
+                           
+                            {% if (newsletter_namestatus == 1 or newsletter_namestatus == 2) %}
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <input type="text" name="name" value="" placeholder="{{ newsletter_name_text }}"
+                                               id="input-name" class="form-control"/>
+                                        <div class="nameerror"></div>
+                                    </div>
+                                </div>
+                            {% endif %}
+
+
+                            <div class="form-group">
+                                <div class="col-sm-12 col-xs-8 input-email">
+                                    <input type="text" name="email" value="" placeholder="{{ newsletter_email_text }}"
+                                           id="input-email" class="form-control"/>
+                                    <div class="emailerror"></div>
+                                </div>
+                                <div class="buttons col-xs-4 clearfix">
+                                    <div class="buttons-newslet">
+                                        <input type="button" value="{{ newsletter_btn_text }}" class="btn btn-primary"
+                                               id="newsletters"/>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            {% if (agree_status == 1) %}
+                                <!--new code start   -->
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="subscribe_agree" value="1"/>
+                                        {{ text_agree }} <a class="report" data-toggle="modal"
+                                                            data-target="#myModal">{{ text_privacy }}</a>
+                                    </label>
+                                </div>
+                                <!--new code start   -->
+                            {% endif %}
+                        </div>
+                    </form>
+                </div>
+            </div>
+                <script>
+                    $('#newsletters').click(function () {
+
+                        var successtext = '{{ newsletter_success_text }}';
+                        $.ajax({
+                            url: 'index.php?route=extension/module/tmdnewsletter/addnewsletter',
+                            type: 'post',
+                            data: $('#addsubs input[type=\'text\'], #addsubs input[type=\'checkbox\']:checked'),
+                            dataType: 'json',
+                            beforeSend: function () {
+                                $('#newsletters').button('loading');
+                                $('.loader').removeClass('hide');
+
+                            },
+                            complete: function () {
+                                $('#newsletters').button('reset');
+                            },
+                            success: function (json) {
+                                $('.alert, .alert-success, .text-danger, .warning').remove();
+                                /* validation class has error */
+                                $('.form-group').removeClass('has-error');
+                                /* validation class has error */
+                                $('.loader').addClass('hide');
+                                if (json['error']) {
+                                    $('.warning').fadeIn('slow');
+
+                                    if (json['error']['name']) {
+                                        $('.nameerror').html('<div class="text-danger">' + json['error']['name'] + '</div>');
+                                    }
+
+                                    if (json['error']['email']) {
+                                        $('.emailerror').html('<div class="text-danger">' + json['error']['email'] + '</div>');
+                                    }
+                                    //new code start
+                                    else if (json['error']['agree']) {
+                                        alert('{{ error_agree }}');
+                                    }
+                                    //new code end
+
+                                }
+
+                                if (json['success']) {
+
+                                    $('.contctseller').before('<div class="alert alert-successnews">' + successtext + '<button type="button" class="close vendorbutton" data-dismiss="alert">&times;</button></div>');
+                                    $('input[name=name]').val('');
+                                    $('input[name=email]').val('');
+                                    $('.alert-successnews').fadeOut(4000);
+                                }
+
+                            }
+                        });
+                    });
+                </script>
+                <style>
+                    .contctseller h2 {
+                        background: {{ footer_bgcolor }} !important;
+                        color: {{ footer_fontcolor }} !important;
+                    }
+
+                    .alert-successnews {
+                        color: #3c763d;
+                        background-color: #dff0d8;
+                        border-color: #d6e9c6;
+                        padding: 8px 14px 8px 14px;
+                        margin-top: 5px;
+                    }
+
+                    {{ customcss }}
+                </style>
+                <link href="catalog/view/theme/default/stylesheet/newsletter.css" rel="stylesheet">
+            </div>
+        {% endif %}
+ </div>
+
+
+<!-- agree model -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+        <div class="tab-first"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">{{ text_privacy }} </h4>
+            </div>
+            <div class="modal-body">
+                <p>{{ newsletter_privacy_text }} </p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- agree model -->

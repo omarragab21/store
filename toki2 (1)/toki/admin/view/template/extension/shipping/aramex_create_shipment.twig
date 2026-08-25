@@ -1,0 +1,1055 @@
+{{ header }}
+
+<style>
+    #aramex_loader {
+        background-image: url({{ aramex_loader }});
+    }
+    .ui-autocomplete {
+        max-height: 200px;
+        overflow-y: auto;
+        /* prevent horizontal scrollbar */
+        overflow-x: hidden;
+        /* add padding to account for vertical scrollbar */
+    }
+</style>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var aramex_allow = '{{ aramex_allow }}';
+        /* block script running*/
+        if(aramex_allow == 0){
+            return false;
+        }
+
+        /* billing_aramex_cities and  shipping_aramex_cities */
+        var type = '.aramex_shipment_creation_fieldset_left';
+        setAutocomplate(type);
+        var type = '.aramex_shipment_creation_fieldset_right';
+        setAutocomplate(type);
+
+        function setAutocomplate(type) {
+
+            var shippingAramexCitiesObj;
+            var shipping_aramex_cities_temp;
+            var billing_aramex_cities = '';
+            var shipping_aramex_cities = billing_aramex_cities;
+
+            /* set HTML blocks */
+            jQuery( type ).find(".aramex_city").after('<div id="aramex_loader" style="height:31px; width:31px; display:none;"></div>');
+            shipping_aramex_cities_temp = shipping_aramex_cities;
+
+            /* get Aramex sities */
+            shippingAramexCitiesObj = AutoSearchControls(type, shipping_aramex_cities);
+            jQuery( type ).find(".aramex_countries").change(function () {
+                getAllCitiesJson( type , shippingAramexCitiesObj);
+            });
+            getAllCitiesJson(type, shippingAramexCitiesObj);
+
+            function AutoSearchControls(type, search_city) {
+                return jQuery( type ).find(".aramex_city")
+                    .autocomplete({
+                        /*source: search_city,*/
+                        minLength: 3,
+                        scroll: true,
+                        source: function (req, responseFn) {
+                            var re = $.ui.autocomplete.escapeRegex(req.term);
+                            var matcher = new RegExp("^" + re, "i");
+                            var a = jQuery.grep(search_city, function (item, index) {
+                                return matcher.test(item);
+                            });
+                            responseFn(a);
+                        },
+                        search: function (event, ui) {
+                            /* open initializer */
+                            jQuery('.checkout-index-index .ui-autocomplete').css('display', 'none');
+                            jQuery(type + ' #aramex_loader').css('display', 'block');
+                        },
+                        response: function (event, ui) {
+                            var temp_arr = [];
+                            jQuery(ui.content).each(function (i, v) {
+                                temp_arr.push(v.value);
+                            });
+
+                            jQuery(type + ' #aramex_loader').css('display', 'none');
+                            return temp_arr;
+                        }
+                    });
+            }
+
+            function getAllCitiesJson(type, aramexCitiesObj) {
+                var country_code = jQuery( type ).find(".aramex_countries").val();
+                var url_check = '{{ aramex_searchautocities }}&country_code=' + country_code;
+                shipping_aramex_cities_temp = '';
+                aramexCitiesObj.autocomplete("option", "source", url_check);
+            }
+
+        }
+        if ($("#aramex_shipment_shipper_country").val() == "IN" && $("#aramex_shipment_receiver_country").val() != "IN"){
+            $("#IN1").css('display', '');
+            $("#IN2").css('display', '');
+            $("#IN3").css('display', '');
+            $("#IN4").css('display', '');
+            $("#IN5").css('display', '');
+            $("#IN6").css('display', '');
+            $("#IN7").css('display', '');
+        }
+
+    });
+</script>
+
+{{ column_left }}
+
+
+<div id="content">
+    <style>
+        td{
+            padding:8px;
+        }
+    </style>
+    <div class="page-header" style="overflow: hidden;">
+        <div class="container-fluid pull-left">
+            <h1>{{ heading_title }}</h1>
+            <ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+                    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="pull-right container-fluid">
+            <a href="{{ back_to_order }}" class="btn btn-info">{{ text_back_to_order }}</a>
+            {% if is_shipment  ==  1 %}
+                <a href="{{ aramex_print_label }}"  class="btn btn-info">{{ text_print_label }}</a>
+                <a href="{{ aramex_rate_calculator }}"  class="btn btn-info">{{ text_rate_calculator }}</a>
+                <a href="{{ aramex_schedule_pickup }}"  class="btn btn-info">{{ text_schedule_pickup }}</a>
+                <a href="{{ aramex_traking }}"  class="btn btn-info">{{ text_track }}</a>
+            {% else %}
+                <a href="{{ aramex_rate_calculator }}"  class="btn btn-info">{{ text_rate_calculator }}</a>
+
+            {% endif %}
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                {% if success_html  and  success_html is not empty %}
+                    {{ success_html }}
+                {% endif %}
+            </h3>
+            <h3 class="panel-title" style="color:red;">
+                {% if eRRORS  and  eRRORS is not empty
+                %}
+                    {% for val in eRRORS %}
+                        {{ val }}
+                        {{ "<br>" }}
+                    {% endfor %}
+                {% endif %}
+            </h3>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <!--  code --->
+                <form enctype="multipart/form-data" action="" method="post" id="aramex_shipment" novalidate="novalidate" class="form-horizontal">
+                    <table class="table  table-bordered table-hover">
+                        <tr>
+                            <td colspan="2">
+                                <input type="hidden" value="" name="aramex_shipment_referer">
+                                <input type="hidden" value="{{ aramex_shipment_shipper_account }}" name="aramex_shipment_shipper_account">
+                                <input type="hidden" value="{{ reference }}" name="aramex_shipment_original_reference">
+                                <fieldset id="aramex_shipment_creation_general_info">
+                                    <legend>Billing Account</legend>
+                                    <table class="form">
+                                        <tr>
+                                            <td> Account </td>
+                                            <td><input type="text" value="{{ aramex_shipment_shipper_account }}" disabled="disabled" name="aramex_shipment_shipper_account_show" class="">
+                                                <span>Taken from Aramex Global Settings</span> </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Payment</td>
+                                            <td><select onchange="resetShipperDetail(this);" name="aramex_shipment_info_billing_account" class="aramex_all_options valid " id="payment_switcher">
+                                                    <option value="1" {{ aramex_shipment_info_billing_account == '1'?'selected="selected"': "" }}>Shipper Account</option>
+                                                    <option value="2" {{ aramex_shipment_info_billing_account == '2'?'selected="selected"': "" }}>Consignee Account</option>
+                                                    <option value="3" {{ aramex_shipment_info_billing_account == '3'?'selected="selected"': "" }}>Third Party</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </fieldset></td>
+                        </tr>
+                        <tr>
+                            <td><fieldset class="aramex_shipment_creation_fieldset aramex_shipment_creation_fieldset_left">
+                                    <legend>Shipper Details</legend>
+                                    <table class="form aramex_shipment_creation_part" id="shipper_details">
+                                        <tr>
+                                            <td>Reference</td>
+                                            <td><input type="text" value="{{ reference }}" name="aramex_shipment_shipper_reference" class="">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Name</td>
+                                            <td><input type="text" value="{{ aramex_shipment_shipper_name }}" name="aramex_shipment_shipper_name" id="aramex_shipment_shipper_name" class="">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Email</td>
+                                            <td><input type="text" value="{{ aramex_shipment_shipper_email }}" name="aramex_shipment_shipper_email" id="aramex_shipment_shipper_email" class="">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Company</td>
+                                            <td><input type="text" value="{{ aramex_shipment_shipper_company }}" name="aramex_shipment_shipper_company" id="aramex_shipment_shipper_company" class="">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Address</td>
+                                            <td><textarea name="aramex_shipment_shipper_street" id="aramex_shipment_shipper_street" type="text" cols="26" rows="4" class="">{{ aramex_shipment_shipper_street }}</textarea>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Country</td>
+                                            <td><select name="aramex_shipment_shipper_country" id="aramex_shipment_shipper_country" class="aramex_countries ">
+
+                                                    {% for country in countries %}
+                                                        {% if country.iso_code_2  ==  aramex_shipment_shipper_country %}
+                                                            <option value="{{ country.iso_code_2 }}" selected="selected">{{ country.name }}</option>
+                                                        {% else %}
+                                                            <option value="{{ country.iso_code_2 }}">{{ country.name }}</option>
+                                                        {% endif %}
+                                                    {% endfor %}
+
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>City</td>
+                                            <td><input type="text" value="{{ aramex_shipment_shipper_city }}" name="aramex_shipment_shipper_city" id="aramex_shipment_shipper_city" class="aramex_city">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Postal Code</td>
+                                            <td><input type="text" value="{{ aramex_shipment_shipper_postal }}" name="aramex_shipment_shipper_postal" id="aramex_shipment_shipper_postal" class="">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>State</td>
+                                            <td><input type="text" value="{{ aramex_shipment_shipper_state }}" name="aramex_shipment_shipper_state" id="aramex_shipment_shipper_state" class="">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Phone</td>
+                                            <td><input type="text" value="{{ aramex_shipment_shipper_phone }}" name="aramex_shipment_shipper_phone" id="aramex_shipment_shipper_phone" class="">
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </fieldset></td>
+                            <td>
+                                <fieldset class="aramex_shipment_creation_fieldset aramex_shipment_creation_fieldset_right">
+                                    <legend>Receiver Details</legend>
+                                    <table class="aramex_shipment_creation_part form" id="receiver_details">
+                                        <tr>
+                                            <td>Reference</td>
+                                            <td><input type="text" value="{{ reference }}" name="aramex_shipment_receiver_reference" id="aramex_shipment_receiver_reference" class="">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Name</td>
+                                            <td><input type="text" value="{{ aramex_shipment_receiver_name }}" name="aramex_shipment_receiver_name" id="aramex_shipment_receiver_name" class="">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Email</td>
+                                            <td><input type="text" value="{{ aramex_shipment_receiver_email }}" name="aramex_shipment_receiver_email" id="aramex_shipment_receiver_email" class="">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Company</td>
+                                            <td><input type="text" value="{{ aramex_shipment_receiver_company }}" name="aramex_shipment_receiver_company" id="aramex_shipment_receiver_company" class="">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Address</td>
+                                            <td><textarea name="aramex_shipment_receiver_street" id="aramex_shipment_receiver_street" type="text" cols="26" rows="4" class="">{{ aramex_shipment_receiver_street }}</textarea>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Country</td>
+                                            <td>
+                                                <select name="aramex_shipment_receiver_country" id="aramex_shipment_receiver_country" class="aramex_countries ">
+
+                                                    {% for country in countries %}
+                                                        {% if country.iso_code_2  ==  aramex_shipment_receiver_country %}
+                                                            <option value="{{ country.iso_code_2 }}" selected="selected">{{ country.name }}</option>
+                                                        {% else %}
+                                                            <option value="{{ country.iso_code_2 }}">{{ country.name }}</option>
+                                                        {% endif %}
+                                                    {% endfor %}
+
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>City</td>
+                                            <td><input type="text" value="{{ aramex_shipment_receiver_city }}" name="aramex_shipment_receiver_city" id="aramex_shipment_receiver_city" class="aramex_city">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Postal Code</td>
+                                            <td><input type="text" value="{{ aramex_shipment_receiver_postal }}" name="aramex_shipment_receiver_postal" id="aramex_shipment_receiver_postal" class="">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>State</td>
+                                            <td><input type="text" value="{{ aramex_shipment_receiver_state }}" name="aramex_shipment_receiver_state" id="aramex_shipment_receiver_state" class="">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Phone</td>
+                                            <td><input type="text" value="{{ aramex_shipment_receiver_phone }}" name="aramex_shipment_receiver_phone" id="aramex_shipment_receiver_phone" class="">
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </fieldset></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><fieldset class="aramex_shipment_creation_fieldset">
+                                    <legend>Shipment Information</legend>
+                                    <table class="form" width="100%">
+                                        <tr>
+                                            <td width="50%"><table class="aramex_shipment_creation_part form" id="shipment_infromation">
+                                            {% set weightTotal = weighttot  %}
+                                                    <tr>
+                                                        <td>Total weight:</td>
+                                                        <td><div style="display:none" class="text_short">Total weight: <span id="order-total-weight">210.00</span> KG</div>
+                                                            <input type="text" class="" value="{{ weighttot }}" name="order_weight">
+                                                            <select class="" name="weight_unit">
+                                                                <option value="KG" {{ weight_unit|upper == 'KG' ? 'selected="selected"' : '' }}>KG</option>
+                                                                <option value="LB" {{ weight_unit|upper == 'LB'  ? 'selected="selected"' : '' }}>LB</option>
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                    <input type="hidden" value="{{ weightTotal }}" name="order_weight_hidden" id="order_weight_hidden" class="">
+                                                    <tr>
+                                                        <td>Reference:</td>
+                                                        <td>
+                                                            <input type="text" value="{{ reference }}" name="aramex_shipment_info_reference" id="aramex_shipment_info_reference" class="">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Product Group:</td>
+                                                        <td>
+                                                            {% set checkCountry = false  %}
+                                                            {% if group == '' %}
+                                                                {%  set checkCountry = (aramex_shipment_shipper_country  ==  aramex_shipment_receiver_country ) ? true : false %}
+                                                            {%  endif %}
+
+                                                            <select class="aramex_all_options " id="aramex_shipment_info_product_group" name="aramex_shipment_info_product_group"  >
+
+                                                                <option {{ group  == 'DOM' or checkCountry ? 'selected="selected"' : '' }} value="DOM">Domestic</option>
+                                                                <option {{ group  == 'EXP' or group == '' and not checkCountry ? 'selected="selected"' : '' }} value="EXP">International Express</option>
+
+                                                            </select>
+                                                            <div id="aramex_shipment_info_product_group_div" style="display: none;"></div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Service Type:</td>
+                                                        <td>
+                                                            {%  set notHide = '' %}
+                                                            {% if aramex_shipment_shipper_country  ==  aramex_shipment_receiver_country and type == '' %}
+                                                                {% set notHide = 'display: none' %}
+                                                            {% endif %}
+                                                            {% set checkCountry = false %}
+                                                            {% if type == '' %}
+                                                                {% set checkCountry = (aramex_shipment_shipper_country  ==  aramex_shipment_receiver_country) ? true : false %}
+                                                            {% endif %}
+
+                                                            {% set allowed_domestic_methods   =   aramex_allowed_domestic_methods %}
+                                                            {% set allowed_international_methods  =  aramex_allowed_international_methods %}
+                                                            {% set domestic_methods =  all_allowed_domestic_methods %}
+                                                            {% set international_methods =  all_allowed_international_methods %}
+                                                            {% set allowed_domestic_methods_apply = [] %}
+                                                            {% set allowed_international_methods_apply = [] %}
+
+                                                            <select class="aramex_all_options " id="aramex_shipment_info_product_type" name="aramex_shipment_info_product_type">
+                                                                {% if allowed_domestic_methods|length > 0 %}
+                                                                    {% set i=1 %}
+                                                                    {% for key, val in domestic_methods %}
+                                                                        {% if val.value in allowed_domestic_methods %}
+                                                                            {% set selected_str = '' %}
+                                                                            {% if i == 1 %}
+                                                                                {% set  selected_str =  (type == val.value or checkCountry ) ? 'selected="selected"' :  '' %}
+                                                                            {% else %}
+                                                                                {%  set selected_str =  type  ==  val.value ? 'selected="selected"' :  '' %}
+                                                                            {% endif %}
+                                                                            {% set allowed_domestic_methods_apply =  allowed_domestic_methods_apply|merge({ (val.value) : val.label })  %}
+                                                                            <option {{ selected_str }} value="{{ val.value }}" id="{{ val.value }}"  class="DOM"> {{ val.label }} </option>
+                                                                            {% set i = i + 1 %}
+                                                                        {% endif %}
+                                                                    {% endfor %}
+                                                                {% endif %}
+                                                                {% if allowed_international_methods |length > 0 %}
+                                                                    {% set i=1 %}
+                                                                    {% for key, val in international_methods %}
+                                                                        {% if val.value in allowed_international_methods %}
+                                                                            {% set selected_str = '' %}
+                                                                            {% if i == 1%}
+                                                                                {% if type == val.value or not checkCountry and type == '' %}
+                                                                                    {% set selected_str = 'selected="selected"' %}
+                                                                                {% endif %}
+                                                                            {% else %}
+                                                                                {% if type == val.value %}
+                                                                                    {%  set selected_str = 'selected="selected"' %}
+                                                                                {% endif %}
+                                                                            {% endif %}
+                                                                            {% set allowed_international_methods_apply =  allowed_international_methods_apply|merge({ (val.value) : val.label })  %}
+                                                                            <option {{ selected_str }} value="{{ val.value }}" id="{{ val.value }}" class="EXP">{{ val.label }}</option>
+                                                                            {% set i = i + 1 %}
+                                                                        {% endif %}
+                                                                    {% endfor %}
+                                                                {% endif %}
+                                                            </select>
+                                                            <div id="aramex_shipment_info_service_type_div" style="display: none;"></div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Additional Services:</td>
+                                                        <td>
+                                                            <select multiple class="aramex_all_options " id="aramex_shipment_info_service_type" name="aramex_shipment_info_service_type[]">
+                                                                {% set allowed_domestic_additional_services  =  aramex_allowed_domestic_additional_services %}
+                                                                {% set allowed_international_additional_services =  aramex_allowed_international_additional_services %}
+                                                                {% set domestic_additional_services =  all_allowed_domestic_additional_services %}
+                                                                {% set international_additional_services = all_allowed_international_additional_services %}
+
+                                                                {% set flagDOM = true %}
+                                                                {% if allowed_domestic_additional_services|length > 0 %}
+                                                                    {% set i = 1 %}
+                                                                    {% for key, val in domestic_additional_services %}
+                                                                        {% if val.value in allowed_domestic_additional_services %}
+                                                                            {% if aramex_payment_method == 'payment_smartaramex' and val.value == 'CODS' %} {% set flagDOM = false %} {% endif %}
+                                                                            {% if flagDOM == true %}
+                                                                                <option {{ stype ==  val.value  ? 'selected="selected"' :  '' }} {{ payment_method ==  val.value  ? 'selected="selected"' :  '' }}   value="{{ val.value }}" id="dom_as_{{ val.value }}" class="DOM local">{{ val.label }}</option>
+                                                                                {% set i = i + 1 %}   
+                                                                            {% endif %}    
+                                                                        {% endif %}
+                                                                        {% set flagDOM = true %}
+                                                                    {% endfor %}
+                                                                {% endif %}
+
+                                                                {% set flagEXP = true %}
+                                                                {% if allowed_international_additional_services|length > 0 %}
+                                                                    {% set i = 1 %}
+                                                                    {% for key, val in international_additional_services %}
+                                                                        {% if val.value in allowed_international_additional_services %}
+                                                                            {% if aramex_payment_method == 'payment_smartaramex' and val.value == 'CODS' %} {% set flagEXP = false %} {% endif %}
+                                                                            {% if flagEXP == true %}
+                                                                                <option {{ stype1  ==  val.value  ? 'selected="selected"' : '' }} {{ payment_method ==  val.value  ? 'selected="selected"' :  '' }}  value="{{ val.value }}" id="exp_as_{{ val.value }}" class="non-local EXP">{{ val.label }}</option>
+                                                                                {% set i = i + 1 %}   
+                                                                            {% endif %}    
+                                                                        {% endif %}
+                                                                        {% set flagEXP = true %}
+                                                                    {% endfor %}
+                                                                {% endif %}
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Payment Type:</td>
+                                                        <td><select name="aramex_shipment_info_payment_type" id="aramex_shipment_info_payment_type" class="aramex_all_options ">
+                                                                <option value="P" {% if pay_type == 'P' %} {{ 'selected="selected"' }} {% endif %}>Prepaid</option>
+                                                                <option value="C" {% if pay_type == 'C' %} {{ 'selected="selected"' }} {% endif %}>Collect</option>
+                                                                <option value="3" {% if pay_type == '3' %} {{ 'selected="selected"' }} {% endif %}>Third Party</option>
+                                                            </select>
+                                                            <div style="display: none;" id="aramex_shipment_info_service_type_div"></div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Payment Option:</td>
+                                                        <td><select name="aramex_shipment_info_payment_option" id="aramex_shipment_info_payment_option" class="">
+                                                                <option value=""></option>
+                                                                <option style="display: none;" value="ASCC" id="ASCC">Needs Shipper Account Number to be filled</option>
+                                                                <option style="display: none;" value="ARCC" id="ARCC">Needs Consignee Account Number to be filled</option>
+                                                                <option id="CASH" value="CASH" {% if pay_option == 'CASH' %} {{ 'selected="selected"' }} {% endif %}>Cash</option>
+                                                                <option id="ACCT" value="ACCT" {% if pay_option == 'ACCT' %} {{ 'selected="selected"' }} {% endif %}>Account</option>
+                                                                <option id="PPST" value="PPST" {% if pay_option == 'PPST' %} {{ 'selected="selected"' }} {% endif %}>Prepaid Stock</option>
+                                                                <option id="CRDT" value="CRDT" {% if pay_option == 'CRDT' %} {{ 'selected="selected"' }} {% endif %}>Credit</option>
+
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>COD Amount:</td>
+                                                        <td><input type="text" value="{{ payment_method  ==  'CODS'  ? cod_value : '' }}" name="aramex_shipment_info_cod_amount" id="aramex_shipment_info_cod_amount" class="">
+                                                        </td>
+                                                    </tr>
+                                                    <input type="hidden" value="{{ payment_method }}" name="aramex_shipment_info_payment_method" id="aramex_shipment_info_payment_method">
+                                                    <tr>
+                                                        <td>Custom Amount:</td>
+                                                        {% set custom_amount_hidden = cod_value %}
+                                                        {% set custom_currency_hidden = currency_code %}
+                                                        {% if aramex_shipment_shipper_country  !=  aramex_shipment_receiver_country %}
+                                                              {% set custom_amount = cod_value %}                                     
+                                                        {% endif %}
+                                                        <td><input type="text" value="{{ custom_amount }}" name="aramex_shipment_info_custom_amount" id="aramex_shipment_info_custom_amount" class="">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Currency:</td>
+                                                        <td><input type="text" value="{{ currency_code }}" name="aramex_shipment_currency_code" id="aramex_shipment_currency_code" class="">
+                                                        </td>
+                                                    </tr>
+                                                    <tr id="IN1" style="display:none">
+                                                        <td>Shipper Tax Number: </td>
+                                                        <td><input type="text" id="ShipperTaxIdVATEINNumber" name="ShipperTaxIdVATEINNumber"></td>
+                                                    </tr>
+                                                    <tr id="IN2" style="display:none">
+                                                        <td>Consignee Tax Number: </td>
+                                                        <td><input type="text" id="ConsigneeTaxIdVATEINNumber" name="ConsigneeTaxIdVATEINNumber"></td>
+                                                    </tr>
+                                                    <tr id="IN3" style="display:none">
+                                                        <td>Tax Paid: </td>
+                                                        <td>
+                                                            <select class="" id="TaxPaid" name="TaxPaid">
+                                                                <option value="1">Yes</option>
+                                                                <option value="0">No</option>
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                    <tr id="IN4" style="display:none">
+                                                        <td>Tax Amount: </td>
+                                                        <td><input type="text" class="" id="TaxAmount" name="TaxAmount"/></td>
+                                                    </tr>
+                                                    <tr id="IN5" style="display:none">
+                                                        <td>Invoice Number: </td>
+                                                        <td><input type="text" class="" id="InvoiceNumber" name="InvoiceNumber"/></td>
+                                                    </tr>
+                                                    <tr id="IN6" style="display:none">
+                                                        <td>Invoice Date: </td>
+                                                        <td><input type="date" class="" id="InvoiceDate" name="InvoiceDate"/></td>
+                                                    </tr>
+                                                    <tr id="IN7" style="display:none">
+                                                        <td>Exporter Type: </td>
+                                                        <td>
+                                                            <select class="" id="ExporterType" name="ExporterType">
+                                                                <option value="UT">UT</option>
+                                                                <option value="Bond">Bond</option>
+                                                                <option value="Not Applicable">Not Applicable</option>
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                    <input type="hidden" value="{{ custom_amount_hidden }}" name="aramex_shipment_info_custom_amount_hidden" id="aramex_shipment_info_custom_amount_hidden" class="">
+                                                    <input type="hidden" value="{{ custom_currency_hidden }}" name="aramex_shipment_currency_code_hidden" id="aramex_shipment_currency_code_hidden" class="">
+                                                    <tr>
+                                                        <td>Comment:</td>
+                                                        <td><textarea name="aramex_shipment_info_comment" id="aramex_shipment_info_comment" type="text" cols="29 " rows="4" class="">{{ aramex_shipment_info_comment }}</textarea>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Foreign Shipment No:</td>
+                                                        <td><input type="text" value="{{ aramex_shipment_info_foreignhawb }}" name="aramex_shipment_info_foreignhawb" id="aramex_shipment_info_foreignhawb" class="">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Filename 1:</td>
+                                                        <td><div style="float: left;width: 145px;" id="file1_div">
+                                                                <input type="file" size="7" id="file1" name="file1" >
+                                                            </div>
+                                                            <div style="float: right;">
+                                                                <input type="button" style="width: 60px;height: 24px;" value="Reset" id="filereset" name="filereset">
+                                                            </div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Filename 2:</td>
+                                                        <td><div style="float: left;width: 145px;" id="file2_div">
+                                                                <input type="file" size="7" id="file2" name="file2">
+                                                            </div>
+                                                            <div style="float: right;">
+                                                                <input type="button" style="width: 60px;height: 24px;" value="Reset" id="file2reset" name="file2reset">
+                                                            </div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Filename 3:</td>
+                                                        <td><div style="float: left;width: 145px;" id="file3_div">
+                                                                <input type="file" size="7" id="file3" name="file3">
+                                                            </div>
+                                                            <div style="float: right;">
+                                                                <input type="button" style="width: 60px;height: 24px;" value="Reset" id="file3reset" name="file3reset">
+                                                            </div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Description:</td>
+                                                        <td><textarea name="aramex_shipment_description" id="aramex_shipment_description" type="text" cols="31" rows="4" class="valid" style="display: none;">{{ product_arr|join(',') }} </textarea>
+                                                            <div style="float: left;font-size: 11px;margin-bottom: 5px;margin-top: 2px;width: 202px;" id="aramex_shipment_description_div">
+                                                                {{   product_arr|join(',') }}
+                                                            </div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Items Price:</td>
+                                                        <td><input type="text" value="{{ total }}" style="width: 151px; float: left;" disabled="disabled" name="aramex_shipment_info_items_subtotal" id="aramex_shipment_info_items_subtotal" class="">
+                                                            <div style="float: left; padding-left: 5px;">{{ currency_code }}</div></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Number of Pieces: </td>
+                                                        <td><input type="text" name="number_pieces" value="1" ></td>
+                                                    </tr>
+                                                </table></td>
+                                            <td width="50%" valign="top" style="vertical-align: top;"><table id="aramex_items_table"  class="form">
+                                                    <tr>
+                                                        <th class="aramex_item_name">Name</th>
+                                                        <th class="aramex_item_qty">Qty</th>
+                                                    </tr>
+                                                    {% set qty = 0 %}
+                                                    {% set itemsArray = order_products[0].order_product_id %}
+                                                    {% for op in order_products %}
+                                                        {% set itemsArray = itemsArray ~ ',' ~ op.order_product_id %}
+                                                        <tr class="aramex_item_tobe_shipped" id="item{{ op.order_product_id }}">
+                                                            <td class="aramex_item_name"><span title="{{ op.name }}">{{ op.name|slice( 0, 21) }} ...</span>
+                                                                <input type="hidden" value="{{ op.quantity }}" name="aramex_items[{{ op.order_product_id }}]" id="aramex_items_{{ op.order_product_id }}">
+                                                            </td>
+                                                            <td class="aramex_item_qty">
+                                                                <input type="text"   value="{{ op.quantity }}" name="{{ op.order_product_id }}" class="aramex_input_items_qty valid" readonly>
+                                                                <input type="hidden" value="{{ op.name }}" name="aramex_items_Title_{{ op.order_product_id }}" id="aramex_items_Title_{{ op.order_product_id }}">
+                                                                <input type="hidden" value="{{ op.price }}" name="aramex_items_base_price_{{ op.order_product_id }}" id="aramex_items_base_price_{{ op.order_product_id }}">
+                                                                <input type="hidden" value="{{ op.weight }}" name="aramex_items_base_weight_{{ op.order_product_id }}" id="aramex_items_base_weight_{{ op.order_product_id }}">
+                                                                <input type="hidden" value="{{ op.quantity }}" name="aramex_items_total_{{ op.order_product_id }}" id="aramex_items_total_{{ op.order_product_id }}">
+                                                            </td>
+                                                        </tr>
+                                                        {%  set qty = qty+op.quantity %}
+                                                    {% endfor %}
+                                                    <input type="hidden" value="{{ itemsArray }}" name="item_details" id="item_details">
+                                                    <tr>
+                                                        <td colspan="2" valign="top" style="font-weight: bold;background: none repeat scroll 0% 0% rgb(224, 224, 224);">Number of items to be shipped:</td>
+                                                        <td><span id="items_tobe_shipped_number">{{ qty }}</span> </td>
+                                                    </tr>
+                                                </table></td>
+                                        </tr>
+                                    </table>
+                                </fieldset></td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="2">
+                                <input type="hidden" value="{{ reference }}" name="order_id" class="">
+                                <div class="pull-right6">
+                                    {% if not is_shipment %}
+                                        <a class="btn btn-info" onclick=" $('#aramex_shipment').submit();" id="aramex_shipment_creation_submit_id">Create Shipment</a>
+                                        <input type="checkbox" value="yes" name="aramex_email_customer" style="">
+                                        <span style="">Notify customer by email</span>
+                                    {% else %}
+                                        <input type="hidden" value="return_shipment" name="aramex_return_shipment">
+                                        <a class="btn btn-info" onclick="returnCheck();" id="aramex_shipment_creation_submit_id">Return Shipment</a>
+                                    {% endif %}
+                                    <div>
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+                <script>
+                    function returnCheck(){
+                        if($('#payment_switcher').val() == 1 || $('#payment_switcher').val() == 3) {
+                            alert("Please select Consignee Account from payment dropdown to return shipment");
+                        }else{
+                            $('#aramex_shipment').submit();
+                        }
+                    }
+
+                    var allowed_domestic_methods = {{ allowed_domestic_methods|json_encode() }};
+                    var allowed_international_methods = {{ allowed_international_methods|json_encode() }};
+
+                    var allowed_domestic_methods_apply = {{ allowed_domestic_methods_apply|json_encode() }};
+                    var allowed_international_methods_apply = {{ allowed_international_methods_apply|json_encode() }};
+
+
+                    var aramex_shipment_shipper_name = document.getElementById('aramex_shipment_shipper_name').value;
+                    var aramex_shipment_shipper_email = document.getElementById('aramex_shipment_shipper_email').value;
+                    var aramex_shipment_shipper_company = document.getElementById('aramex_shipment_shipper_company').value;
+                    var aramex_shipment_shipper_street = document.getElementById('aramex_shipment_shipper_street').value;
+                    var aramex_shipment_shipper_country = document.getElementById('aramex_shipment_shipper_country').value;
+                    var aramex_shipment_shipper_city = document.getElementById('aramex_shipment_shipper_city').value;
+                    var aramex_shipment_shipper_postal = document.getElementById('aramex_shipment_shipper_postal').value;
+                    var aramex_shipment_shipper_state = document.getElementById('aramex_shipment_shipper_state').value;
+                    var aramex_shipment_shipper_phone = document.getElementById('aramex_shipment_shipper_phone').value;
+
+                    var aramex_shipment_receiver_name = document.getElementById('aramex_shipment_receiver_name').value;
+                    var aramex_shipment_receiver_email = document.getElementById('aramex_shipment_receiver_email').value;
+                    var aramex_shipment_receiver_company = document.getElementById('aramex_shipment_receiver_company').value;
+                    var aramex_shipment_receiver_street = document.getElementById('aramex_shipment_receiver_street').value;
+                    var aramex_shipment_receiver_country = document.getElementById('aramex_shipment_receiver_country').value;
+                    var aramex_shipment_receiver_city = document.getElementById('aramex_shipment_receiver_city').value;
+                    var aramex_shipment_receiver_postal = document.getElementById('aramex_shipment_receiver_postal').value;
+                    var aramex_shipment_receiver_state = document.getElementById('aramex_shipment_receiver_state').value;
+                    var aramex_shipment_receiver_phone = document.getElementById('aramex_shipment_receiver_phone').value;
+
+                    function resetShipperDetail(el){
+                        //alert(el.value);
+                        var elValue = el.value;
+                        var flag = 0;
+
+
+                        if(elValue == 2){
+                            document.getElementById('aramex_shipment_shipper_name').value = aramex_shipment_receiver_name;
+                            document.getElementById('aramex_shipment_shipper_email').value = aramex_shipment_receiver_email;
+                            document.getElementById('aramex_shipment_shipper_company').value = aramex_shipment_receiver_company;
+                            document.getElementById('aramex_shipment_shipper_street').value = aramex_shipment_receiver_street;
+                            document.getElementById('aramex_shipment_shipper_country').value = aramex_shipment_receiver_country;
+                            document.getElementById('aramex_shipment_shipper_city').value = aramex_shipment_receiver_city;
+                            document.getElementById('aramex_shipment_shipper_postal').value = aramex_shipment_receiver_postal;
+                            document.getElementById('aramex_shipment_shipper_state').value = aramex_shipment_receiver_state;
+                            document.getElementById('aramex_shipment_shipper_phone').value = aramex_shipment_receiver_phone;
+                            document.getElementById('aramex_shipment_receiver_name').value = aramex_shipment_shipper_name;
+                            document.getElementById('aramex_shipment_receiver_email').value = aramex_shipment_shipper_email;
+                            document.getElementById('aramex_shipment_receiver_company').value = aramex_shipment_shipper_company;
+                            document.getElementById('aramex_shipment_receiver_street').value = aramex_shipment_shipper_street;
+                            document.getElementById('aramex_shipment_receiver_country').value = aramex_shipment_shipper_country;
+                            document.getElementById('aramex_shipment_receiver_city').value = aramex_shipment_shipper_city;
+                            document.getElementById('aramex_shipment_receiver_postal').value = aramex_shipment_shipper_postal;
+                            document.getElementById('aramex_shipment_receiver_state').value = aramex_shipment_shipper_state;
+                            document.getElementById('aramex_shipment_receiver_phone').value = aramex_shipment_shipper_phone;
+                            flag = 1;
+                        }
+                        else if(elValue == 3){
+                            /* document.getElementById('aramex_shipment_shipper_name').value = "";
+                            document.getElementById('aramex_shipment_shipper_email').value = "";
+                            document.getElementById('aramex_shipment_shipper_company').value = "";
+                            document.getElementById('aramex_shipment_shipper_street').value = "";
+                            document.getElementById('aramex_shipment_shipper_country').value = "";
+                            document.getElementById('aramex_shipment_shipper_city').value = "";
+                            document.getElementById('aramex_shipment_shipper_postal').value = "";
+                            document.getElementById('aramex_shipment_shipper_state').value = "";
+                            document.getElementById('aramex_shipment_shipper_phone').value = "";
+                            */
+                            
+                            document.getElementById('aramex_shipment_info_payment_type').value = '3';
+
+                            document.getElementById('ASCC').style.display = 'block';
+                            document.getElementById('ARCC').style.display = 'block';
+
+                            document.getElementById('CASH').style.display = 'none';
+                            document.getElementById('ACCT').style.display = 'none';
+                            document.getElementById('PPST').style.display = 'none';
+                            document.getElementById('CRDT').style.display = 'none';
+
+                            $('#aramex_shipment_info_payment_option').val("");
+
+
+
+                            flag = 2;
+                        }
+                        else{
+                            if(flag = 1){
+                                document.getElementById('aramex_shipment_receiver_name').value = aramex_shipment_receiver_name;
+                                document.getElementById('aramex_shipment_receiver_email').value = aramex_shipment_receiver_email;
+                                document.getElementById('aramex_shipment_receiver_company').value = aramex_shipment_receiver_company;
+                                document.getElementById('aramex_shipment_receiver_street').value = aramex_shipment_receiver_street;
+                                document.getElementById('aramex_shipment_receiver_country').value = aramex_shipment_receiver_country;
+                                document.getElementById('aramex_shipment_receiver_city').value = aramex_shipment_receiver_city;
+                                document.getElementById('aramex_shipment_receiver_postal').value = aramex_shipment_receiver_postal;
+                                document.getElementById('aramex_shipment_receiver_state').value = aramex_shipment_receiver_state;
+                                document.getElementById('aramex_shipment_receiver_phone').value = aramex_shipment_receiver_phone;
+
+
+                                document.getElementById('aramex_shipment_shipper_name').value = aramex_shipment_shipper_name;
+                                document.getElementById('aramex_shipment_shipper_email').value = aramex_shipment_shipper_email;
+                                document.getElementById('aramex_shipment_shipper_company').value = aramex_shipment_shipper_company;
+                                document.getElementById('aramex_shipment_shipper_street').value = aramex_shipment_shipper_street;
+                                document.getElementById('aramex_shipment_shipper_country').value = aramex_shipment_shipper_country;
+                                document.getElementById('aramex_shipment_shipper_city').value = aramex_shipment_shipper_city;
+                                document.getElementById('aramex_shipment_shipper_postal').value = aramex_shipment_shipper_postal;
+                                document.getElementById('aramex_shipment_shipper_state').value = aramex_shipment_shipper_state;
+                                document.getElementById('aramex_shipment_shipper_phone').value = aramex_shipment_shipper_phone;
+
+                                document.getElementById('aramex_shipment_info_payment_type').value = 'P';
+
+                                document.getElementById('ASCC').style.display = 'none';
+                                document.getElementById('ARCC').style.display = 'none';
+
+                                document.getElementById('CASH').style.display = 'block';
+                                document.getElementById('ACCT').style.display = 'block';
+                                document.getElementById('PPST').style.display = 'block';
+                                document.getElementById('CRDT').style.display = 'block';
+
+                                $('#aramex_shipment_info_payment_option').val("");
+
+
+
+
+                            }
+                            else if(flag = 2){
+                                document.getElementById('aramex_shipment_shipper_name').value = aramex_shipment_shipper_name;
+                                document.getElementById('aramex_shipment_shipper_email').value = aramex_shipment_shipper_email;
+                                document.getElementById('aramex_shipment_shipper_company').value = aramex_shipment_shipper_company;
+                                document.getElementById('aramex_shipment_shipper_street').value = aramex_shipment_shipper_street;
+                                document.getElementById('aramex_shipment_shipper_country').value = aramex_shipment_shipper_country;
+                                document.getElementById('aramex_shipment_shipper_city').value = aramex_shipment_shipper_city;
+                                document.getElementById('aramex_shipment_shipper_postal').value = aramex_shipment_shipper_postal;
+                                document.getElementById('aramex_shipment_shipper_state').value = aramex_shipment_shipper_state;
+                                document.getElementById('aramex_shipment_shipper_phone').value = aramex_shipment_shipper_phone;
+
+                                document.getElementById('aramex_shipment_receiver_name').value = aramex_shipment_receiver_name;
+                                document.getElementById('aramex_shipment_receiver_email').value = aramex_shipment_receiver_email;
+                                document.getElementById('aramex_shipment_receiver_company').value = aramex_shipment_receiver_company;
+                                document.getElementById('aramex_shipment_receiver_street').value = aramex_shipment_receiver_street;
+                                document.getElementById('aramex_shipment_receiver_country').value = aramex_shipment_receiver_country;
+                                document.getElementById('aramex_shipment_receiver_city').value = aramex_shipment_receiver_city;
+                                document.getElementById('aramex_shipment_receiver_postal').value = aramex_shipment_receiver_postal;
+                                document.getElementById('aramex_shipment_receiver_state').value = aramex_shipment_receiver_state;
+                                document.getElementById('aramex_shipment_receiver_phone').value = aramex_shipment_receiver_phone;
+
+                                document.getElementById('aramex_shipment_info_payment_type').value = 'P';
+
+                                document.getElementById('ASCC').style.display = 'none';
+                                document.getElementById('ARCC').style.display = 'none';
+
+                                document.getElementById('CASH').style.display = 'block';
+                                document.getElementById('ACCT').style.display = 'block';
+                                document.getElementById('PPST').style.display = 'block';
+                                document.getElementById('CRDT').style.display = 'block';
+
+                                $('#aramex_shipment_info_payment_option').val("");
+
+
+                            }
+                            flag = 0;
+                        }
+                    }
+
+                    $('#aramex_shipment_info_payment_type').change(function(){
+                        //alert('Hello');
+                        if($('#aramex_shipment_info_payment_type').val() == "P"){
+                            document.getElementById('ASCC').style.display = 'none';
+                            document.getElementById('ARCC').style.display = 'none';
+
+                            document.getElementById('CASH').style.display = 'block';
+                            document.getElementById('ACCT').style.display = 'block';
+                            document.getElementById('PPST').style.display = 'block';
+                            document.getElementById('CRDT').style.display = 'block';
+
+                            $('#aramex_shipment_info_payment_option').val("");
+
+
+                        }
+                        else{
+                            document.getElementById('ASCC').style.display = 'block';
+                            document.getElementById('ARCC').style.display = 'block';
+
+                            document.getElementById('CASH').style.display = 'none';
+                            document.getElementById('ACCT').style.display = 'none';
+                            document.getElementById('PPST').style.display = 'none';
+                            document.getElementById('CRDT').style.display = 'none';
+
+                            $('#aramex_shipment_info_payment_option').val("");
+
+                        }
+                    });
+
+
+                    function togglePickup(){
+                        $('#pickup_infromation').toggle('slow');
+                    }
+
+
+                    function aramexpop(itemscount)
+                    {
+                        if(itemscount >= 0){
+                            $("#aramex_overlay").css("display", "block");
+                            $("#aramex_shipment_creation").fadeIn(1000);
+                        }
+                        else{
+                            alert('Cannot create a shipment, all items have been shipped');
+                        }
+
+                    }
+
+                    function aramexclose()
+                    {
+                        $("#aramex_overlay").css("display", "none");
+                        $("#aramex_shipment_creation").fadeOut(500);
+                    }
+
+                    function aramexhide(aramexid, item_price, order_total_weight)
+                    {
+
+                        if($(".aramex_item_tobe_shipped").length > 1){
+                            $("#order-total-weight").html((parseFloat($("#order-total-weight").html()) - parseFloat(order_total_weight)).toFixed(2));
+                            $("#order_weight").val((parseFloat($("#order-total-weight").html()) - parseFloat(order_total_weight)).toFixed(2));
+
+                            $("input[name=aramex_shipment_info_items_subtotal]").val((parseFloat($("input[name=aramex_shipment_info_items_subtotal]").val())-parseFloat(item_price)).toFixed(2));
+
+                            //new
+                            $('#aramex_shipment_info_cod_amount').val((parseFloat($('#aramex_shipment_info_cod_amount').val()) - parseFloat(parseInt($("input[name="+ aramexid +"]").val()) * parseFloat($('#aramex_items_base_price_'+aramexid).val()))).toFixed(2));
+
+                            $("#item"+aramexid).css('background', '#F2C2C8');
+                            $("#item"+aramexid).fadeOut(500);
+                            $("#item"+aramexid+" input").val(0);
+                            $("#item"+aramexid).remove();
+                            $("#"+aramexid).remove();
+                            $("textarea[name=aramex_shipment_description]").text($("#aramex_shipment_description_div").text());
+                            get_tobe_shipped_items_number();
+                        } else {
+                            alert('At least one item is needed to create a shipment.');
+                        }
+                    }
+
+                    function get_tobe_shipped_items_number()
+                    {
+                        items_tobe_shipped_number = 0;
+                        $("#aramex_items_table .aramex_input_items_qty").each(function(qty_index){
+                            items_tobe_shipped_number += parseFloat($(this).val());
+                        });
+                        $("#items_tobe_shipped_number").html(items_tobe_shipped_number);
+                    }
+
+                    var codTotal = $("#aramex_shipment_info_cod_amount").val();
+
+                    $(".aramex_input_items_qty").keyup(function(){
+                        var the_id = $(this).attr('name');
+                        var items_price = 0;
+
+                        var itemWeight = 0;
+                        var itemTotalPrice = 0;
+
+                        $("#aramex_items_"+the_id).val($(this).val());
+                        $(".aramex_input_items_qty").each(function(price_index){
+                            var the_id_qty = $(this).attr('name'); //alert(the_id_qty);
+                            //alert(the_id_qty);
+                            items_price += $(this).val() * $("#aramex_items_base_price_"+the_id_qty).val();
+                            //alert(items_price)
+                            itemWeight += $(this).val() * $("#aramex_items_base_weight_"+the_id_qty).val();
+                            itemTotalPrice += (parseInt($("#aramex_items_total_"+the_id_qty).val()) - parseInt($(this).val())) * $("#aramex_items_base_price_"+the_id_qty).val();
+
+                        });
+                        $("input[name=aramex_shipment_info_items_subtotal]").val(items_price.toFixed(2));
+                        $("#order-total-weight").html(itemWeight.toFixed(2));
+
+                        if(itemTotalPrice){
+                            $("#aramex_shipment_info_cod_amount").val((parseFloat('{{ total }}') - parseFloat(itemTotalPrice)).toFixed(2));
+                        }
+                        else if(itemTotalPrice == 0){
+                            $("#aramex_shipment_info_cod_amount").val(codTotal);
+                        }
+
+                        $("input[name=aramex_shipment_info_cod_value]").val(parseFloat(items_price) + parseFloat($("input[name=aramex_shipment_info_shipping_charges]").val()));
+                        get_tobe_shipped_items_number();
+                    });
+
+                    var messages_content;
+
+                    $("input[name=aramex_shipment_info_shipping_charges]").change(function(){
+                        var cod_value = parseFloat($("input[name=aramex_shipment_info_shipping_charges]").val()) + parseFloat($("input[name=aramex_shipment_info_items_subtotal]").val());
+                        $("input[name=aramex_shipment_info_cod_value]").val(cod_value);
+                    });
+
+                    $(".aramex_countries").change(function(){
+                        if($("select[name=aramex_shipment_shipper_country]").val() != $("select[name=aramex_shipment_receiver_country]").val()){
+                            $("select[name=aramex_shipment_info_product_group]").val('EXP');
+                            $("#aramex_shipment_info_product_group").trigger('change');
+                            $("select[name=aramex_shipment_info_additional_services] option:selected").removeAttr("selected");
+                            $("select[name=aramex_shipment_info_additional_services] .express_service").attr("selected", "selected");
+                        } else {
+                            $("select[name=aramex_shipment_info_product_group]").val('DOM');
+                            $("#aramex_shipment_info_product_group").trigger('change');
+                            $("select[name=aramex_shipment_info_additional_services] option:selected").removeAttr("selected");
+                            $("select[name=aramex_shipment_info_additional_services] .domestic_service").attr("selected", "selected");
+
+                        }
+
+                        $("#aramex_shipment_info_product_group_div").html($("select[name=aramex_shipment_info_product_group] option:selected").text());
+                        $("#aramex_shipment_info_service_type_div").html($("select[name=aramex_shipment_info_service_type] option:selected").text());
+                        $("#aramex_shipment_info_additional_services_div").html($("select[name=aramex_shipment_info_additional_services] option:selected").text());
+                    });
+
+                    $(".aramex_all_options").change(function(){
+
+                    });
+                    $("#aramex_shipment_info_product_group").change(function(){
+
+                        if($("select[name=aramex_shipment_info_product_group]").val()=='EXP'){
+                            $("select[name=aramex_shipment_info_additional_services] option:selected").removeAttr("selected");
+                            $("select[name=aramex_shipment_info_additional_services] .express_service").attr("selected", "selected");
+                            $("#aramex_shipment_info_product_type option").hide();
+                        }else if($("select[name=aramex_shipment_info_product_group]").val()=='DOM'){
+                            $("select[name=aramex_shipment_info_additional_services] option:selected").removeAttr("selected");
+                            $("select[name=aramex_shipment_info_additional_services] .domestic_service").attr("selected", "selected");
+                            $("#aramex_shipment_info_product_type option").hide();
+                        }
+                        $("#aramex_shipment_info_service_type_div").html($("select[name=aramex_shipment_info_service_type] option:selected").text());
+                        $("#aramex_shipment_info_additional_services_div").html($("select[name=aramex_shipment_info_additional_services] option:selected").text());
+
+                    });
+                    $("#aramex_shipment_info_product_group_div").html($("select[name=aramex_shipment_info_product_group] option:selected").text());
+                    $("#aramex_shipment_info_service_type_div").html($("select[name=aramex_shipment_info_service_type] option:selected").text());
+                    $("#aramex_shipment_info_additional_services_div").html($("select[name=aramex_shipment_info_additional_services] option:selected").text());
+
+                    $("#TaxPaid").change(function () {
+                        if ($("#TaxPaid").val() == 1)
+                            $("#IN4").fadeIn(500);
+                        else
+                            $("#IN4").fadeOut(500);
+                            document.getElementById('TaxAmount').value = "";
+                    })
+
+                    $("#aramex_shipment_shipper_country").change(function () {
+                        if ($("#aramex_shipment_shipper_country").val() == "IN" && $("#aramex_shipment_receiver_country").val() != "IN") {
+                            $("#IN1").fadeIn(500);
+                            $("#IN2").fadeIn(500);
+                            $("#IN3").fadeIn(500);
+                            $("#IN4").fadeIn(500);
+                            $("#IN5").fadeIn(500);
+                            $("#IN6").fadeIn(500);
+                            $("#IN7").fadeIn(500);
+                        }
+                        else {
+                            $("#IN1").fadeOut(500);
+                            $("#IN2").fadeOut(500);
+                            $("#IN3").fadeOut(500);
+                            $("#IN4").fadeOut(500);
+                            $("#IN5").fadeOut(500);
+                            $("#IN6").fadeOut(500);
+                            $("#IN7").fadeOut(500);
+                        }
+                    })
+
+                    $(document).ready(function(){
+                        var currentDate = new Date();
+                        var currentYear = currentDate.getFullYear();
+                        var currentMonth = currentDate.getMonth() + 1;
+                        var currentDay = currentDate.getDate();
+                        $('#InvoiceDate').prop('max', currentYear + "-" + currentMonth + "-" + currentDay);
+
+                        if ($("#aramex_shipment_shipper_country").val() == "IN" && $("#aramex_shipment_receiver_country").val() != "IN") {
+                            $("#IN1").fadeIn(500);
+                            $("#IN2").fadeIn(500);
+                            $("#IN3").fadeIn(500);
+                            $("#IN4").fadeIn(500);
+                            $("#IN5").fadeIn(500);
+                            $("#IN6").fadeIn(500);
+                            $("#IN7").fadeIn(500);
+                        }
+
+                        if(($('#aramex_messages').html() != "") && ($('.error-msg'))){
+                            $("#aramex_overlay").css("display", "block");
+                            $("#aramex_shipment_creation").fadeIn(1000);
+                        }
+
+                        $(function() {
+                            $( "#aramex_shipment_info_pickup_date" ).datepicker({ dateFormat: "yy-mm-dd" });
+                            $( "#aramex_shipment_info_ready_time" ).datepicker({ dateFormat: "yy-mm-dd" });
+                            $( "#aramex_shipment_info_last_pickup_time" ).datepicker({ dateFormat: "yy-mm-dd" });
+                            $( "#aramex_shipment_info_closing_time" ).datepicker({ dateFormat: "yy-mm-dd" });
+                        });
+                        $('#filereset').click(function(){
+                            $("#file1_div").html($("#file1_div").html());
+                        });
+                        $('#file2reset').click(function(){
+                            $("#file2_div").html($("#file2_div").html());
+                        });
+                        $('#file3reset').click(function(){
+                            $("#file3_div").html($("#file3_div").html());
+                        });
+                    });
+
+                    jQuery("#aramex_shipment_info_product_type").chained("#aramex_shipment_info_product_group");
+                    jQuery("#aramex_shipment_info_service_type").chained("#aramex_shipment_info_product_group");
+
+                </script>
+            </div>
+        </div>
+    </div>{{ footer }}

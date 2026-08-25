@@ -1,0 +1,39 @@
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h3>Track By Tracking Number</h3>
+</div>
+<br>
+<div class="modal-body">
+    {% if result %}
+    <h4>AWB #{{ awbNo }}</h4>
+    <h4>Status :{{ status }}</h4>
+    <br>
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover list">
+        <thead>
+          <tr>
+            <td>Date</td>
+            <td>Activity</td>
+            <td>Details</td>
+            <td>Location</td>
+          </tr>
+        </thead>
+        <tbody>
+        {% for track in result %}
+        <tr>
+          <td class="text-left">{{ track.Date }}</td>
+          <td class="text-left">{{ track.Activity }}</td>
+          <td class="text-left">{{ track.Details }}</td>
+          <td class="text-left">{{ track.Location }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+        {% else %}
+          <p>{{ text_empty }}</p>
+        {% endif %}
+  </div> 
+        <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>                
+        </div>
