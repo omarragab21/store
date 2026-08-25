@@ -1,6 +1,9 @@
 // Toki Store & Marketplace Client Application
+if (window.__TOKI_LOADED__) {
+  console.log('Toki app already loaded.');
+} else {
+  window.__TOKI_LOADED__ = true;
 
-let currentLang = 'ar';
 let currentCurrency = 'SAR';
 let allProducts = [];
 let allCategories = [];
@@ -621,3 +624,5 @@ function setupEventListeners() {
     }
   });
 }
+}
+
