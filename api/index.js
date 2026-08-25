@@ -1,38 +1,28 @@
-const fs = require('fs');
-const path = require('path');
+// Safe static requires so Vercel bundler packages all data into the Lambda function
+let products = [];
+let categories = [];
+let banners = [];
+let settings = {};
+let orders = [];
+let vendors = [];
+let coupons = [];
+let shippingCouriers = [];
+let saudiZones = [];
+let databaseAll = {};
 
-// Helper to load JSON file safely
-function loadJson(filename) {
-  try {
-    const fullPath = path.join(process.cwd(), 'dummy_data', filename);
-    if (fs.existsSync(fullPath)) {
-      return JSON.parse(fs.readFileSync(fullPath, 'utf8'));
-    }
-    // Fallback relative to __dirname
-    const relPath = path.join(__dirname, '..', 'dummy_data', filename);
-    if (fs.existsSync(relPath)) {
-      return JSON.parse(fs.readFileSync(relPath, 'utf8'));
-    }
-  } catch (err) {
-    console.error(`Error loading ${filename}:`, err);
-  }
-  return null;
-}
-
-// In-memory cache for dummy data
-const products = loadJson('products.json') || [];
-const categories = loadJson('categories.json') || [];
-const banners = loadJson('banners.json') || [];
-const settings = loadJson('settings.json') || {};
-const orders = loadJson('orders.json') || [];
-const vendors = loadJson('vendors.json') || [];
-const coupons = loadJson('coupons.json') || [];
-const shippingCouriers = loadJson('shipping_couriers.json') || [];
-const saudiZones = loadJson('zones_saudi.json') || [];
-let databaseAll = null; // lazy load for performance
+try { products = require('./data/products.json'); } catch(e) { try { products = require('../dummy_data/products.json'); } catch(e2) { products = []; } }
+try { categories = require('./data/categories.json'); } catch(e) { try { categories = require('../dummy_data/categories.json'); } catch(e2) { categories = []; } }
+try { banners = require('./data/banners.json'); } catch(e) { try { banners = require('../dummy_data/banners.json'); } catch(e2) { banners = []; } }
+try { settings = require('./data/settings.json'); } catch(e) { try { settings = require('../dummy_data/settings.json'); } catch(e2) { settings = {}; } }
+try { orders = require('./data/orders.json'); } catch(e) { try { orders = require('../dummy_data/orders.json'); } catch(e2) { orders = []; } }
+try { vendors = require('./data/vendors.json'); } catch(e) { try { vendors = require('../dummy_data/vendors.json'); } catch(e2) { vendors = []; } }
+try { coupons = require('./data/coupons.json'); } catch(e) { try { coupons = require('../dummy_data/coupons.json'); } catch(e2) { coupons = []; } }
+try { shippingCouriers = require('./data/shipping_couriers.json'); } catch(e) { try { shippingCouriers = require('../dummy_data/shipping_couriers.json'); } catch(e2) { shippingCouriers = []; } }
+try { saudiZones = require('./data/zones_saudi.json'); } catch(e) { try { saudiZones = require('../dummy_data/zones_saudi.json'); } catch(e2) { saudiZones = []; } }
+try { databaseAll = require('./data/database_all.json'); } catch(e) { try { databaseAll = require('../dummy_data/database_all.json'); } catch(e2) { databaseAll = {}; } }
 
 module.exports = (req, res) => {
-  // Polyfill status and json for non-Vercel local node environments
+  // Polyfill status and json for all environments
   if (!res.status) {
     res.status = function(code) {
       this.statusCode = code;
@@ -50,20 +40,21 @@ module.exports = (req, res) => {
   // CORS Headers
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
 
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
 
-  // Parse URL & Query
-  const urlObj = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
-  const pathname = urlObj.pathname.replace(/^\/api/, '') || '/';
-  const query = Object.fromEntries(urlObj.searchParams.entries());
-
   try {
-    // 1. Root / Health Check
+    const rawUrl = req.url || '/';
+    const host = (req.headers && req.headers.host) || 'localhost';
+    const urlObj = new URL(rawUrl, `http://${host}`);
+    let pathname = urlObj.pathname.replace(/^\/api/, '') || '/';
+    const query = Object.fromEntries(urlObj.searchParams.entries());
+
+    // 1. Health check & info
     if (pathname === '/' || pathname === '/health' || pathname === '/status') {
       return res.status(200).json({
         status: 'success',
@@ -76,7 +67,7 @@ module.exports = (req, res) => {
           banners_sets: banners.length,
           orders_count: orders.length,
           vendors_count: vendors.length,
-          total_sql_tables: 109
+          total_sql_tables: Object.keys(databaseAll).length || 109
         },
         endpoints: [
           '/api/products',
@@ -95,17 +86,15 @@ module.exports = (req, res) => {
       });
     }
 
-    // 2. Products List & Filtering
+    // 2. Products List
     if (pathname === '/products') {
       let filtered = [...products];
 
-      // Filter by category
       if (query.category_id) {
         const catId = parseInt(query.category_id, 10);
         filtered = filtered.filter(p => p.categories && p.categories.includes(catId));
       }
 
-      // Filter by search query
       if (query.q || query.search) {
         const q = (query.q || query.search).toLowerCase().trim();
         filtered = filtered.filter(p => 
@@ -117,7 +106,6 @@ module.exports = (req, res) => {
         );
       }
 
-      // Filter by min / max price
       if (query.min_price) {
         const minP = parseFloat(query.min_price);
         filtered = filtered.filter(p => (p.special_price_sar || p.price_sar) >= minP);
@@ -127,7 +115,6 @@ module.exports = (req, res) => {
         filtered = filtered.filter(p => (p.special_price_sar || p.price_sar) <= maxP);
       }
 
-      // Sort
       if (query.sort === 'price_asc') {
         filtered.sort((a, b) => (a.special_price_sar || a.price_sar) - (b.special_price_sar || b.price_sar));
       } else if (query.sort === 'price_desc') {
@@ -136,7 +123,6 @@ module.exports = (req, res) => {
         filtered.sort((a, b) => b.rating - a.rating);
       }
 
-      // Pagination
       const page = Math.max(1, parseInt(query.page || '1', 10));
       const limit = Math.max(1, Math.min(50, parseInt(query.limit || '20', 10)));
       const startIndex = (page - 1) * limit;
@@ -171,7 +157,7 @@ module.exports = (req, res) => {
       });
     }
 
-    // 5. Banners & Sliders
+    // 5. Banners
     if (pathname === '/banners') {
       return res.status(200).json({
         status: 'success',
@@ -180,7 +166,7 @@ module.exports = (req, res) => {
       });
     }
 
-    // 6. Vendors / Marketplace
+    // 6. Vendors
     if (pathname === '/vendors') {
       return res.status(200).json({
         status: 'success',
@@ -189,7 +175,7 @@ module.exports = (req, res) => {
       });
     }
 
-    // 7. Settings & Config
+    // 7. Settings
     if (pathname === '/settings') {
       return res.status(200).json({
         status: 'success',
@@ -240,9 +226,6 @@ module.exports = (req, res) => {
     const dbMatch = pathname.match(/^\/db\/([a-zA-Z0-9_]+)$/);
     if (dbMatch) {
       const tableName = dbMatch[1];
-      if (!databaseAll) {
-        databaseAll = loadJson('database_all.json') || {};
-      }
       if (tableName === 'tables') {
         const tableStats = Object.keys(databaseAll).map(t => ({
           table: t,
@@ -297,17 +280,17 @@ module.exports = (req, res) => {
       });
     }
 
-    // Fallback 404
+    // 14. Fallback 404
     return res.status(404).json({
       status: 'error',
-      message: `API endpoint '${pathname}' not found. Try /api/products, /api/categories, /api/banners, etc.`
+      message: `Endpoint '${pathname}' not found.`
     });
 
   } catch (err) {
-    console.error('Serverless Handler Error:', err);
+    console.error('API Error:', err);
     return res.status(500).json({
       status: 'error',
-      message: 'Internal serverless execution error',
+      message: 'API internal execution error',
       error: err.message
     });
   }

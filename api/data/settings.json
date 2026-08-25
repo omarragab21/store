@@ -1,0 +1,82 @@
+{
+  "store_name": "متجر وسوق توكي - Toki Store & Marketplace",
+  "store_slogan": "تسوق آلاف المنتجات بأسعار استثنائية وشحن سريع لجميع مدن المملكة",
+  "store_owner": "مؤسسة توكي للتجارة الإلكترونية",
+  "email": "support@tokistore.com",
+  "telephone": "+966 50 123 4567",
+  "vat_number": "310123456700003",
+  "cr_number": "1010789456",
+  "maroof_id": "182934",
+  "default_currency": "SAR",
+  "currencies": [
+    {
+      "code": "SAR",
+      "title": "ريال سعودي",
+      "symbol_right": " ر.س",
+      "value": 1.0
+    },
+    {
+      "code": "USD",
+      "title": "US Dollar",
+      "symbol_left": "$",
+      "value": 0.266
+    },
+    {
+      "code": "AED",
+      "title": "درهم إماراتي",
+      "symbol_right": " د.إ",
+      "value": 0.98
+    }
+  ],
+  "languages": [
+    {
+      "code": "ar",
+      "name": "العربية",
+      "direction": "rtl",
+      "active": true
+    },
+    {
+      "code": "en",
+      "name": "English",
+      "direction": "ltr",
+      "active": true
+    }
+  ],
+  "payment_methods": [
+    {
+      "code": "mada",
+      "name_ar": "مدى (Mada)",
+      "name_en": "Mada Debit Card",
+      "icon": "mada.png",
+      "active": true
+    },
+    {
+      "code": "apple_pay",
+      "name_ar": "أبل باي (Apple Pay)",
+      "name_en": "Apple Pay",
+      "icon": "applepay.png",
+      "active": true
+    },
+    {
+      "code": "visa_master",
+      "name_ar": "بطاقات فيزا وماستركارد",
+      "name_en": "Visa & MasterCard",
+      "icon": "visa.png",
+      "active": true
+    },
+    {
+      "code": "tabby",
+      "name_ar": "تابي (قسمها على 4 دفعات بدون فوائد)",
+      "name_en": "Tabby (Split in 4)",
+      "icon": "tabby.png",
+      "active": true
+    },
+    {
+      "code": "cod",
+      "name_ar": "الدفع عند الاستلام",
+      "name_en": "Cash On Delivery",
+      "icon": "cod.png",
+      "active": true
+    }
+  ]
+}
