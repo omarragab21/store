@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "name": "متجر النخبة للإلكترونيات الذكية",
+    "name_en": "Elite Smart Electronics Store",
+    "rating": 4.9,
+    "sales_count": 1420,
+    "city": "الرياض",
+    "verified": true,
+    "badge": "تاجر موثق ذهبي 🥇",
+    "banner": "catalog/demo/banners/bann1.png",
+    "products_count": 4
+  },
+  {
+    "id": 2,
+    "name": "عالم الموضة والأزياء الخليجية",
+    "name_en": "Gulf Fashion & Fragrances World",
+    "rating": 4.8,
+    "sales_count": 850,
+    "city": "جدة",
+    "verified": true,
+    "badge": "تاجر بلاتيني 💎",
+    "banner": "catalog/demo/banners/bann2.png",
+    "products_count": 2
+  },
+  {
+    "id": 3,
+    "name": "استوديو توكي للطباعة والتخصيص الفوري",
+    "name_en": "Toki Print & Custom Design Studio",
+    "rating": 5.0,
+    "sales_count": 3200,
+    "city": "الدمام",
+    "verified": true,
+    "badge": "المتجر الرسمي لتوكي 👑",
+    "banner": "catalog/demo/banners/slider.png",
+    "products_count": 2
+  }
+]

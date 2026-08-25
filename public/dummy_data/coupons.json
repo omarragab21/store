@@ -1,0 +1,47 @@
+[
+  {
+    "id": 4,
+    "name": "-10% خصم",
+    "code": 2222,
+    "type": "percentage",
+    "discount": 10.0,
+    "total_min": 0.0,
+    "status": false
+  },
+  {
+    "id": 5,
+    "name": "شحن مجاني",
+    "code": 3333,
+    "type": "percentage",
+    "discount": 0.0,
+    "total_min": 100.0,
+    "status": false
+  },
+  {
+    "id": 6,
+    "name": "-10.00 خصم",
+    "code": 1111,
+    "type": "fixed",
+    "discount": 10.0,
+    "total_min": 10.0,
+    "status": false
+  },
+  {
+    "id": 7,
+    "name": "اليوم الوطني",
+    "code": "S100",
+    "type": "percentage",
+    "discount": 10.0,
+    "total_min": 0.0,
+    "status": true
+  },
+  {
+    "id": 8,
+    "name": "jkkk",
+    "code": "k55",
+    "type": "percentage",
+    "discount": 20.0,
+    "total_min": 0.0,
+    "status": true
+  }
+]

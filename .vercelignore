@@ -1,0 +1,9 @@
+# Ignore heavy archive and PHP engine from Vercel Lambda bundle
+toki2 (1).zip
+toki2 (1)/
+*.zip
+*.sql
+*.py
+PROJECT_DOCUMENTATION.md
+extract_sql_to_dummy_data.py
+api/data/database_all.json

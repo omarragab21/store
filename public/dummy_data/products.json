@@ -1,0 +1,439 @@
+[
+  {
+    "id": 1,
+    "model": "model",
+    "sku": "",
+    "name_ar": "هاتف توكي سمارت إكستريم 5G (ذاكرة 256 جيجابايت)",
+    "name_en": "Toki Smart Extreme 5G Phone (256GB)",
+    "description_ar": "يمكن عرض وصف المنتج ، جنبًا إلى جنب مع أي علامة تبويب أخرى كعلامات تبويب أو أكورديون أو كتل مرئية بالكامل بتنسيق الشبكة أو واحدة تحت الأخرى. يمكنك مزج ومطابقة علامات التبويب والكتل بأي ترتيب وفي أي موضع. يمكن أيضًا إعداد كل علامة تبويب كارتباط والإشارة إلى صفحات أخرى أو فتح وحدات منبثقة. يتوفر أيضًا محتوى الكتلة القابل للطي الاختياري \"إظهار المزيد\" كخيار للأوصاف الكبيرة والطويلة أو المحتوى المخصص.",
+    "description_en": "100% Genuine product with comprehensive 2-year warranty. Fast delivery across Saudi Arabia and Gulf regions.",
+    "summary_ar": "يمكن عرض وصف المنتج ، جنبًا إلى جنب مع أي علامة تبويب أخرى كعلامات تبويب أو أكورديون أو كتل مرئية بالكامل بتنسيق الشبكة أو واحدة تحت الأخرى. يمكنك مزج ومطابقة علامات التبويب والكتل...",
+    "summary_en": "100% Genuine product with comprehensive 2-year warranty. Fast delivery across Saudi Arabia and Gulf regions....",
+    "price_sar": 150.0,
+    "special_price_sar": null,
+    "discount_percent": 0,
+    "currency": "SAR",
+    "quantity": 100,
+    "in_stock": true,
+    "main_image": "catalog/demo/product/p1.png",
+    "gallery_images": [
+      "catalog/demo/product/p1.png",
+      "catalog/demo/product/p3.png",
+      "catalog/demo/product/p4.png",
+      "catalog/demo/product/p5.png"
+    ],
+    "categories": [
+      57,
+      61,
+      69,
+      70,
+      73,
+      75,
+      76,
+      77
+    ],
+    "category_name_ar": "موبايلات",
+    "manufacturer": {
+      "id": 0,
+      "name": "Toki Original",
+      "image": "catalog/demo/manufacturer/logo1.png"
+    },
+    "rating": 4.9,
+    "reviews_count": 128,
+    "specs": {
+      "الشاشة": "6.7 بوصة AMOLED 120Hz",
+      "المعالج": "Snapdragon 8 Gen 2",
+      "البطارية": "5000 mAh"
+    },
+    "shipping_free": false,
+    "badge": "الأكثر مبيعاً 🔥",
+    "vendor": {
+      "id": 2,
+      "name": "عالم الموضة الخليجية",
+      "verified": true
+    },
+    "date_added": "2022-03-20 04:35:33"
+  },
+  {
+    "id": 2,
+    "model": "model",
+    "sku": "",
+    "name_ar": "لابتوب توكي إير فائق النحافة Core i7 (شاشة 15.6 بوصة)",
+    "name_en": "Toki Air Ultra Slim Laptop Core i7 (15.6 Inch)",
+    "description_ar": "<p>يمكن عرض وصف المنتج ، جنبًا إلى جنب مع أي علامة تبويب أخرى كعلامات تبويب أو أكورديون أو كتل مرئية بالكامل بتنسيق الشبكة أو واحدة تحت الأخرى. يمكنك مزج ومطابقة علامات التبويب والكتل بأي ترتيب وفي أي موضع. يمكن أيضًا إعداد كل علامة تبويب كارتباط والإشارة إلى صفحات أخرى أو فتح وحدات منبثقة. يتوفر أيضًا محتوى الكتلة القابل للطي الاختياري \"إظهار المزيد\" كخيار للأوصاف الكبيرة والطويلة أو المحتوى المخصص.<br></p>",
+    "description_en": "100% Genuine product with comprehensive 2-year warranty. Fast delivery across Saudi Arabia and Gulf regions.",
+    "summary_ar": "يمكن عرض وصف المنتج ، جنبًا إلى جنب مع أي علامة تبويب أخرى كعلامات تبويب أو أكورديون أو كتل مرئية بالكامل بتنسيق الشبكة أو واحدة تحت الأخرى. يمكنك مزج ومطابقة علامات التبويب والكتل...",
+    "summary_en": "100% Genuine product with comprehensive 2-year warranty. Fast delivery across Saudi Arabia and Gulf regions....",
+    "price_sar": 170.0,
+    "special_price_sar": 139.4,
+    "discount_percent": 18,
+    "currency": "SAR",
+    "quantity": 100,
+    "in_stock": true,
+    "main_image": "catalog/demo/product/p2.png",
+    "gallery_images": [
+      "catalog/demo/product/p2.png",
+      "catalog/demo/product/p4.png",
+      "catalog/demo/product/p5.png",
+      "catalog/demo/product/p6.png"
+    ],
+    "categories": [
+      57,
+      61,
+      62,
+      69,
+      70,
+      73,
+      75,
+      76,
+      77
+    ],
+    "category_name_ar": "لابتوبات وإلكترونيات",
+    "manufacturer": {
+      "id": 0,
+      "name": "Toki Original",
+      "image": "catalog/demo/manufacturer/logo1.png"
+    },
+    "rating": 4.8,
+    "reviews_count": 94,
+    "specs": {
+      "المعالج": "Intel Core i7 13th Gen",
+      "الرام": "16GB DDR5",
+      "التخزين": "1TB NVMe SSD"
+    },
+    "shipping_free": true,
+    "badge": "عرض خاص ⚡",
+    "vendor": {
+      "id": 3,
+      "name": "استوديو توكي الرسمي",
+      "verified": true
+    },
+    "date_added": "2022-03-20 04:36:15"
+  },
+  {
+    "id": 3,
+    "model": "model",
+    "sku": "",
+    "name_ar": "ساعة توكي الذكية المقاومة للماء مع مراقب اللياقة",
+    "name_en": "Toki Waterproof Smart Watch with Fitness Tracker",
+    "description_ar": "<p>يمكن عرض وصف المنتج ، جنبًا إلى جنب مع أي علامة تبويب أخرى كعلامات تبويب أو أكورديون أو كتل مرئية بالكامل بتنسيق الشبكة أو واحدة تحت الأخرى. يمكنك مزج ومطابقة علامات التبويب والكتل بأي ترتيب وفي أي موضع. يمكن أيضًا إعداد كل علامة تبويب كارتباط والإشارة إلى صفحات أخرى أو فتح وحدات منبثقة. يتوفر أيضًا محتوى الكتلة القابل للطي الاختياري \"إظهار المزيد\" كخيار للأوصاف الكبيرة والطويلة أو المحتوى المخصص.<br></p>",
+    "description_en": "100% Genuine product with comprehensive 2-year warranty. Fast delivery across Saudi Arabia and Gulf regions.",
+    "summary_ar": "يمكن عرض وصف المنتج ، جنبًا إلى جنب مع أي علامة تبويب أخرى كعلامات تبويب أو أكورديون أو كتل مرئية بالكامل بتنسيق الشبكة أو واحدة تحت الأخرى. يمكنك مزج ومطابقة علامات التبويب والكتل...",
+    "summary_en": "100% Genuine product with comprehensive 2-year warranty. Fast delivery across Saudi Arabia and Gulf regions....",
+    "price_sar": 200.0,
+    "special_price_sar": 164.0,
+    "discount_percent": 18,
+    "currency": "SAR",
+    "quantity": 98,
+    "in_stock": true,
+    "main_image": "catalog/demo/product/p3.png",
+    "gallery_images": [
+      "catalog/demo/product/p3.png",
+      "catalog/demo/product/p5.png",
+      "catalog/demo/product/p6.png",
+      "catalog/demo/product/p7.png"
+    ],
+    "categories": [
+      57,
+      61,
+      62,
+      69,
+      70,
+      73,
+      75,
+      76
+    ],
+    "category_name_ar": "إلكترونيات وساعات",
+    "manufacturer": {
+      "id": 0,
+      "name": "Toki Original",
+      "image": "catalog/demo/manufacturer/logo1.png"
+    },
+    "rating": 4.7,
+    "reviews_count": 210,
+    "specs": {
+      "البطارية": "تدوم 10 أيام",
+      "المستشعرات": "نبضات القلب، الأكسجين، النوم",
+      "المقاومة": "IP68"
+    },
+    "shipping_free": true,
+    "badge": "خصم مميز 30%",
+    "vendor": {
+      "id": 1,
+      "name": "متجر النخبة للإلكترونيات",
+      "verified": true
+    },
+    "date_added": "2022-03-20 04:37:07"
+  },
+  {
+    "id": 4,
+    "model": "model",
+    "sku": "",
+    "name_ar": "سماعات رأس توكي اللاسلكية بنظام العزل النشط للضوضاء",
+    "name_en": "Toki Wireless ANC Over-Ear Headphones",
+    "description_ar": "<p>يمكن عرض وصف المنتج ، جنبًا إلى جنب مع أي علامة تبويب أخرى كعلامات تبويب أو أكورديون أو كتل مرئية بالكامل بتنسيق الشبكة أو واحدة تحت الأخرى. يمكنك مزج ومطابقة علامات التبويب والكتل بأي ترتيب وفي أي موضع. يمكن أيضًا إعداد كل علامة تبويب كارتباط والإشارة إلى صفحات أخرى أو فتح وحدات منبثقة. يتوفر أيضًا محتوى الكتلة القابل للطي الاختياري \"إظهار المزيد\" كخيار للأوصاف الكبيرة والطويلة أو المحتوى المخصص.<br></p>",
+    "description_en": "100% Genuine product with comprehensive 2-year warranty. Fast delivery across Saudi Arabia and Gulf regions.",
+    "summary_ar": "يمكن عرض وصف المنتج ، جنبًا إلى جنب مع أي علامة تبويب أخرى كعلامات تبويب أو أكورديون أو كتل مرئية بالكامل بتنسيق الشبكة أو واحدة تحت الأخرى. يمكنك مزج ومطابقة علامات التبويب والكتل...",
+    "summary_en": "100% Genuine product with comprehensive 2-year warranty. Fast delivery across Saudi Arabia and Gulf regions....",
+    "price_sar": 170.0,
+    "special_price_sar": 100.0,
+    "discount_percent": 41,
+    "currency": "SAR",
+    "quantity": 97,
+    "in_stock": true,
+    "main_image": "catalog/demo/product/p4.png",
+    "gallery_images": [
+      "catalog/demo/product/p4.png",
+      "catalog/demo/product/p6.png",
+      "catalog/demo/product/p7.png",
+      "catalog/demo/product/p8.png"
+    ],
+    "categories": [
+      57,
+      61,
+      62,
+      69,
+      70,
+      73,
+      75,
+      77
+    ],
+    "category_name_ar": "صوتيات وإلكترونيات",
+    "manufacturer": {
+      "id": 0,
+      "name": "Toki Original",
+      "image": "catalog/demo/manufacturer/logo1.png"
+    },
+    "rating": 4.9,
+    "reviews_count": 340,
+    "specs": {
+      "البطارية": "40 ساعة تشغيل",
+      "عزل الضوضاء": "Active Hybrid ANC",
+      "الاتصال": "Bluetooth 5.3"
+    },
+    "shipping_free": true,
+    "badge": "وصل حديثاً ✨",
+    "vendor": {
+      "id": 2,
+      "name": "عالم الموضة الخليجية",
+      "verified": true
+    },
+    "date_added": "2022-03-20 04:37:07"
+  },
+  {
+    "id": 5,
+    "model": "model",
+    "sku": "",
+    "name_ar": "ماكينة تحضير الاسبريسو والقهوة الاحترافية من توكي",
+    "name_en": "Toki Pro Espresso & Coffee Machine",
+    "description_ar": "<p>يمكن عرض وصف المنتج ، جنبًا إلى جنب مع أي علامة تبويب أخرى كعلامات تبويب أو أكورديون أو كتل مرئية بالكامل بتنسيق الشبكة أو واحدة تحت الأخرى. يمكنك مزج ومطابقة علامات التبويب والكتل بأي ترتيب وفي أي موضع. يمكن أيضًا إعداد كل علامة تبويب كارتباط والإشارة إلى صفحات أخرى أو فتح وحدات منبثقة. يتوفر أيضًا محتوى الكتلة القابل للطي الاختياري \"إظهار المزيد\" كخيار للأوصاف الكبيرة والطويلة أو المحتوى المخصص.<br></p>",
+    "description_en": "100% Genuine product with comprehensive 2-year warranty. Fast delivery across Saudi Arabia and Gulf regions.",
+    "summary_ar": "يمكن عرض وصف المنتج ، جنبًا إلى جنب مع أي علامة تبويب أخرى كعلامات تبويب أو أكورديون أو كتل مرئية بالكامل بتنسيق الشبكة أو واحدة تحت الأخرى. يمكنك مزج ومطابقة علامات التبويب والكتل...",
+    "summary_en": "100% Genuine product with comprehensive 2-year warranty. Fast delivery across Saudi Arabia and Gulf regions....",
+    "price_sar": 150.0,
+    "special_price_sar": 120.0,
+    "discount_percent": 20,
+    "currency": "SAR",
+    "quantity": 96,
+    "in_stock": true,
+    "main_image": "catalog/demo/product/p1.png",
+    "gallery_images": [
+      "catalog/demo/product/p1.png",
+      "catalog/demo/product/p5.png",
+      "catalog/demo/product/p7.png",
+      "catalog/demo/product/p8.png"
+    ],
+    "categories": [
+      57,
+      61,
+      62,
+      69,
+      70,
+      73,
+      75,
+      76
+    ],
+    "category_name_ar": "أجهزة منزلية وسوبرماركت",
+    "manufacturer": {
+      "id": 0,
+      "name": "Toki Original",
+      "image": "catalog/demo/manufacturer/logo1.png"
+    },
+    "rating": 4.6,
+    "reviews_count": 85,
+    "specs": {
+      "الضغط": "20 Bar",
+      "سعة الخزان": "1.5 لتر",
+      "المادة": "Stainless Steel"
+    },
+    "shipping_free": false,
+    "badge": "شحن مجاني 🚚",
+    "vendor": {
+      "id": 3,
+      "name": "استوديو توكي الرسمي",
+      "verified": true
+    },
+    "date_added": "2022-03-20 04:38:40"
+  },
+  {
+    "id": 6,
+    "model": "model",
+    "sku": "",
+    "name_ar": "مجموعة العناية الفاخرة بالبشرة والجمال العضوي",
+    "name_en": "Toki Luxury Organic Skin Care & Beauty Set",
+    "description_ar": "<p>يمكن عرض وصف المنتج ، جنبًا إلى جنب مع أي علامة تبويب أخرى كعلامات تبويب أو أكورديون أو كتل مرئية بالكامل بتنسيق الشبكة أو واحدة تحت الأخرى. يمكنك مزج ومطابقة علامات التبويب والكتل بأي ترتيب وفي أي موضع. يمكن أيضًا إعداد كل علامة تبويب كارتباط والإشارة إلى صفحات أخرى أو فتح وحدات منبثقة. يتوفر أيضًا محتوى الكتلة القابل للطي الاختياري \"إظهار المزيد\" كخيار للأوصاف الكبيرة والطويلة أو المحتوى المخصص.<br></p>",
+    "description_en": "100% Genuine product with comprehensive 2-year warranty. Fast delivery across Saudi Arabia and Gulf regions.",
+    "summary_ar": "يمكن عرض وصف المنتج ، جنبًا إلى جنب مع أي علامة تبويب أخرى كعلامات تبويب أو أكورديون أو كتل مرئية بالكامل بتنسيق الشبكة أو واحدة تحت الأخرى. يمكنك مزج ومطابقة علامات التبويب والكتل...",
+    "summary_en": "100% Genuine product with comprehensive 2-year warranty. Fast delivery across Saudi Arabia and Gulf regions....",
+    "price_sar": 170.0,
+    "special_price_sar": 150.0,
+    "discount_percent": 12,
+    "currency": "SAR",
+    "quantity": 96,
+    "in_stock": true,
+    "main_image": "catalog/demo/product/p2.png",
+    "gallery_images": [
+      "catalog/demo/product/p2.png",
+      "catalog/demo/product/p6.png",
+      "catalog/demo/product/p8.png",
+      "catalog/demo/product/p1.png"
+    ],
+    "categories": [
+      57,
+      61,
+      69,
+      70,
+      73,
+      75,
+      77
+    ],
+    "category_name_ar": "الجمال والعناية",
+    "manufacturer": {
+      "id": 0,
+      "name": "Toki Original",
+      "image": "catalog/demo/manufacturer/logo1.png"
+    },
+    "rating": 4.8,
+    "reviews_count": 156,
+    "specs": {
+      "المكونات": "مستخلصات عضوية طبيعية",
+      "المحتوى": "سيروم + كريم ليلي + غسول"
+    },
+    "shipping_free": true,
+    "badge": "طبيعي 100%",
+    "vendor": {
+      "id": 1,
+      "name": "متجر النخبة للإلكترونيات",
+      "verified": true
+    },
+    "date_added": "2022-03-20 04:38:40"
+  },
+  {
+    "id": 7,
+    "model": "model",
+    "sku": "",
+    "name_ar": "كاميرا تصوير رقمية احترافية 4K UHD مع عدسة زووم",
+    "name_en": "Toki 4K UHD Pro Digital Camera with Zoom Lens",
+    "description_ar": "<p>يمكن عرض وصف المنتج ، جنبًا إلى جنب مع أي علامة تبويب أخرى كعلامات تبويب أو أكورديون أو كتل مرئية بالكامل بتنسيق الشبكة أو واحدة تحت الأخرى. يمكنك مزج ومطابقة علامات التبويب والكتل بأي ترتيب وفي أي موضع. يمكن أيضًا إعداد كل علامة تبويب كارتباط والإشارة إلى صفحات أخرى أو فتح وحدات منبثقة. يتوفر أيضًا محتوى الكتلة القابل للطي الاختياري \"إظهار المزيد\" كخيار للأوصاف الكبيرة والطويلة أو المحتوى المخصص.<br></p>",
+    "description_en": "100% Genuine product with comprehensive 2-year warranty. Fast delivery across Saudi Arabia and Gulf regions.",
+    "summary_ar": "يمكن عرض وصف المنتج ، جنبًا إلى جنب مع أي علامة تبويب أخرى كعلامات تبويب أو أكورديون أو كتل مرئية بالكامل بتنسيق الشبكة أو واحدة تحت الأخرى. يمكنك مزج ومطابقة علامات التبويب والكتل...",
+    "summary_en": "100% Genuine product with comprehensive 2-year warranty. Fast delivery across Saudi Arabia and Gulf regions....",
+    "price_sar": 200.0,
+    "special_price_sar": 160.0,
+    "discount_percent": 20,
+    "currency": "SAR",
+    "quantity": 98,
+    "in_stock": true,
+    "main_image": "catalog/demo/product/p3.png",
+    "gallery_images": [
+      "catalog/demo/product/p3.png",
+      "catalog/demo/product/p7.png",
+      "catalog/demo/product/p1.png",
+      "catalog/demo/product/p2.png"
+    ],
+    "categories": [
+      57,
+      61,
+      62,
+      69,
+      70,
+      73,
+      76
+    ],
+    "category_name_ar": "كاميرات وتصوير",
+    "manufacturer": {
+      "id": 0,
+      "name": "Toki Original",
+      "image": "catalog/demo/manufacturer/logo1.png"
+    },
+    "rating": 4.9,
+    "reviews_count": 62,
+    "specs": {
+      "الدقة": "48 Megapixels",
+      "الفيديو": "4K 60fps",
+      "الزووم": "24x Optical"
+    },
+    "shipping_free": true,
+    "badge": "احترافي 📷",
+    "vendor": {
+      "id": 2,
+      "name": "عالم الموضة الخليجية",
+      "verified": true
+    },
+    "date_added": "2022-03-20 04:38:40"
+  },
+  {
+    "id": 8,
+    "model": "model",
+    "sku": "",
+    "name_ar": "عطر توكي الملكي المركز للجنسين (100 مل)",
+    "name_en": "Toki Royal Eau De Parfum (100ml)",
+    "description_ar": "<p>يمكن عرض وصف المنتج ، جنبًا إلى جنب مع أي علامة تبويب أخرى كعلامات تبويب أو أكورديون أو كتل مرئية بالكامل بتنسيق الشبكة أو واحدة تحت الأخرى. يمكنك مزج ومطابقة علامات التبويب والكتل بأي ترتيب وفي أي موضع. يمكن أيضًا إعداد كل علامة تبويب كارتباط والإشارة إلى صفحات أخرى أو فتح وحدات منبثقة. يتوفر أيضًا محتوى الكتلة القابل للطي الاختياري \"إظهار المزيد\" كخيار للأوصاف الكبيرة والطويلة أو المحتوى المخصص.<br></p>",
+    "description_en": "100% Genuine product with comprehensive 2-year warranty. Fast delivery across Saudi Arabia and Gulf regions.",
+    "summary_ar": "يمكن عرض وصف المنتج ، جنبًا إلى جنب مع أي علامة تبويب أخرى كعلامات تبويب أو أكورديون أو كتل مرئية بالكامل بتنسيق الشبكة أو واحدة تحت الأخرى. يمكنك مزج ومطابقة علامات التبويب والكتل...",
+    "summary_en": "100% Genuine product with comprehensive 2-year warranty. Fast delivery across Saudi Arabia and Gulf regions....",
+    "price_sar": 170.0,
+    "special_price_sar": 100.0,
+    "discount_percent": 41,
+    "currency": "SAR",
+    "quantity": 97,
+    "in_stock": true,
+    "main_image": "catalog/demo/product/p4.png",
+    "gallery_images": [
+      "catalog/demo/product/p4.png",
+      "catalog/demo/product/p8.png",
+      "catalog/demo/product/p2.png",
+      "catalog/demo/product/p3.png"
+    ],
+    "categories": [
+      57,
+      61,
+      69,
+      70,
+      73,
+      75,
+      77
+    ],
+    "category_name_ar": "عطور وأزياء",
+    "manufacturer": {
+      "id": 0,
+      "name": "Toki Original",
+      "image": "catalog/demo/manufacturer/logo1.png"
+    },
+    "rating": 5.0,
+    "reviews_count": 412,
+    "specs": {
+      "النوع": "Eau de Parfum",
+      "الحجم": "100ml",
+      "النوتات": "العود والمسك والعنبر والورد"
+    },
+    "shipping_free": true,
+    "badge": "الأعلى تقييماً 🌟",
+    "vendor": {
+      "id": 3,
+      "name": "استوديو توكي الرسمي",
+      "verified": true
+    },
+    "date_added": "2022-03-20 04:38:40"
+  }
+]
